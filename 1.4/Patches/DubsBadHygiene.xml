@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="FecalSludge"]</xpath>
+    <success>Always</success>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="FecalSludge"]</xpath>
+      <value>
+        <li Class="SomeThingsFloat.FloatingThing_ModExtension">
+          <floatingValue>0.25</floatingValue>
+        </li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

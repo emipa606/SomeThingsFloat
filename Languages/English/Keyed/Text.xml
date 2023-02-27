@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <STF.VerboseLogging>Verbose Logging</STF.VerboseLogging>
+  <STF.VerboseLoggingTT>For debugging</STF.VerboseLoggingTT>
+  <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>
+  <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
+  <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
+  <STF.DespawnAtMapEdgeTT>Floating things will despawn instead of being stopped by the map edge.</STF.DespawnAtMapEdgeTT>
+  <STF.SpawnNewItems>Spawn items at river map-edge</STF.SpawnNewItems>
+  <STF.SpawnNewItemsTT>Things can spawn at the edge of the map if there is a river flowing.</STF.SpawnNewItemsTT>
+  <STF.MaxSpawnValue>Maximum value of spawned items: {0}</STF.MaxSpawnValue>
+  <STF.MaxSpawnValueTT>The maximum value of each stack of items spawned in rivers.</STF.MaxSpawnValueTT>
+  <STF.CurrentModVersion>Installed mod-version: {0}</STF.CurrentModVersion>
+</LanguageData>

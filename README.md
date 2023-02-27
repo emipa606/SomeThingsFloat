@@ -1,0 +1,35 @@
+# SomeThingsFloat
+
+![Image](https://i.imgur.com/buuPQel.png)
+
+
+Let the river wash your trash away!
+
+This mod lets things float in water and move with the stream. In non-streaming water things will move about at random. 
+Things can leave the map this way so can be used to dispose of things you dont want, corpses for example.
+There is also a possibility that things spawn in the river that you can get use of.
+
+Technically the mod looks at all items in water-tiles and calculates their floating value. This is based on what stuff is used to build the item, but some things like corpses have a default float value. Its also possible to add floatable-values to other things via patches, there is a patch for barrels of fecal-matter from https://steamcommunity.com/sharedfiles/filedetails/?id=836308268]Dubs Bad Hygiene that can be used as an example. Higher floatable values makes things move quicker in the water.
+
+I made it mostly for my own playthrough but hopefully someone else can get joy from it!
+
+![Image](https://i.imgur.com/O0IIlYj.png)
+
+Since modding is just a hobby for me I expect no donations to keep modding. If you still want to show your support you can gift me anything from my https://store.steampowered.com/wishlist/id/Mlie]Wishlist or buy me a cup of tea.
+
+https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/Utx6OIH.png)
+
+
+![Image](https://i.imgur.com/PwoNOj4.png)
+
+
+
+-  See if the the error persists if you just have this mod and its requirements active.
+-  If not, try adding your other mods until it happens again.
+-  Post your error-log using https://steamcommunity.com/workshop/filedetails/?id=818773962]HugsLib and command Ctrl+F12
+-  For best support, please use the Discord-channel for error-reporting.
+-  Do not report errors by making a discussion-thread, I get no notification of that.
+-  If you have the solution for a problem, please post it to the GitHub repository.
+
+
+
