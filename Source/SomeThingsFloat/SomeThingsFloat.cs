@@ -56,32 +56,32 @@ public class SomeThingsFloat
         }
 
         // Check floatability based on ingredients
-        if (!actualThing.def.CostList.NullOrEmpty() || !actualThing.def.stuffCategories.NullOrEmpty())
+        if (actualThing.def.CostList.NullOrEmpty() && actualThing.def.stuffCategories.NullOrEmpty())
         {
-            var totalIngredients = 0f;
-            var totalValue = 0f;
-            if (!actualThing.def.CostList.NullOrEmpty())
-            {
-                foreach (var thingDefCountClass in actualThing.def.CostList)
-                {
-                    TryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue);
-                    totalIngredients += thingDefCountClass.count;
-                    totalValue += thingDefCountClass.count * floatingValue;
-                }
-            }
-
-            if (!actualThing.def.stuffCategories.NullOrEmpty())
-            {
-                TryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue);
-                totalIngredients += actualThing.def.CostStuffCount;
-                totalValue += actualThing.def.CostStuffCount * floatingValue;
-            }
-
-            totalValue /= totalIngredients;
-            return totalValue;
+            return 0;
         }
 
-        return 0;
+        var totalIngredients = 0f;
+        var totalValue = 0f;
+        if (!actualThing.def.CostList.NullOrEmpty())
+        {
+            foreach (var thingDefCountClass in actualThing.def.CostList)
+            {
+                TryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue);
+                totalIngredients += thingDefCountClass.count;
+                totalValue += thingDefCountClass.count * floatingValue;
+            }
+        }
+
+        if (!actualThing.def.stuffCategories.NullOrEmpty())
+        {
+            TryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue);
+            totalIngredients += actualThing.def.CostStuffCount;
+            totalValue += actualThing.def.CostStuffCount * floatingValue;
+        }
+
+        totalValue /= totalIngredients;
+        return totalValue;
     }
 
     public static IEnumerable<Thing> GetThingsAndPawns(IntVec3 c, Map map)

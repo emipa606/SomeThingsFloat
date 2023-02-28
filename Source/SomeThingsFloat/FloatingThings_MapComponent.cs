@@ -71,6 +71,32 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             floatingValues.Remove(thing);
+
+            if (thing.def == ThingDefOf.Wastepack)
+            {
+                var neighbor = Find.World.grid[map.Tile].Rivers.FirstOrDefault().neighbor;
+                if (neighbor == 0)
+                {
+                    neighbor = Find.World.grid.FindMostReasonableAdjacentTileForDisplayedPathCost(map.Tile);
+                }
+
+                var goodwillEffecter = thing.TryGetComp<CompDissolutionEffect_Goodwill>();
+                var pollutionEffecter = thing.TryGetComp<CompDissolutionEffect_Pollution>();
+                if (goodwillEffecter != null)
+                {
+                    goodwillEffecter.DoDissolutionEffectWorld(thing.stackCount, neighbor);
+                    SomeThingsFloat.LogMessage(
+                        $"Triggering goodwillEffecter for {thing} on map-tile {neighbor}");
+                }
+
+                if (pollutionEffecter != null)
+                {
+                    pollutionEffecter.DoDissolutionEffectWorld(thing.stackCount, neighbor);
+                    SomeThingsFloat.LogMessage(
+                        $"Triggering pollutionEffecter for {thing} on map-tile {neighbor}");
+                }
+            }
+
             thing.Destroy();
             return;
         }
@@ -328,12 +354,12 @@ public class FloatingThings_MapComponent : MapComponent
             return false;
         }
 
-        if (!cellsWithWater.Contains(thing.Position))
+        if (cellsWithWater.Contains(thing.Position))
         {
-            SomeThingsFloat.LogMessage($"{thing} is no longer in water");
-            return false;
+            return true;
         }
 
-        return true;
+        SomeThingsFloat.LogMessage($"{thing} is no longer in water");
+        return false;
     }
 }
