@@ -4,11 +4,20 @@
   <STF.VerboseLoggingTT>For debugging</STF.VerboseLoggingTT>
   <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>
   <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
+  <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
   <STF.DespawnAtMapEdgeTT>Floating things will despawn instead of being stopped by the map edge.</STF.DespawnAtMapEdgeTT>
   <STF.SpawnNewItems>Spawn items at river map-edge</STF.SpawnNewItems>
   <STF.SpawnNewItemsTT>Things can spawn at the edge of the map if there is a river flowing.</STF.SpawnNewItemsTT>
   <STF.MaxSpawnValue>Maximum value of spawned items: {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>The maximum value of each stack of items spawned in rivers.</STF.MaxSpawnValueTT>
+  <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>Downed pawn {0} is floating away!</STF.PawnIsFloatingAway>
+  <STF.PawnIsLostTitle>{0} has floated away</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselved but you may never see them again.</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>Someone is struggeling in the river</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>You notice someone in the water, the signal you for help</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>Installed mod-version: {0}</STF.CurrentModVersion>
 </LanguageData>

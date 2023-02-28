@@ -5,9 +5,8 @@
 
 Let the river wash your trash away!
 
-This mod lets things float in water and move with the stream. In non-streaming water things will move about at random. 
-Things can leave the map this way so can be used to dispose of things you dont want, corpses for example.
-There is also a possibility that things spawn in the river that you can get use of.
+This mod lets things float in water and move with the stream. In non-streaming water things will move about at random. Things can leave the map this way so can be used to dispose of things you dont want, corpses for example.
+There is also a possibility that things spawn in the river that you can get use of, or even downed pawns you can choose to rescue.
 
 Technically the mod looks at all items in water-tiles and calculates their floating value. This is based on what stuff is used to build the item, but some things like corpses have a default float value. Its also possible to add floatable-values to other things via patches, there is a patch for barrels of fecal-matter from https://steamcommunity.com/sharedfiles/filedetails/?id=836308268]Dubs Bad Hygiene that can be used as an example. Higher floatable values makes things move quicker in the water.
 
@@ -33,3 +32,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/Utx6OIH.png)
 
 
 
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-02-28

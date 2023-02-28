@@ -8,8 +8,10 @@ namespace SomeThingsFloat;
 internal class SomeThingsFloatSettings : ModSettings
 {
     public bool DespawnAtMapEdge = true;
+    public bool DownedPawnsFloat = true;
     public bool ForbidWhenMoving = true;
     public float MaxSpawnValue = 50f;
+    public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
     public bool VerboseLogging;
 
@@ -23,6 +25,8 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);
         Scribe_Values.Look(ref SpawnNewItems, "SpawnNewItems", true);
+        Scribe_Values.Look(ref DownedPawnsFloat, "DownedPawnsFloat", true);
+        Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
     }
 }

@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -15,9 +13,8 @@ public class SomeThingsFloat
 
     static SomeThingsFloat()
     {
-        new Harmony("Mlie.SomeThingsFloat").PatchAll(Assembly.GetExecutingAssembly());
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
-            .Where(def => def.IsStuff && TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
+            .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
             .ToList();
     }
 
@@ -32,7 +29,12 @@ public class SomeThingsFloat
             case Corpse corpse when corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
             // Living things do not float
-            case Pawn:
+            case Pawn pawn:
+                if (SomeThingsFloatMod.instance.Settings.DownedPawnsFloat && pawn.Downed)
+                {
+                    return 0.5f;
+                }
+
                 return 0;
             case Building:
                 return 0;
@@ -80,6 +82,21 @@ public class SomeThingsFloat
         }
 
         return 0;
+    }
+
+    public static IEnumerable<Thing> GetThingsAndPawns(IntVec3 c, Map map)
+    {
+        var thingList = map.thingGrid.ThingsListAt(c);
+        int num;
+        for (var i = 0; i < thingList.Count; i = num + 1)
+        {
+            if (thingList[i].def.category is ThingCategory.Item or ThingCategory.Pawn)
+            {
+                yield return thingList[i];
+            }
+
+            num = i;
+        }
     }
 
     public static bool TryToFindNewPostition(Thing thing, out IntVec3 resultingCell, List<IntVec3> waterCells)

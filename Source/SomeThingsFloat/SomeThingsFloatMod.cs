@@ -51,6 +51,8 @@ internal class SomeThingsFloatMod : Mod
         listing_Standard.Gap();
         listing_Standard.CheckboxLabeled("STF.ForbidWhenMoving".Translate(), ref Settings.ForbidWhenMoving,
             "STF.ForbidWhenMovingTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
+            "STF.DownedPawnsFloatTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,
             "STF.DespawnAtMapEdgeTT".Translate());
         listing_Standard.CheckboxLabeled("STF.SpawnNewItems".Translate(), ref Settings.SpawnNewItems,
@@ -60,6 +62,8 @@ internal class SomeThingsFloatMod : Mod
             listing_Standard.Label("STF.MaxSpawnValue".Translate(Settings.MaxSpawnValue.ToStringMoney()), -1,
                 "STF.MaxSpawnValueTT".Translate());
             Settings.MaxSpawnValue = listing_Standard.Slider(Settings.MaxSpawnValue, 0, 500f);
+            listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,
+                "STF.SpawnLivingPawnsTT".Translate());
         }
 
         listing_Standard.CheckboxLabeled("STF.VerboseLogging".Translate(), ref Settings.VerboseLogging,

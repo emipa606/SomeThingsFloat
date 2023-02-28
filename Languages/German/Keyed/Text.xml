@@ -12,4 +12,13 @@
   <STF.MaxSpawnValue>Maximaler Wert der gespawnten Gegenstände: {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>Der Höchstwert eines jeden Stapels von Gegenständen, die in Flüssen gelaicht werden.</STF.MaxSpawnValueTT>
   <STF.CurrentModVersion>Installierte Mod-Version: {0}</STF.CurrentModVersion>
+  <STF.DownedPawnsFloat>Besiegte Bauern schweben</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>Umgefallene Bauern schweben ebenfalls, allerdings langsamer als Leichen.</STF.DownedPawnsFloatTT>
+  <STF.SpawnLivingPawns>Erlaube lebenden (abgeschossenen) Spielfiguren, in Flüssen zu laichen.</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>Lebende, aber niedergeschlagene Spielfiguren können im Fluss laichen, du kannst sie retten, wenn du willst.</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>Der geschlagene Bauer {0} schwebt weg!</STF.PawnIsFloatingAway>
+  <STF.PawnIsLostTitle>{0} ist weggeschwommen</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>Es ist dir nicht gelungen, {0} aus dem fließenden Wasser zu retten, und sie sind jetzt außer Sichtweite. Hoffentlich können sie sich retten, aber vielleicht siehst du sie nie wieder.</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>Jemand zappelt im Fluss</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>Sie bemerken jemanden im Wasser, der Sie um Hilfe bittet</STF.PawnSpawnedMessage>
 </LanguageData>

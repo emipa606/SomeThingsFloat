@@ -9,9 +9,9 @@ namespace SomeThingsFloat;
 
 public class FloatingThings_MapComponent : MapComponent
 {
+    private readonly Dictionary<Thing, float> floatingValues = new Dictionary<Thing, float>();
     private readonly List<IntVec3> mapEdgeCells = new List<IntVec3>();
     private List<IntVec3> cellsWithWater = new List<IntVec3>();
-    private Dictionary<Thing, float> floatingValues = new Dictionary<Thing, float>();
     private List<Thing> floatingValuesKeys = new List<Thing>();
     private List<float> floatingValuesValues = new List<float>();
     private Dictionary<int, Thing> updateValues = new Dictionary<int, Thing>();
@@ -43,7 +43,11 @@ public class FloatingThings_MapComponent : MapComponent
         if (!verifyThingIsStillFloating(thing))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
-            floatingValues.Remove(thing);
+            if (thing != null)
+            {
+                floatingValues.Remove(thing);
+            }
+
             return;
         }
 
@@ -58,6 +62,14 @@ public class FloatingThings_MapComponent : MapComponent
         thing.DeSpawn();
         if (newPosition == IntVec3.Invalid)
         {
+            if (thing is Pawn { IsColonist: true } pawn)
+            {
+                Find.LetterStack.ReceiveLetter("STF.PawnIsLostTitle".Translate(pawn.NameFullColored),
+                    "STF.PawnIsLostMessage".Translate(pawn.NameFullColored), LetterDefOf.Death);
+
+                PawnDiedOrDownedThoughtsUtility.TryGiveThoughts(pawn, null, PawnDiedOrDownedThoughtsKind.Lost);
+            }
+
             floatingValues.Remove(thing);
             thing.Destroy();
             return;
@@ -73,7 +85,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
         {
-            thing.SetForbidden(!thing.IsInValidStorage());
+            thing.SetForbidden(!thing.IsInValidStorage(), false);
         }
     }
 
@@ -87,11 +99,14 @@ public class FloatingThings_MapComponent : MapComponent
     public override void ExposeData()
     {
         base.ExposeData();
+
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
-        Scribe_Collections.Look(ref floatingValues, "floatingValues", LookMode.Reference, LookMode.Value,
-            ref floatingValuesKeys, ref floatingValuesValues);
         Scribe_Collections.Look(ref updateValues, "updateValues", LookMode.Value, LookMode.Reference,
             ref updateValuesKeys, ref updateValuesValues);
+        if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs)
+        {
+            updateListOfFloatingThings();
+        }
     }
 
     private void updateListOfWaterCells()
@@ -118,7 +133,7 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (Rand.Value < 0.98f)
+        if (Rand.Value < 0.95f)
         {
             return;
         }
@@ -165,9 +180,51 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        var thingToMake = SomeThingsFloat.ThingsToCreate.RandomElement();
         var cellToPlaceIt = mapEdgeCells.RandomElement();
 
+        // Sometimes we spawn a pawn or corpse
+        if (Rand.Value > 0.9f)
+        {
+            var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
+                    where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
+                    select kindDef)
+                .RandomElement();
+            Faction faction = null;
+            if (pawnKindDef.defaultFactionType != null)
+            {
+                faction = Find.World.factionManager.AllFactions
+                    .Where(factionType => factionType.def == pawnKindDef.defaultFactionType).RandomElement();
+            }
+
+            var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKindDef, faction, allowDead: false));
+
+            if (!SomeThingsFloatMod.instance.Settings.SpawnLivingPawns || Rand.Value > 0.1f)
+            {
+                if (!pawn.Dead)
+                {
+                    pawn.Kill(null);
+                }
+
+                pawn.Corpse.Age = Rand.Range(1, 900000);
+                GenSpawn.Spawn(pawn.Corpse, cellToPlaceIt, map);
+                pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
+                return;
+            }
+
+            pawn.equipment?.DestroyAllEquipment();
+            HealthUtility.DamageUntilDowned(pawn);
+            GenSpawn.Spawn(pawn, cellToPlaceIt, map);
+            if (!pawn.RaceProps.Animal)
+            {
+                Find.LetterStack.ReceiveLetter("STF.PawnSpawnedTitle".Translate(), "STF.PawnSpawnedMessage".Translate(),
+                    LetterDefOf.NeutralEvent, pawn);
+            }
+
+            return;
+        }
+
+        var thingToMake = SomeThingsFloat.ThingsToCreate
+            .Where(def => def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue).RandomElement();
         var amountToSpawn =
             (int)Math.Floor(SomeThingsFloatMod.instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
 
@@ -178,6 +235,11 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         var thing = ThingMaker.MakeThing(thingToMake);
+        if (thing is Corpse corpse && (corpse.Bugged || !corpse.InnerPawn.RaceProps.IsFlesh))
+        {
+            return;
+        }
+
         if (GenPlace.HaulPlaceBlockerIn(thing, cellToPlaceIt, map, true) != null)
         {
             SomeThingsFloat.LogMessage(
@@ -185,7 +247,10 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        thing.stackCount = Math.Min(thing.def.stackLimit, amountToSpawn);
+        if (thing.def.stackLimit > 1)
+        {
+            thing.stackCount = Rand.RangeInclusive(1, Math.Min(thing.def.stackLimit, amountToSpawn));
+        }
 
         if (!GenPlace.TryPlaceThing(thing, cellToPlaceIt, map, ThingPlaceMode.Direct))
         {
@@ -195,7 +260,7 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatingThings()
     {
-        foreach (var possibleThings in cellsWithWater.Select(vec3 => vec3.GetItems(map)))
+        foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
         {
             foreach (var possibleThing in possibleThings)
             {
@@ -212,6 +277,11 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 setNextUpdateTime(possibleThing);
+                if (possibleThing is Pawn { Faction.IsPlayer: true } pawn)
+                {
+                    Messages.Message("STF.PawnIsFloatingAway".Translate(pawn.NameFullColored), pawn,
+                        MessageTypeDefOf.NegativeEvent);
+                }
             }
         }
 
@@ -220,6 +290,16 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void setNextUpdateTime(Thing thing)
     {
+        if (thing == null)
+        {
+            return;
+        }
+
+        if (!floatingValues.ContainsKey(thing))
+        {
+            return;
+        }
+
         var nextupdate = GenTicks.TicksGame +
                          (int)Math.Round(
                              (GenTicks.TickRareInterval / floatingValues[thing]) +

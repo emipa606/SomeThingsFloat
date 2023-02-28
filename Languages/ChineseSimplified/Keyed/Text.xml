@@ -12,4 +12,13 @@
   <STF.MaxSpawnValue>生成物品的最大价值。{0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>河流中产生的每堆物品的最大价值。</STF.MaxSpawnValueTT>
   <STF.CurrentModVersion>已安装的mod-version。{0}</STF.CurrentModVersion>
+  <STF.DownedPawnsFloat>倒下的棋子漂浮在空中</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>被击倒的卒子也会漂浮，但速度比尸体慢。</STF.DownedPawnsFloatTT>
+  <STF.SpawnLivingPawns>允许活的（倒下的）卒子在河里产卵。</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>活着但被击倒的卒子可以在河里产卵，如果你愿意，你可以选择拯救他们。</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>被击倒的卒{0}正在飘走!</STF.PawnIsFloatingAway>
+  <STF.PawnIsLostTitle>{0}已经飘走了</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>你没能从流水中救出{0}，他们现在已经漂浮在视线之外了。希望他们能够自救，但你可能再也见不到他们了。</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>有人在河里挣扎</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>你发现有人落水，向你发出求救信号</STF.PawnSpawnedMessage>
 </LanguageData>

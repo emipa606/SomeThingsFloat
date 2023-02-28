@@ -12,4 +12,13 @@
   <STF.MaxSpawnValue>Максимальное значение порождаемых предметов: {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>Максимальная стоимость каждой стопки предметов, порожденных в реках.</STF.MaxSpawnValueTT>
   <STF.CurrentModVersion>Установленная версия мода: {0}</STF.CurrentModVersion>
+  <STF.DownedPawnsFloat>Опущенные пешки плавают</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>Подбитые пешки также будут плавать, но медленнее, чем трупы.</STF.DownedPawnsFloatTT>
+  <STF.SpawnLivingPawns>Разрешить живым (сбитым) пешкам нереститься в реках.</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>Живые, но убитые пешки могут появиться в реке, и вы можете спасти их, если хотите.</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>Поверженная пешка {0} уплывает!</STF.PawnIsFloatingAway>
+  <STF.PawnIsLostTitle>{0} уплыл</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>Вам не удалось спасти {0} из текущей воды, и теперь они скрылись из виду. Надеюсь, они смогут спастись, но вы можете больше никогда их не увидеть.</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>Кто-то борется в реке</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>Вы заметили кого-то в воде, и он подал вам сигнал о помощи.</STF.PawnSpawnedMessage>
 </LanguageData>

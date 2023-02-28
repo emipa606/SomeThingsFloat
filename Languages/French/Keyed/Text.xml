@@ -12,4 +12,13 @@
   <STF.MaxSpawnValue>Valeur maximale des objets créés : {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>La valeur maximale de chaque pile d'objets frayés dans les rivières.</STF.MaxSpawnValueTT>
   <STF.CurrentModVersion>Version installée du module : {0}</STF.CurrentModVersion>
+  <STF.DownedPawnsFloat>Les pions abattus flottent</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>Les pions abattus flottent également, mais à un rythme plus lent que les cadavres.</STF.DownedPawnsFloatTT>
+  <STF.SpawnLivingPawns>Permettre aux pions vivants (abattus) de frayer dans les rivières.</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>Des pions vivants, mais abattus, peuvent apparaître dans la rivière, vous pouvez choisir de les sauver si vous le souhaitez.</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>Le pion abattu {0} est en train de flotter !</STF.PawnIsFloatingAway>
+  <STF.PawnIsLostTitle>{0} s'est envolé</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>Vous n'avez pas réussi à sauver {0} de l'eau qui coule et ils ont maintenant flotté hors de vue. Avec un peu de chance, ils pourront se sauver eux-mêmes, mais tu ne les reverras peut-être jamais.</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>Quelqu'un se débat dans la rivière</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>Vous remarquez quelqu'un dans l'eau, il vous fait signe de l'aider.</STF.PawnSpawnedMessage>
 </LanguageData>
