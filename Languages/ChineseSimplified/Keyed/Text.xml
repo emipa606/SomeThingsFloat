@@ -21,4 +21,6 @@
   <STF.PawnIsLostMessage>你没能从流水中救出{0}，他们现在已经漂浮在视线之外了。希望他们能够自救，但你可能再也见不到他们了。</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>有人在河里挣扎</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>你发现有人落水，向你发出求救信号</STF.PawnSpawnedMessage>
+  <STF.FloatUnderBridges>桥下的东西可以漂浮</STF.FloatUnderBridges>
+  <STF.FloatUnderBridgesTT>东西会漂浮在桥下，它们的质地在路径中被隐藏。</STF.FloatUnderBridgesTT>
 </LanguageData>

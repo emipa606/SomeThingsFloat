@@ -9,18 +9,33 @@ namespace SomeThingsFloat;
 
 public class FloatingThings_MapComponent : MapComponent
 {
-    private readonly Dictionary<Thing, float> floatingValues = new Dictionary<Thing, float>();
-    private readonly List<IntVec3> mapEdgeCells = new List<IntVec3>();
-    private List<IntVec3> cellsWithWater = new List<IntVec3>();
-    private List<Thing> floatingValuesKeys = new List<Thing>();
-    private List<float> floatingValuesValues = new List<float>();
-    private Dictionary<int, Thing> updateValues = new Dictionary<int, Thing>();
-    private List<int> updateValuesKeys = new List<int>();
-    private List<Thing> updateValuesValues = new List<Thing>();
+    private readonly Dictionary<Thing, float> floatingValues;
+    private readonly List<IntVec3> mapEdgeCells;
+    private List<IntVec3> cellsWithWater;
+    private Dictionary<Thing, IntVec3> hiddenPositions;
+    private List<Thing> hiddenPositionsKeys;
+    private List<IntVec3> hiddenPositionsValues;
+    private List<IntVec3> totalCellsWithWater;
+    private List<IntVec3> underCellsWithWater;
+    private Dictionary<int, Thing> updateValues;
+    private List<int> updateValuesKeys;
+    private List<Thing> updateValuesValues;
 
     public FloatingThings_MapComponent(Map map) : base(map)
     {
         this.map = map;
+        SomeThingsFloat.FloatingMapComponents[map] = this;
+        underCellsWithWater = new List<IntVec3>();
+        totalCellsWithWater = new List<IntVec3>();
+        cellsWithWater = new List<IntVec3>();
+        mapEdgeCells = new List<IntVec3>();
+        floatingValues = new Dictionary<Thing, float>();
+        updateValues = new Dictionary<int, Thing>();
+        updateValuesKeys = new List<int>();
+        updateValuesValues = new List<Thing>();
+        hiddenPositions = new Dictionary<Thing, IntVec3>();
+        hiddenPositionsKeys = new List<Thing>();
+        hiddenPositionsValues = new List<IntVec3>();
     }
 
     public override void MapComponentTick()
@@ -40,7 +55,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         var thing = updateValues[ticksGame];
         updateValues.Remove(ticksGame);
-        if (!verifyThingIsStillFloating(thing))
+        if (!verifyThingIsInWater(thing))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
             if (thing != null)
@@ -51,15 +66,29 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (!SomeThingsFloat.TryToFindNewPostition(thing, out var newPosition, cellsWithWater))
+        if (!tryToFindNewPostition(thing, out var newPosition, totalCellsWithWater))
         {
             SomeThingsFloat.LogMessage($"{thing} cannot find a new postition");
             setNextUpdateTime(thing);
             return;
         }
 
-        var originalPosition = thing.Position;
-        thing.DeSpawn();
+        var wasInStorage = false;
+        if (!hiddenPositions.TryGetValue(thing, out var originalPosition))
+        {
+            originalPosition = thing.Position;
+            if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
+            {
+                wasInStorage = thing.IsInValidStorage();
+            }
+
+            thing.DeSpawn();
+        }
+        else
+        {
+            hiddenPositions.Remove(thing);
+        }
+
         if (newPosition == IntVec3.Invalid)
         {
             if (thing is Pawn { IsColonist: true } pawn)
@@ -103,15 +132,26 @@ public class FloatingThings_MapComponent : MapComponent
 
         setNextUpdateTime(thing);
 
+        if (underCellsWithWater.Contains(newPosition))
+        {
+            hiddenPositions[thing] = newPosition;
+            return;
+        }
+
         if (!GenPlace.TryPlaceThing(thing, newPosition, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be placed at its new position");
             GenPlace.TryPlaceThing(thing, originalPosition, map, ThingPlaceMode.Direct);
         }
 
-        if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
+        if (!SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
         {
-            thing.SetForbidden(!thing.IsInValidStorage(), false);
+            return;
+        }
+
+        if (wasInStorage != thing.IsInValidStorage())
+        {
+            thing.SetForbidden(wasInStorage, false);
         }
     }
 
@@ -127,23 +167,52 @@ public class FloatingThings_MapComponent : MapComponent
         base.ExposeData();
 
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
+        Scribe_Collections.Look(ref totalCellsWithWater, "totalCellsWithWater", LookMode.Value);
+        Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref updateValues, "updateValues", LookMode.Value, LookMode.Reference,
             ref updateValuesKeys, ref updateValuesValues);
-        if (Scribe.mode == LoadSaveMode.ResolvingCrossRefs)
+        Scribe_Collections.Look(ref hiddenPositions, "hiddenPositions", LookMode.Reference, LookMode.Value,
+            ref hiddenPositionsKeys, ref hiddenPositionsValues);
+        if (Scribe.mode != LoadSaveMode.ResolvingCrossRefs)
         {
-            updateListOfFloatingThings();
+            return;
+        }
+
+        updateListOfFloatingThings();
+        if (hiddenPositions == null)
+        {
+            hiddenPositions = new Dictionary<Thing, IntVec3>();
         }
     }
 
     private void updateListOfWaterCells()
     {
-        if (cellsWithWater.Any() && Rand.Bool)
+        var forceUpdate = Rand.Bool;
+        SomeThingsFloat.LogMessage("Updating water-cells");
+        if (cellsWithWater == null || !cellsWithWater.Any() || forceUpdate)
+        {
+            cellsWithWater = map.AllCells.Where(vec3 => vec3.GetTerrain(map).defName.Contains("Water")).ToList();
+            SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
+        }
+
+        if (!SomeThingsFloatMod.instance.Settings.FloatUnderBridges)
+        {
+            totalCellsWithWater = cellsWithWater;
+            return;
+        }
+
+        if (underCellsWithWater != null && underCellsWithWater.Any() && !forceUpdate)
         {
             return;
         }
 
-        cellsWithWater = map.AllCells.Where(vec3 => vec3.GetTerrain(map).defName.Contains("Water")).ToList();
-        SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
+        underCellsWithWater = map.AllCells
+            .Where(vec3 => map.terrainGrid.UnderTerrainAt(vec3)?.defName.Contains("Water") == true).ToList();
+        SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
+        if (underCellsWithWater.Any())
+        {
+            totalCellsWithWater = cellsWithWater.Union(underCellsWithWater).ToList();
+        }
     }
 
     private void spawnThingAtMapEdge()
@@ -153,20 +222,20 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (!cellsWithWater.Any())
+        if (!totalCellsWithWater.Any())
         {
             SomeThingsFloat.LogMessage("No water cells to spawn in");
             return;
         }
 
-        if (Rand.Value < 0.95f)
+        if (Rand.Value < 0.97f)
         {
             return;
         }
 
         if (!mapEdgeCells.Any())
         {
-            var possibleMapEdgeCells = cellsWithWater.Where(vec3 =>
+            var possibleMapEdgeCells = totalCellsWithWater.Where(vec3 =>
                 vec3.x == 0 || vec3.x == map.Size.x - 1 || vec3.z == 0 || vec3.z == map.Size.z - 1).ToList();
 
             if (!possibleMapEdgeCells.Any())
@@ -286,7 +355,7 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatingThings()
     {
-        foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
+        foreach (var possibleThings in totalCellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
         {
             foreach (var possibleThing in possibleThings)
             {
@@ -340,26 +409,119 @@ public class FloatingThings_MapComponent : MapComponent
     }
 
 
-    private bool verifyThingIsStillFloating(Thing thing)
+    private bool tryToFindNewPostition(Thing thing, out IntVec3 resultingCell, List<IntVec3> waterCells)
     {
+        if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))
+        {
+            originalPosition = thing.Position;
+        }
+
+        resultingCell = originalPosition;
+
+        var originalFlow = map.waterInfo.GetWaterMovement(resultingCell.ToVector3Shifted());
+        SomeThingsFloat.LogMessage($"Flow at {thing} position: {originalFlow}");
+
+        var possibleCellsToRecheck = new List<IntVec3>();
+
+        foreach (var adjacentCell in GenAdj.AdjacentCells.InRandomOrder())
+        {
+            if (originalFlow != Vector3.zero)
+            {
+                if (adjacentCell.x > 0 != originalFlow.x > 0 || adjacentCell.z > 0 != originalFlow.z > 0)
+                {
+                    possibleCellsToRecheck.Add(adjacentCell);
+                    SomeThingsFloat.LogMessage(
+                        $"{adjacentCell} position compared to original flow {originalFlow} is not the right way");
+                    continue;
+                }
+            }
+
+            var currentCell = originalPosition + adjacentCell;
+            if (!currentCell.InBounds(map))
+            {
+                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
+                {
+                    resultingCell = IntVec3.Invalid;
+                    return true;
+                }
+
+                continue;
+            }
+
+            if (!waterCells.Contains(currentCell))
+            {
+                continue;
+            }
+
+            if (GenPlace.HaulPlaceBlockerIn(thing, currentCell, map, true) != null)
+            {
+                continue;
+            }
+
+            SomeThingsFloat.LogMessage($"Cell {currentCell} for {thing} was valid");
+            resultingCell = currentCell;
+            return true;
+        }
+
+        foreach (var adjacentCell in possibleCellsToRecheck)
+        {
+            if (originalFlow != Vector3.zero)
+            {
+                if (adjacentCell.x > 0 != originalFlow.x > 0 && adjacentCell.z > 0 != originalFlow.z > 0)
+                {
+                    SomeThingsFloat.LogMessage(
+                        $"{adjacentCell} position compared to original flow {originalFlow} is really not the right way");
+                    continue;
+                }
+            }
+
+            var currentCell = originalPosition + adjacentCell;
+            if (!currentCell.InBounds(map))
+            {
+                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
+                {
+                    resultingCell = IntVec3.Invalid;
+                    return true;
+                }
+
+                continue;
+            }
+
+            if (!waterCells.Contains(currentCell))
+            {
+                continue;
+            }
+
+            if (GenPlace.HaulPlaceBlockerIn(thing, currentCell, map, true) != null)
+            {
+                continue;
+            }
+
+            SomeThingsFloat.LogMessage($"Cell {currentCell} for {thing} was valid");
+            resultingCell = currentCell;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool verifyThingIsInWater(Thing thing)
+    {
+        if (hiddenPositions?.ContainsKey(thing) == true)
+        {
+            return true;
+        }
+
         if (thing is not { Spawned: true })
         {
-            SomeThingsFloat.LogMessage($"{thing} no longer exists");
             return false;
         }
 
         if (!thing.Position.InBounds(thing.Map))
         {
-            SomeThingsFloat.LogMessage($"{thing} no longer in bounds of map");
             return false;
         }
 
-        if (cellsWithWater.Contains(thing.Position))
-        {
-            return true;
-        }
-
-        SomeThingsFloat.LogMessage($"{thing} is no longer in water");
-        return false;
+        return totalCellsWithWater?.Contains(thing.Position) == true;
     }
 }

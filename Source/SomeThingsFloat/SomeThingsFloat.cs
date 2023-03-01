@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace SomeThingsFloat;
@@ -11,11 +10,14 @@ public class SomeThingsFloat
 {
     public static readonly List<ThingDef> ThingsToCreate;
 
+    public static readonly Dictionary<Map, FloatingThings_MapComponent> FloatingMapComponents;
+
     static SomeThingsFloat()
     {
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
             .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
             .ToList();
+        FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
     }
 
     public static float GetFloatingValue(Thing thing)
@@ -99,95 +101,6 @@ public class SomeThingsFloat
         }
     }
 
-    public static bool TryToFindNewPostition(Thing thing, out IntVec3 resultingCell, List<IntVec3> waterCells)
-    {
-        resultingCell = thing.Position;
-        var originalFlow = thing.Map.waterInfo.GetWaterMovement(resultingCell.ToVector3Shifted());
-        LogMessage($"Flow at {thing} position: {originalFlow}");
-
-        var possibleCellsToRecheck = new List<IntVec3>();
-
-        foreach (var adjacentCell in GenAdj.AdjacentCells.InRandomOrder())
-        {
-            if (originalFlow != Vector3.zero)
-            {
-                if (adjacentCell.x > 0 != originalFlow.x > 0 || adjacentCell.z > 0 != originalFlow.z > 0)
-                {
-                    possibleCellsToRecheck.Add(adjacentCell);
-                    LogMessage(
-                        $"{adjacentCell} position compared to original flow {originalFlow} is not the right way");
-                    continue;
-                }
-            }
-
-            var currentCell = thing.Position + adjacentCell;
-            if (!currentCell.InBounds(thing.Map))
-            {
-                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
-                {
-                    resultingCell = IntVec3.Invalid;
-                    return true;
-                }
-
-                continue;
-            }
-
-            if (!waterCells.Contains(currentCell))
-            {
-                continue;
-            }
-
-            if (GenPlace.HaulPlaceBlockerIn(thing, currentCell, thing.Map, true) != null)
-            {
-                continue;
-            }
-
-            LogMessage($"Cell {currentCell} for {thing} was valid");
-            resultingCell = currentCell;
-            return true;
-        }
-
-        foreach (var adjacentCell in possibleCellsToRecheck)
-        {
-            if (originalFlow != Vector3.zero)
-            {
-                if (adjacentCell.x > 0 != originalFlow.x > 0 && adjacentCell.z > 0 != originalFlow.z > 0)
-                {
-                    LogMessage(
-                        $"{adjacentCell} position compared to original flow {originalFlow} is really not the right way");
-                    continue;
-                }
-            }
-
-            var currentCell = thing.Position + adjacentCell;
-            if (!currentCell.InBounds(thing.Map))
-            {
-                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
-                {
-                    resultingCell = IntVec3.Invalid;
-                    return true;
-                }
-
-                continue;
-            }
-
-            if (!waterCells.Contains(currentCell))
-            {
-                continue;
-            }
-
-            if (GenPlace.HaulPlaceBlockerIn(thing, currentCell, thing.Map, true) != null)
-            {
-                continue;
-            }
-
-            LogMessage($"Cell {currentCell} for {thing} was valid");
-            resultingCell = currentCell;
-            return true;
-        }
-
-        return false;
-    }
 
     private static bool TryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue)
     {

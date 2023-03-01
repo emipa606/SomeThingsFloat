@@ -51,6 +51,8 @@ internal class SomeThingsFloatMod : Mod
         listing_Standard.Gap();
         listing_Standard.CheckboxLabeled("STF.ForbidWhenMoving".Translate(), ref Settings.ForbidWhenMoving,
             "STF.ForbidWhenMovingTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.FloatUnderBridges".Translate(), ref Settings.FloatUnderBridges,
+            "STF.FloatUnderBridgesTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
             "STF.DownedPawnsFloatTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,

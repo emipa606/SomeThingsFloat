@@ -21,4 +21,6 @@
   <STF.PawnIsLostMessage>Вам не удалось спасти {0} из текущей воды, и теперь они скрылись из виду. Надеюсь, они смогут спастись, но вы можете больше никогда их не увидеть.</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>Кто-то борется в реке</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>Вы заметили кого-то в воде, и он подал вам сигнал о помощи.</STF.PawnSpawnedMessage>
+  <STF.FloatUnderBridges>Вещи могут плавать под мостами</STF.FloatUnderBridges>
+  <STF.FloatUnderBridgesTT>Вещи будут плавать под мостами, их текстура будет скрыта во время пути</STF.FloatUnderBridgesTT>
 </LanguageData>

@@ -21,4 +21,6 @@
   <STF.PawnIsLostMessage>Vous n'avez pas réussi à sauver {0} de l'eau qui coule et ils ont maintenant flotté hors de vue. Avec un peu de chance, ils pourront se sauver eux-mêmes, mais tu ne les reverras peut-être jamais.</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>Quelqu'un se débat dans la rivière</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>Vous remarquez quelqu'un dans l'eau, il vous fait signe de l'aider.</STF.PawnSpawnedMessage>
+  <STF.FloatUnderBridges>Les choses peuvent flotter sous les ponts</STF.FloatUnderBridges>
+  <STF.FloatUnderBridgesTT>Des objets flotteront sous les ponts, leur texture étant cachée pendant le trajet.</STF.FloatUnderBridgesTT>
 </LanguageData>
