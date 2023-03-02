@@ -23,4 +23,6 @@
   <STF.PawnSpawnedMessage>Вы заметили кого-то в воде, и он подал вам сигнал о помощи.</STF.PawnSpawnedMessage>
   <STF.FloatUnderBridges>Вещи могут плавать под мостами</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Вещи будут плавать под мостами, их текстура будет скрыта во время пути</STF.FloatUnderBridgesTT>
+  <STF.ForbidSpawningItems>Запретить порождать предметы</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>Предметы, нерестящиеся в реке, по умолчанию будут запрещены</STF.ForbidSpawningItemsTT>
 </LanguageData>

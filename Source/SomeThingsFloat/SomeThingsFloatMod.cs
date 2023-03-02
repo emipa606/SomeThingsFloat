@@ -64,6 +64,8 @@ internal class SomeThingsFloatMod : Mod
             listing_Standard.Label("STF.MaxSpawnValue".Translate(Settings.MaxSpawnValue.ToStringMoney()), -1,
                 "STF.MaxSpawnValueTT".Translate());
             Settings.MaxSpawnValue = listing_Standard.Slider(Settings.MaxSpawnValue, 0, 500f);
+            listing_Standard.CheckboxLabeled("STF.ForbidSpawningItems".Translate(), ref Settings.ForbidSpawningItems,
+                "STF.ForbidSpawningItemsTT".Translate());
             listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,
                 "STF.SpawnLivingPawnsTT".Translate());
         }

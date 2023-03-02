@@ -350,7 +350,10 @@ public class FloatingThings_MapComponent : MapComponent
         if (!GenPlace.TryPlaceThing(thing, cellToPlaceIt, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be created at map edge: {cellToPlaceIt}");
+            return;
         }
+
+        thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
     }
 
     private void updateListOfFloatingThings()

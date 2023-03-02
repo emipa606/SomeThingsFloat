@@ -14,6 +14,8 @@
   <STF.SpawnNewItemsTT>Things can spawn at the edge of the map if there is a river flowing.</STF.SpawnNewItemsTT>
   <STF.MaxSpawnValue>Maximum value of spawned items: {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>The maximum value of each stack of items spawned in rivers.</STF.MaxSpawnValueTT>
+  <STF.ForbidSpawningItems>Forbid spawning items</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>Items spawning in the river will by default be forbidden</STF.ForbidSpawningItemsTT>
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.PawnIsFloatingAway>Downed pawn {0} is floating away!</STF.PawnIsFloatingAway>

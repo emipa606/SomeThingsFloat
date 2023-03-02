@@ -23,4 +23,6 @@
   <STF.PawnSpawnedMessage>你发现有人落水，向你发出求救信号</STF.PawnSpawnedMessage>
   <STF.FloatUnderBridges>桥下的东西可以漂浮</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>东西会漂浮在桥下，它们的质地在路径中被隐藏。</STF.FloatUnderBridgesTT>
+  <STF.ForbidSpawningItems>禁止催生物品</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>在河流中产卵的物品将被默认为禁止的。</STF.ForbidSpawningItemsTT>
 </LanguageData>

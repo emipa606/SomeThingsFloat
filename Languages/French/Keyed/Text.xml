@@ -23,4 +23,6 @@
   <STF.PawnSpawnedMessage>Vous remarquez quelqu'un dans l'eau, il vous fait signe de l'aider.</STF.PawnSpawnedMessage>
   <STF.FloatUnderBridges>Les choses peuvent flotter sous les ponts</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Des objets flotteront sous les ponts, leur texture étant cachée pendant le trajet.</STF.FloatUnderBridgesTT>
+  <STF.ForbidSpawningItems>Interdire le frai d'objets</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>Les objets qui frayent dans la rivière seront par défaut interdits.</STF.ForbidSpawningItemsTT>
 </LanguageData>

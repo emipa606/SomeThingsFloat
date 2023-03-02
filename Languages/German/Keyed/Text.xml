@@ -23,4 +23,6 @@
   <STF.PawnSpawnedMessage>Sie bemerken jemanden im Wasser, der Sie um Hilfe bittet</STF.PawnSpawnedMessage>
   <STF.FloatUnderBridges>Dinge können unter Brücken schwimmen</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Dinge werden unter Brücken schweben, wobei ihre Textur während des Weges verborgen bleibt</STF.FloatUnderBridgesTT>
+  <STF.ForbidSpawningItems>Verbot des Laichens von Gegenständen</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>Gegenstände, die im Fluss laichen, sind standardmäßig verboten</STF.ForbidSpawningItemsTT>
 </LanguageData>
