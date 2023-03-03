@@ -25,4 +25,6 @@
   <STF.FloatUnderBridgesTT>东西会漂浮在桥下，它们的质地在路径中被隐藏。</STF.FloatUnderBridgesTT>
   <STF.ForbidSpawningItems>禁止催生物品</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>在河流中产卵的物品将被默认为禁止的。</STF.ForbidSpawningItemsTT>
+  <STF.MinTimeBetweenItems>项目产生之间的最小时间。{0}</STF.MinTimeBetweenItems>
+  <STF.MinTimeBetweenItemsTT>河流中事物产卵之间的最小时间。</STF.MinTimeBetweenItemsTT>
 </LanguageData>

@@ -25,4 +25,6 @@
   <STF.FloatUnderBridgesTT>Вещи будут плавать под мостами, их текстура будет скрыта во время пути</STF.FloatUnderBridgesTT>
   <STF.ForbidSpawningItems>Запретить порождать предметы</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>Предметы, нерестящиеся в реке, по умолчанию будут запрещены</STF.ForbidSpawningItemsTT>
+  <STF.MinTimeBetweenItems>Минимальное время между порождениями предметов: {0}</STF.MinTimeBetweenItems>
+  <STF.MinTimeBetweenItemsTT>Минимальное время между нерестами в реке.</STF.MinTimeBetweenItemsTT>
 </LanguageData>

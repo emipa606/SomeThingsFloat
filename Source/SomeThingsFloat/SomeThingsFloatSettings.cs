@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace SomeThingsFloat;
@@ -13,6 +14,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool ForbidSpawningItems;
     public bool ForbidWhenMoving = true;
     public float MaxSpawnValue = 50f;
+    public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
     public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
     public bool VerboseLogging;
@@ -32,5 +34,6 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref DownedPawnsFloat, "DownedPawnsFloat", true);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
+        Scribe_Values.Look(ref MinTimeBetweenItems, "MinTimeBetweenItems", GenDate.TicksPerHour * 18);
     }
 }

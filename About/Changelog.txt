@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.5 - Added option to set minimum time between spawning items in the river.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.4 - Added option to auto-forbid all spawning items.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

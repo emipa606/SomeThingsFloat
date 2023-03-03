@@ -1,4 +1,6 @@
+using System;
 using Mlie;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -64,6 +66,13 @@ internal class SomeThingsFloatMod : Mod
             listing_Standard.Label("STF.MaxSpawnValue".Translate(Settings.MaxSpawnValue.ToStringMoney()), -1,
                 "STF.MaxSpawnValueTT".Translate());
             Settings.MaxSpawnValue = listing_Standard.Slider(Settings.MaxSpawnValue, 0, 500f);
+            listing_Standard.Label(
+                "STF.MinTimeBetweenItems".Translate(
+                    ((int)Settings.MinTimeBetweenItems).ToStringTicksToPeriodVague(false)),
+                -1,
+                "STF.MinTimeBetweenItemsTT".Translate());
+            Settings.MinTimeBetweenItems =
+                (float)Math.Round(listing_Standard.Slider(Settings.MinTimeBetweenItems, 0, GenDate.TicksPerDay * 7));
             listing_Standard.CheckboxLabeled("STF.ForbidSpawningItems".Translate(), ref Settings.ForbidSpawningItems,
                 "STF.ForbidSpawningItemsTT".Translate());
             listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,

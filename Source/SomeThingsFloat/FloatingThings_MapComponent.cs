@@ -15,6 +15,7 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
     private List<IntVec3> hiddenPositionsValues;
+    private int lastSpawnTick;
     private List<IntVec3> totalCellsWithWater;
     private List<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
@@ -36,6 +37,7 @@ public class FloatingThings_MapComponent : MapComponent
         hiddenPositions = new Dictionary<Thing, IntVec3>();
         hiddenPositionsKeys = new List<Thing>();
         hiddenPositionsValues = new List<IntVec3>();
+        lastSpawnTick = 0;
     }
 
     public override void MapComponentTick()
@@ -166,6 +168,7 @@ public class FloatingThings_MapComponent : MapComponent
     {
         base.ExposeData();
 
+        Scribe_Values.Look(ref lastSpawnTick, "lastSpawnTick");
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref totalCellsWithWater, "totalCellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
@@ -228,8 +231,16 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (Rand.Value < 0.97f)
+
+        if (Rand.Value < 0.9f)
         {
+            return;
+        }
+
+        if (lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems > GenTicks.TicksGame)
+        {
+            SomeThingsFloat.LogMessage(
+                $"Not time to spawn yet, next spawn: {lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems}, current time {GenTicks.TicksGame}");
             return;
         }
 
@@ -303,6 +314,7 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.Corpse.Age = Rand.Range(1, 900000);
                 GenSpawn.Spawn(pawn.Corpse, cellToPlaceIt, map);
                 pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
+                lastSpawnTick = GenTicks.TicksGame;
                 return;
             }
 
@@ -315,6 +327,7 @@ public class FloatingThings_MapComponent : MapComponent
                     LetterDefOf.NeutralEvent, pawn);
             }
 
+            lastSpawnTick = GenTicks.TicksGame;
             return;
         }
 
@@ -354,6 +367,7 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
+        lastSpawnTick = GenTicks.TicksGame;
     }
 
     private void updateListOfFloatingThings()

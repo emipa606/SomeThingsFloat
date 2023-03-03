@@ -25,4 +25,6 @@
   <STF.FloatUnderBridgesTT>Des objets flotteront sous les ponts, leur texture étant cachée pendant le trajet.</STF.FloatUnderBridgesTT>
   <STF.ForbidSpawningItems>Interdire le frai d'objets</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>Les objets qui frayent dans la rivière seront par défaut interdits.</STF.ForbidSpawningItemsTT>
+  <STF.MinTimeBetweenItems>Temps minimum entre le frai des éléments : {0}</STF.MinTimeBetweenItems>
+  <STF.MinTimeBetweenItemsTT>Le temps minimum entre les choses qui frayent dans la rivière.</STF.MinTimeBetweenItemsTT>
 </LanguageData>

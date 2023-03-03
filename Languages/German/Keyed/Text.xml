@@ -25,4 +25,6 @@
   <STF.FloatUnderBridgesTT>Dinge werden unter Brücken schweben, wobei ihre Textur während des Weges verborgen bleibt</STF.FloatUnderBridgesTT>
   <STF.ForbidSpawningItems>Verbot des Laichens von Gegenständen</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>Gegenstände, die im Fluss laichen, sind standardmäßig verboten</STF.ForbidSpawningItemsTT>
+  <STF.MinTimeBetweenItems>Mindestzeit zwischen dem Spawnen von Gegenständen: {0}</STF.MinTimeBetweenItems>
+  <STF.MinTimeBetweenItemsTT>Die Mindestzeit zwischen dem Laichen im Fluss.</STF.MinTimeBetweenItemsTT>
 </LanguageData>
