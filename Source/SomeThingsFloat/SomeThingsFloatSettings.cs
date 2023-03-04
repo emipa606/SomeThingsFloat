@@ -13,6 +13,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool FloatUnderBridges = true;
     public bool ForbidSpawningItems;
     public bool ForbidWhenMoving = true;
+    public bool HaulUrgently;
     public float MaxSpawnValue = 50f;
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
     public bool PawnsCanFall = true;
@@ -28,6 +29,7 @@ internal class SomeThingsFloatSettings : ModSettings
         base.ExposeData();
         Scribe_Values.Look(ref VerboseLogging, "VerboseLogging");
         Scribe_Values.Look(ref ForbidSpawningItems, "ForbidSpawningItems");
+        Scribe_Values.Look(ref HaulUrgently, "HaulUrgently");
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);

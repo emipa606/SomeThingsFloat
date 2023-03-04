@@ -12,12 +12,15 @@ public class SomeThingsFloat
 
     public static readonly Dictionary<Map, FloatingThings_MapComponent> FloatingMapComponents;
 
+    public static readonly DesignationDef HaulUrgentlyDef;
+
     static SomeThingsFloat()
     {
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
             .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
             .ToList();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
+        HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
     }
 
     public static float GetFloatingValue(Thing thing)

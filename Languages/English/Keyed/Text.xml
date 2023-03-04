@@ -20,6 +20,8 @@
   <STF.MinTimeBetweenItemsTT>The minimum time between things spawning in the river.</STF.MinTimeBetweenItemsTT>
   <STF.ForbidSpawningItems>Forbid spawning items</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>Items spawning in the river will by default be forbidden</STF.ForbidSpawningItemsTT>
+  <STF.HaulUrgently>Mark spawning items to be hauled urgently</STF.HaulUrgently>
+  <STF.HaulUrgentlyTT>Items spawning in the river will by default be marked to be hauled urgently</STF.HaulUrgentlyTT>
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.PawnIsFloatingAway>Downed pawn {0} is floating away!</STF.PawnIsFloatingAway>

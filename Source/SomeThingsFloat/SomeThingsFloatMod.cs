@@ -75,8 +75,25 @@ internal class SomeThingsFloatMod : Mod
                 "STF.MinTimeBetweenItemsTT".Translate());
             Settings.MinTimeBetweenItems =
                 (float)Math.Round(listing_Standard.Slider(Settings.MinTimeBetweenItems, 0, GenDate.TicksPerDay * 7));
+            if (SomeThingsFloat.HaulUrgentlyDef != null)
+            {
+                var originalHaulValue = Settings.HaulUrgently;
+                listing_Standard.CheckboxLabeled("STF.HaulUrgently".Translate(), ref Settings.HaulUrgently,
+                    "STF.HaulUrgentlyTT".Translate());
+                if (originalHaulValue != Settings.HaulUrgently && Settings.HaulUrgently)
+                {
+                    Settings.ForbidSpawningItems = false;
+                }
+            }
+
+            var originalForbidValue = Settings.ForbidSpawningItems;
             listing_Standard.CheckboxLabeled("STF.ForbidSpawningItems".Translate(), ref Settings.ForbidSpawningItems,
                 "STF.ForbidSpawningItemsTT".Translate());
+            if (originalForbidValue != Settings.ForbidSpawningItems && Settings.ForbidSpawningItems)
+            {
+                Settings.HaulUrgently = false;
+            }
+
             listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,
                 "STF.SpawnLivingPawnsTT".Translate());
         }

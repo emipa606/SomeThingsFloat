@@ -31,4 +31,6 @@
   <STF.PawnsCanFallTT>Существует вероятность того, что пешки могут поскользнуться в движущейся воде и на некоторое время оказаться под водой. Это зависит от их умения манипулировать.</STF.PawnsCanFallTT>
   <STF.PawnHasFallen>{0} потеряли опору в текущей воде!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} потерял опору в текущей воде и теперь уплывает!</STF.PawnHasFallenAndFloats>
+  <STF.HaulUrgently>Пометить нерестящиеся предметы, которые нужно срочно перетащить</STF.HaulUrgently>
+  <STF.HaulUrgentlyTT>Предметы, появляющиеся в реке, по умолчанию будут помечены как срочно перетаскиваемые</STF.HaulUrgentlyTT>
 </LanguageData>

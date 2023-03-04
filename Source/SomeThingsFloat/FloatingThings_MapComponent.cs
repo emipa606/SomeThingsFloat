@@ -377,6 +377,11 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
+        if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
+        {
+            map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
+        }
+
         lastSpawnTick = GenTicks.TicksGame;
     }
 

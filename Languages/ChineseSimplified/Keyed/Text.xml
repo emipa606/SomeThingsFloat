@@ -31,4 +31,6 @@
   <STF.PawnsCanFallTT>卒子有可能在流动的水中滑倒，并被击倒一小会儿。这与他们的操纵技能有关。</STF.PawnsCanFallTT>
   <STF.PawnHasFallen>{0}已经在流水中失去了脚步!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0}在流水中失去了立足之地，现在正漂浮着。</STF.PawnHasFallenAndFloats>
+  <STF.HaulUrgently>标记出需要紧急拖运的产卵物品</STF.HaulUrgently>
+  <STF.HaulUrgentlyTT>在河中产卵的物品将被默认为标记为紧急拖运。</STF.HaulUrgentlyTT>
 </LanguageData>

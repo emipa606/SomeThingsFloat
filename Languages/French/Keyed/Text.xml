@@ -31,4 +31,6 @@
   <STF.PawnsCanFallTT>Il y a une chance que les pions puissent glisser dans l'eau en mouvement et se retrouver à terre pendant un petit moment. Cela dépend de leur capacité de manipulation.</STF.PawnsCanFallTT>
   <STF.PawnHasFallen>{0} a perdu pied dans l'eau qui coule !</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} a perdu pied dans l'eau qui coule et est maintenant en train de flotter !</STF.PawnHasFallenAndFloats>
+  <STF.HaulUrgently>Marquez les objets qui apparaissent et qui doivent être transportés d'urgence.</STF.HaulUrgently>
+  <STF.HaulUrgentlyTT>Les objets frayant dans la rivière seront par défaut marqués pour être transportés d'urgence.</STF.HaulUrgentlyTT>
 </LanguageData>
