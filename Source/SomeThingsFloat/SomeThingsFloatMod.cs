@@ -57,6 +57,8 @@ internal class SomeThingsFloatMod : Mod
             "STF.FloatUnderBridgesTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
             "STF.DownedPawnsFloatTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.PawnsCanFall".Translate(), ref Settings.PawnsCanFall,
+            "STF.PawnsCanFallTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,
             "STF.DespawnAtMapEdgeTT".Translate());
         listing_Standard.CheckboxLabeled("STF.SpawnNewItems".Translate(), ref Settings.SpawnNewItems,

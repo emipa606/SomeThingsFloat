@@ -27,4 +27,8 @@
   <STF.ForbidSpawningItemsTT>Gegenstände, die im Fluss laichen, sind standardmäßig verboten</STF.ForbidSpawningItemsTT>
   <STF.MinTimeBetweenItems>Mindestzeit zwischen dem Spawnen von Gegenständen: {0}</STF.MinTimeBetweenItems>
   <STF.MinTimeBetweenItemsTT>Die Mindestzeit zwischen dem Laichen im Fluss.</STF.MinTimeBetweenItemsTT>
+  <STF.PawnsCanFall>Bauern können in bewegtem Wasser den Halt verlieren</STF.PawnsCanFall>
+  <STF.PawnsCanFallTT>Es besteht die Möglichkeit, dass Bauern in fließendem Wasser ausrutschen und für eine kurze Zeit zu Boden gehen. Dies hängt von ihrer Manipulationsfähigkeit ab</STF.PawnsCanFallTT>
+  <STF.PawnHasFallen>{0} hat den Halt im fließenden Wasser verloren!</STF.PawnHasFallen>
+  <STF.PawnHasFallenAndFloats>{0} hat im fließenden Wasser den Halt verloren und schwimmt nun davon!</STF.PawnHasFallenAndFloats>
 </LanguageData>

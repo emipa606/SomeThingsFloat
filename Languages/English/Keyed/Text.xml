@@ -8,6 +8,8 @@
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
+  <STF.PawnsCanFall>Pawns can loose footing in moving water</STF.PawnsCanFall>
+  <STF.PawnsCanFallTT>There is a chance that pawns can slip in moving water and become downed for a little while. This scales with their manipulation-skill</STF.PawnsCanFallTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
   <STF.DespawnAtMapEdgeTT>Floating things will despawn instead of being stopped by the map edge.</STF.DespawnAtMapEdgeTT>
   <STF.SpawnNewItems>Spawn items at river map-edge</STF.SpawnNewItems>
@@ -21,6 +23,8 @@
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.PawnIsFloatingAway>Downed pawn {0} is floating away!</STF.PawnIsFloatingAway>
+  <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
+  <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>
   <STF.PawnIsLostTitle>{0} has floated away</STF.PawnIsLostTitle>
   <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselved but you may never see them again.</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>Someone is struggeling in the river</STF.PawnSpawnedTitle>

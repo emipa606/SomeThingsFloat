@@ -27,4 +27,8 @@
   <STF.ForbidSpawningItemsTT>Les objets qui frayent dans la rivière seront par défaut interdits.</STF.ForbidSpawningItemsTT>
   <STF.MinTimeBetweenItems>Temps minimum entre le frai des éléments : {0}</STF.MinTimeBetweenItems>
   <STF.MinTimeBetweenItemsTT>Le temps minimum entre les choses qui frayent dans la rivière.</STF.MinTimeBetweenItemsTT>
+  <STF.PawnsCanFall>Les pions peuvent perdre pied dans les eaux en mouvement.</STF.PawnsCanFall>
+  <STF.PawnsCanFallTT>Il y a une chance que les pions puissent glisser dans l'eau en mouvement et se retrouver à terre pendant un petit moment. Cela dépend de leur capacité de manipulation.</STF.PawnsCanFallTT>
+  <STF.PawnHasFallen>{0} a perdu pied dans l'eau qui coule !</STF.PawnHasFallen>
+  <STF.PawnHasFallenAndFloats>{0} a perdu pied dans l'eau qui coule et est maintenant en train de flotter !</STF.PawnHasFallenAndFloats>
 </LanguageData>

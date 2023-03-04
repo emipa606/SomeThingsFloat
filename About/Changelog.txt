@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.6 - Added option for pawns to sometimes loose their footing in moving water based on their manipulation-value.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.5 - Added option to set minimum time between spawning items in the river.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

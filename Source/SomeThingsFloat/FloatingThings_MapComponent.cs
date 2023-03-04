@@ -50,6 +50,11 @@ public class FloatingThings_MapComponent : MapComponent
             updateListOfFloatingThings();
         }
 
+        if (SomeThingsFloatMod.instance.Settings.PawnsCanFall && ticksGame % GenTicks.TickRareInterval == 0)
+        {
+            checkForPawnsThatCanFall();
+        }
+
         if (!updateValues.ContainsKey(ticksGame))
         {
             return;
@@ -57,7 +62,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         var thing = updateValues[ticksGame];
         updateValues.Remove(ticksGame);
-        if (!verifyThingIsInWater(thing))
+        if (!VerifyThingIsInWater(thing))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
             if (thing != null)
@@ -137,6 +142,11 @@ public class FloatingThings_MapComponent : MapComponent
         if (underCellsWithWater.Contains(newPosition))
         {
             hiddenPositions[thing] = newPosition;
+            if (thing.Spawned)
+            {
+                thing.DeSpawn();
+            }
+
             return;
         }
 
@@ -372,7 +382,7 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatingThings()
     {
-        foreach (var possibleThings in totalCellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
+        foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
         {
             foreach (var possibleThing in possibleThings)
             {
@@ -423,6 +433,76 @@ public class FloatingThings_MapComponent : MapComponent
 
         SomeThingsFloat.LogMessage($"Current tick: {GenTicks.TicksGame}, {thing} next update: {nextupdate}");
         updateValues[nextupdate] = thing;
+    }
+
+
+    private void checkForPawnsThatCanFall()
+    {
+        foreach (var pawn in map.mapPawns.AllPawns)
+        {
+            if (pawn is not { Spawned: true } || pawn.Dead)
+            {
+                continue;
+            }
+
+            if (!cellsWithWater.Contains(pawn.Position))
+            {
+                continue;
+            }
+
+            var flow = map.waterInfo.GetWaterMovement(pawn.Position.ToVector3Shifted());
+            if (flow == Vector3.zero)
+            {
+                continue;
+            }
+
+            var manipulation = Math.Max(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation), 0.1f);
+            var manipulationFiltered = Math.Max(Math.Min(manipulation, 0.999f), 0.5f);
+            var rand = Rand.Value;
+            if (rand < manipulationFiltered)
+            {
+                continue;
+            }
+
+            SomeThingsFloat.LogMessage($"{pawn} failed the Manipulation-check ({manipulationFiltered}/{rand})");
+
+            var alreadyLostFooting = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
+            if (alreadyLostFooting != null)
+            {
+                alreadyLostFooting.Severity = Math.Min(1f, alreadyLostFooting.Severity + (0.05f / manipulation));
+            }
+            else
+            {
+                var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_LostFooting, pawn);
+                hediff.Severity = 0.05f / manipulation;
+                pawn.health.AddHediff(hediff);
+            }
+
+            if (pawn.Downed)
+            {
+                continue;
+            }
+
+            if (!pawn.RaceProps.IsFlesh)
+            {
+                if (pawn.Faction.IsPlayer)
+                {
+                    Messages.Message("STF.PawnHasFallen".Translate(pawn.NameFullColored), pawn,
+                        MessageTypeDefOf.NegativeEvent);
+                }
+
+                continue;
+            }
+
+            floatingValues[pawn] = SomeThingsFloat.GetFloatingValue(pawn);
+            setNextUpdateTime(pawn);
+
+            if (pawn.Faction.IsPlayer)
+            {
+                Messages.Message("STF.PawnHasFallenAndFloats".Translate(pawn.NameFullColored), pawn,
+                    MessageTypeDefOf.NegativeEvent);
+            }
+        }
     }
 
 
@@ -522,10 +602,20 @@ public class FloatingThings_MapComponent : MapComponent
         return false;
     }
 
-    private bool verifyThingIsInWater(Thing thing)
+    public bool VerifyThingIsInWater(Thing thing)
     {
+        if (thing == null)
+        {
+            return false;
+        }
+
         if (hiddenPositions?.ContainsKey(thing) == true)
         {
+            if (thing.Spawned)
+            {
+                thing.DeSpawn();
+            }
+
             return true;
         }
 
@@ -539,6 +629,6 @@ public class FloatingThings_MapComponent : MapComponent
             return false;
         }
 
-        return totalCellsWithWater?.Contains(thing.Position) == true;
+        return cellsWithWater?.Contains(thing.Position) == true;
     }
 }
