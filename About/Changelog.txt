@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.8 - Added load-order for Allow Tool, fixed water-cells references since the last code-change. Thanks to TheCommanderFluffy for the save to test on
+
+
 1.4.7 - Added option to automatically mark spawning items to be hauled urgently if [url=https://steamcommunity.com/sharedfiles/filedetails/?id=761421485]Allow Tool[/url] is loaded.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 
