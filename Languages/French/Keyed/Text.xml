@@ -33,4 +33,8 @@
   <STF.PawnHasFallenAndFloats>{0} a perdu pied dans l'eau qui coule et est maintenant en train de flotter !</STF.PawnHasFallenAndFloats>
   <STF.HaulUrgently>Marquez les objets qui apparaissent et qui doivent être transportés d'urgence.</STF.HaulUrgently>
   <STF.HaulUrgentlyTT>Les objets frayant dans la rivière seront par défaut marqués pour être transportés d'urgence.</STF.HaulUrgentlyTT>
+  <STF.DownedPawnsDrown>Les pions abattus dans l'eau peuvent se noyer</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>Les pions qui sont abattus dans l'eau peuvent se noyer. Les casques avec l'étiquette EVA empêcheront cela.</STF.DownedPawnsDrownTT>
+  <STF.PawnIsFloatingAwayTT>{abattu et flottant dans l'eau.</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsDrowning>{0} est à terre dans l'eau et se noie, ils ont désespérément besoin de secours !</STF.PawnIsDrowning>
 </LanguageData>

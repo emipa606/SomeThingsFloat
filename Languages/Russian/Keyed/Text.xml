@@ -33,4 +33,8 @@
   <STF.PawnHasFallenAndFloats>{0} потерял опору в текущей воде и теперь уплывает!</STF.PawnHasFallenAndFloats>
   <STF.HaulUrgently>Пометить нерестящиеся предметы, которые нужно срочно перетащить</STF.HaulUrgently>
   <STF.HaulUrgentlyTT>Предметы, появляющиеся в реке, по умолчанию будут помечены как срочно перетаскиваемые</STF.HaulUrgentlyTT>
+  <STF.DownedPawnsDrown>Утонувшие пешки в воде могут утонуть</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>Пешки, упавшие в воду, могут утонуть. Шлемы с EVA-меткой предотвратят это.</STF.DownedPawnsDrownTT>
+  <STF.PawnIsFloatingAwayTT>{0} спускается и уплывает в воду.</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsDrowning>{0} спустился в воду и тонет, они отчаянно нуждаются в спасении!</STF.PawnIsDrowning>
 </LanguageData>

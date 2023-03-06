@@ -33,4 +33,8 @@
   <STF.PawnHasFallenAndFloats>{0}在流水中失去了立足之地，现在正漂浮着。</STF.PawnHasFallenAndFloats>
   <STF.HaulUrgently>标记出需要紧急拖运的产卵物品</STF.HaulUrgently>
   <STF.HaulUrgentlyTT>在河中产卵的物品将被默认为标记为紧急拖运。</STF.HaulUrgentlyTT>
+  <STF.DownedPawnsDrown>倒在水中的棋子会被淹死</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>被击倒在水中的棋子会被淹死。带有EVA标签的头盔可以防止这种情况。</STF.DownedPawnsDrownTT>
+  <STF.PawnIsFloatingAwayTT>{0}被击倒，在水中漂走。</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsDrowning>{0}倒在水里，溺水了，他们急需救援!</STF.PawnIsDrowning>
 </LanguageData>

@@ -8,6 +8,8 @@
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
+  <STF.DownedPawnsDrown>Downed pawns in water can drown</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>Pawns that are downed in water can drown. Helmets with the EVA-tag will prevent this.</STF.DownedPawnsDrownTT>
   <STF.PawnsCanFall>Pawns can loose footing in moving water</STF.PawnsCanFall>
   <STF.PawnsCanFallTT>There is a chance that pawns can slip in moving water and become downed for a little while. This scales with their manipulation-skill</STF.PawnsCanFallTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
@@ -24,12 +26,14 @@
   <STF.HaulUrgentlyTT>Items spawning in the river will by default be marked to be hauled urgently</STF.HaulUrgentlyTT>
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
-  <STF.PawnIsFloatingAway>Downed pawn {0} is floating away!</STF.PawnIsFloatingAway>
+  <STF.PawnIsFloatingAway>Pawns floating away</STF.PawnIsFloatingAway>
+  <STF.PawnIsFloatingAwayTT>{0} downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsDrowning>{0} is downed in the water and drowning, they are in desperate need of rescue!</STF.PawnIsDrowning>
   <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>
   <STF.PawnIsLostTitle>{0} has floated away</STF.PawnIsLostTitle>
   <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselved but you may never see them again.</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>Someone is struggeling in the river</STF.PawnSpawnedTitle>
-  <STF.PawnSpawnedMessage>You notice someone in the water, the signal you for help</STF.PawnSpawnedMessage>
+  <STF.PawnSpawnedMessage>You notice someone in the water, they signal you for help</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>Installed mod-version: {0}</STF.CurrentModVersion>
 </LanguageData>

@@ -50,9 +50,17 @@ public class FloatingThings_MapComponent : MapComponent
             updateListOfFloatingThings();
         }
 
-        if (SomeThingsFloatMod.instance.Settings.PawnsCanFall && ticksGame % GenTicks.TickRareInterval == 0)
+        if (ticksGame % GenTicks.TickRareInterval == 0)
         {
-            checkForPawnsThatCanFall();
+            if (SomeThingsFloatMod.instance.Settings.PawnsCanFall)
+            {
+                checkForPawnsThatCanFall();
+            }
+
+            if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
+            {
+                checkForPawnsThatCanDrown();
+            }
         }
 
         if (!updateValues.ContainsKey(ticksGame))
@@ -387,7 +395,7 @@ public class FloatingThings_MapComponent : MapComponent
         {
             foreach (var possibleThing in possibleThings)
             {
-                if (floatingValues.ContainsKey(possibleThing))
+                if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
                 {
                     continue;
                 }
@@ -400,11 +408,6 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 setNextUpdateTime(possibleThing);
-                if (possibleThing is Pawn { Faction.IsPlayer: true } pawn)
-                {
-                    Messages.Message("STF.PawnIsFloatingAway".Translate(pawn.NameFullColored), pawn,
-                        MessageTypeDefOf.NegativeEvent);
-                }
             }
         }
 
@@ -441,12 +444,12 @@ public class FloatingThings_MapComponent : MapComponent
     {
         foreach (var pawn in map.mapPawns.AllPawns)
         {
-            if (pawn is not { Spawned: true } || pawn.Dead)
+            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null)
             {
                 continue;
             }
 
-            if (!cellsWithRiver.Contains(pawn.Position))
+            if (cellsWithRiver?.Contains(pawn.Position) == false)
             {
                 continue;
             }
@@ -461,10 +464,10 @@ public class FloatingThings_MapComponent : MapComponent
 
             SomeThingsFloat.LogMessage($"{pawn} failed the Manipulation-check ({manipulationFiltered}/{rand})");
 
-            var alreadyLostFooting = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (alreadyLostFooting != null)
+            var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
+            if (lostFootingHediff != null)
             {
-                alreadyLostFooting.Severity = Math.Min(1f, alreadyLostFooting.Severity + (0.05f / manipulation));
+                lostFootingHediff.Severity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulation));
             }
             else
             {
@@ -473,7 +476,7 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.health.AddHediff(hediff);
             }
 
-            if (pawn.Downed)
+            if (pawn.Downed && pawn.Awake())
             {
                 continue;
             }
@@ -496,6 +499,67 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 Messages.Message("STF.PawnHasFallenAndFloats".Translate(pawn.NameFullColored), pawn,
                     MessageTypeDefOf.NegativeEvent);
+            }
+        }
+    }
+
+
+    private void checkForPawnsThatCanDrown()
+    {
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
+        {
+            var pawn = map.mapPawns.AllPawns[index];
+            if (pawn == null || pawn.Dead || !SomeThingsFloat.PawnsThatBreathe.Contains(pawn.def) || !pawn.Downed ||
+                !pawn.Awake())
+            {
+                continue;
+            }
+
+            if (pawn.Spawned)
+            {
+                if (cellsWithWater?.Contains(pawn.Position) == false)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (hiddenPositions?.TryGetValue(pawn, out _) == false)
+                {
+                    continue;
+                }
+            }
+
+
+            var cannotDrown =
+                pawn.apparel?.WornApparel?.Any(apparel =>
+                    SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
+
+            var drowningHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (drowningHediff != null)
+            {
+                if (cannotDrown)
+                {
+                    drowningHediff.Severity = 0;
+                    return;
+                }
+
+                drowningHediff.Severity += 0.05f;
+            }
+            else
+            {
+                if (cannotDrown)
+                {
+                    return;
+                }
+
+                var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
+                hediff.Severity = 0.1f;
+                pawn.health.AddHediff(hediff);
+                Find.TickManager.TogglePaused();
+                Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
+                    MessageTypeDefOf.ThreatBig);
             }
         }
     }
@@ -609,6 +673,15 @@ public class FloatingThings_MapComponent : MapComponent
         return false;
     }
 
+
+    public List<Pawn> DownedPawnsInWater()
+    {
+        return map.mapPawns.AllPawns.Where(pawn =>
+            pawn.Downed && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
+            (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true ||
+             hiddenPositions?.TryGetValue(pawn, out _) == true)).ToList();
+    }
+
     public bool VerifyThingIsInWater(Thing thing)
     {
         if (thing == null)
@@ -618,11 +691,6 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (hiddenPositions?.ContainsKey(thing) == true)
         {
-            if (thing.Spawned)
-            {
-                thing.DeSpawn();
-            }
-
             return true;
         }
 

@@ -33,4 +33,8 @@
   <STF.PawnHasFallenAndFloats>{0} hat im fließenden Wasser den Halt verloren und schwimmt nun davon!</STF.PawnHasFallenAndFloats>
   <STF.HaulUrgently>Markieren Sie laichende Gegenstände, die dringend abgeholt werden müssen</STF.HaulUrgently>
   <STF.HaulUrgentlyTT>Gegenstände, die im Fluss laichen, werden standardmäßig als dringend zu bergen markiert</STF.HaulUrgentlyTT>
+  <STF.DownedPawnsDrown>Im Wasser liegende Bauern können ertrinken</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>Spielfiguren, die im Wasser zu Boden gehen, können ertrinken. Helme mit dem EVA-Tag verhindern dies.</STF.DownedPawnsDrownTT>
+  <STF.PawnIsFloatingAwayTT>{0} niedergeschlagen und im Wasser treibend.</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsDrowning>{0} ist im Wasser gelandet und ertrinkt, er braucht dringend Hilfe!</STF.PawnIsDrowning>
 </LanguageData>

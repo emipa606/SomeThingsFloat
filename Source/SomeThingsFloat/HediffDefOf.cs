@@ -7,6 +7,7 @@ namespace SomeThingsFloat;
 public static class HediffDefOf
 {
     public static HediffDef STF_LostFooting;
+    public static HediffDef STF_Drowning;
 
     static HediffDefOf()
     {

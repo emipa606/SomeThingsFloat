@@ -14,11 +14,25 @@ public class SomeThingsFloat
 
     public static readonly DesignationDef HaulUrgentlyDef;
 
+    public static readonly List<ThingDef> ApparelThatPreventDrowning;
+
+    public static readonly List<ThingDef> PawnsThatBreathe;
+
+    public static readonly List<ThingDef> PawnsThatFloat;
+
     static SomeThingsFloat()
     {
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
             .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
             .ToList();
+        ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+            def.IsApparel && def.apparel.tags.Contains("EVA") &&
+            def.apparel.layers.Contains(ApparelLayerDefOf.Overhead)).ToList();
+        PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+            def.race is { IsFlesh: true } &&
+            PawnCapacityUtility.BodyCanEverDoCapacity(def.race.body, PawnCapacityDefOf.Breathing)).ToList();
+        PawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+            def.race is { IsFlesh: true }).ToList();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
     }
@@ -30,12 +44,11 @@ public class SomeThingsFloat
         {
             case null:
                 return 0;
-            // Organic corpses float, mechs do not
             case Corpse corpse when corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
-            // Living things do not float
             case Pawn pawn:
-                if (SomeThingsFloatMod.instance.Settings.DownedPawnsFloat && pawn.Downed)
+                if (SomeThingsFloatMod.instance.Settings.DownedPawnsFloat && PawnsThatFloat.Contains(pawn.def) &&
+                    pawn.Downed && pawn.Awake())
                 {
                     return 0.5f;
                 }

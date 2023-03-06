@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Apparel_PowerArmorHelmet"]/apparel/tags/li[text()="EVA"]</xpath>
+    <success>Always</success>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="Apparel_PowerArmorHelmet"]/apparel/tags</xpath>
+      <value>
+        <li>EVA</li>
+      </value>
+    </nomatch>
+  </Operation>
+</Patch>
