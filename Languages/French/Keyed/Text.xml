@@ -37,4 +37,6 @@
   <STF.DownedPawnsDrownTT>Les pions qui sont abattus dans l'eau peuvent se noyer. Les casques avec l'étiquette EVA empêcheront cela.</STF.DownedPawnsDrownTT>
   <STF.PawnIsFloatingAwayTT>{abattu et flottant dans l'eau.</STF.PawnIsFloatingAwayTT>
   <STF.PawnIsDrowning>{0} est à terre dans l'eau et se noie, ils ont désespérément besoin de secours !</STF.PawnIsDrowning>
+  <STF.ThingsUnderBridge>Choses flottant sous les ponts</STF.ThingsUnderBridge>
+  <STF.ThingsUnderBridgeTT>Les choses qui flottent actuellement sous les ponts : {0}</STF.ThingsUnderBridgeTT>
 </LanguageData>

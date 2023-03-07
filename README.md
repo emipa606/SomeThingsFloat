@@ -9,7 +9,7 @@ This mod lets things float in water and move with the stream. In non-streaming w
 
 There is also a possibility that things spawn in the river that you can get use of, or even downed pawns you can choose to rescue. If https://steamcommunity.com/sharedfiles/filedetails/?id=761421485]Allow Tool is active you can set all spawning items to be hauled urgently automatically. 
 
-Pawns may also loose their footing in moving water. 
+Pawns may also loose their footing in moving water. They can also drown if being downed in water. Certain apparel will prevent this, such as the power-armor helmet. Any headgear with the EVA-tag from SOS2 will be considered a breathable helmet.
 
 Technically the mod looks at all items in water-tiles and calculates their floating value. This is based on what stuff is used to build the item, but some things like corpses have a default float value. Its also possible to add floatable-values to other things via patches, there is a patch for barrels of fecal-matter from https://steamcommunity.com/sharedfiles/filedetails/?id=836308268]Dubs Bad Hygiene that can be used as an example. Higher floatable values makes things move quicker in the water.
 
@@ -34,4 +34,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/Utx6OIH.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-06
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-07

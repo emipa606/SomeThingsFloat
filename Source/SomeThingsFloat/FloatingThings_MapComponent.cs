@@ -192,7 +192,7 @@ public class FloatingThings_MapComponent : MapComponent
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref updateValues, "updateValues", LookMode.Value, LookMode.Reference,
             ref updateValuesKeys, ref updateValuesValues);
-        Scribe_Collections.Look(ref hiddenPositions, "hiddenPositions", LookMode.Reference, LookMode.Value,
+        Scribe_Collections.Look(ref hiddenPositions, "hiddenPositions", LookMode.Deep, LookMode.Value,
             ref hiddenPositionsKeys, ref hiddenPositionsValues);
         if (Scribe.mode != LoadSaveMode.ResolvingCrossRefs)
         {
@@ -411,6 +411,24 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
 
+        foreach (var hiddenPosition in hiddenPositions)
+        {
+            var possibleThing = hiddenPosition.Key;
+            if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+            {
+                continue;
+            }
+
+            floatingValues[possibleThing] = SomeThingsFloat.GetFloatingValue(possibleThing);
+            SomeThingsFloat.LogMessage($"{possibleThing} float-value: {floatingValues[possibleThing]}");
+            if (!(floatingValues[possibleThing] > 0))
+            {
+                continue;
+            }
+
+            setNextUpdateTime(possibleThing);
+        }
+
         SomeThingsFloat.LogMessage($"Found {floatingValues.Count} items in water");
     }
 
@@ -558,8 +576,11 @@ public class FloatingThings_MapComponent : MapComponent
                 hediff.Severity = 0.1f;
                 pawn.health.AddHediff(hediff);
                 Find.TickManager.TogglePaused();
-                Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
-                    MessageTypeDefOf.ThreatBig);
+                if (pawn.Faction.IsPlayer)
+                {
+                    Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
+                        MessageTypeDefOf.ThreatBig);
+                }
             }
         }
     }
@@ -575,13 +596,13 @@ public class FloatingThings_MapComponent : MapComponent
         resultingCell = originalPosition;
 
         var originalFlow = Vector3.zero;
-        if (cellsWithRiver.Contains(originalPosition))
+        if (cellsWithRiver.Contains(originalPosition) ||
+            hiddenPositions?.Values.ToList().Contains(originalPosition) == true)
         {
             originalFlow = map.waterInfo.GetWaterMovement(resultingCell.ToVector3Shifted());
         }
 
         SomeThingsFloat.LogMessage($"Flow at {thing} position: {originalFlow}");
-
 
         var possibleCellsToRecheck = new List<IntVec3>();
 
@@ -680,6 +701,11 @@ public class FloatingThings_MapComponent : MapComponent
             pawn.Downed && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
             (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true ||
              hiddenPositions?.TryGetValue(pawn, out _) == true)).ToList();
+    }
+
+    public Dictionary<Thing, IntVec3> ThingsUnderBridge()
+    {
+        return hiddenPositions ?? new Dictionary<Thing, IntVec3>();
     }
 
     public bool VerifyThingIsInWater(Thing thing)

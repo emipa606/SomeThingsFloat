@@ -37,4 +37,6 @@
   <STF.DownedPawnsDrownTT>被击倒在水中的棋子会被淹死。带有EVA标签的头盔可以防止这种情况。</STF.DownedPawnsDrownTT>
   <STF.PawnIsFloatingAwayTT>{0}被击倒，在水中漂走。</STF.PawnIsFloatingAwayTT>
   <STF.PawnIsDrowning>{0}倒在水里，溺水了，他们急需救援!</STF.PawnIsDrowning>
+  <STF.ThingsUnderBridge>桥下漂浮的东西</STF.ThingsUnderBridge>
+  <STF.ThingsUnderBridgeTT>目前在桥下漂浮的东西。{0}</STF.ThingsUnderBridgeTT>
 </LanguageData>

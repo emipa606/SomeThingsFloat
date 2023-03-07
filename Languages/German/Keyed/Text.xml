@@ -37,4 +37,6 @@
   <STF.DownedPawnsDrownTT>Spielfiguren, die im Wasser zu Boden gehen, können ertrinken. Helme mit dem EVA-Tag verhindern dies.</STF.DownedPawnsDrownTT>
   <STF.PawnIsFloatingAwayTT>{0} niedergeschlagen und im Wasser treibend.</STF.PawnIsFloatingAwayTT>
   <STF.PawnIsDrowning>{0} ist im Wasser gelandet und ertrinkt, er braucht dringend Hilfe!</STF.PawnIsDrowning>
+  <STF.ThingsUnderBridge>Dinge, die unter Brücken schwimmen</STF.ThingsUnderBridge>
+  <STF.ThingsUnderBridgeTT>Dinge, die derzeit unter Brücken schwimmen: {0}</STF.ThingsUnderBridgeTT>
 </LanguageData>
