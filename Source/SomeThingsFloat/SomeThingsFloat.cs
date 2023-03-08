@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -170,6 +171,23 @@ public class SomeThingsFloat
 
         floatingValue = 0;
         return false;
+    }
+
+
+    public static float CalculateDrowningValue(Pawn pawn)
+    {
+        var breathing = pawn.health?.capacities?.GetLevel(PawnCapacityDefOf.Breathing) ?? 1;
+        var manipulation = pawn.health?.capacities?.GetLevel(PawnCapacityDefOf.Manipulation) ?? 1;
+        var minimumCapacity = 0.1;
+        var hediffBaseValue = 0.025f;
+        var breathingFactor = 0.6f;
+        var manipulationFactor = 0.4f;
+        var capacties = (breathingFactor * (float)Math.Max(breathing, minimumCapacity)) +
+                        (manipulationFactor * (float)Math.Max(manipulation, minimumCapacity));
+        var drownValue = hediffBaseValue * (1 / capacties);
+        LogMessage(
+            $"Drowning value for {pawn}: {drownValue}. Breathing: {breathing}, Manipulation: {manipulation}, Capacities: {capacties}");
+        return drownValue;
     }
 
     public static void LogMessage(string message)

@@ -501,7 +501,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!pawn.RaceProps.IsFlesh)
             {
-                if (pawn.Faction.IsPlayer)
+                if (pawn.Faction?.IsPlayer == true)
                 {
                     Messages.Message("STF.PawnHasFallen".Translate(pawn.NameFullColored), pawn,
                         MessageTypeDefOf.NegativeEvent);
@@ -513,7 +513,7 @@ public class FloatingThings_MapComponent : MapComponent
             floatingValues[pawn] = SomeThingsFloat.GetFloatingValue(pawn);
             setNextUpdateTime(pawn);
 
-            if (pawn.Faction.IsPlayer)
+            if (pawn.Faction?.IsPlayer == true)
             {
                 Messages.Message("STF.PawnHasFallenAndFloats".Translate(pawn.NameFullColored), pawn,
                     MessageTypeDefOf.NegativeEvent);
@@ -528,7 +528,8 @@ public class FloatingThings_MapComponent : MapComponent
         for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
         {
             var pawn = map.mapPawns.AllPawns[index];
-            if (pawn == null || pawn.Dead || !SomeThingsFloat.PawnsThatBreathe.Contains(pawn.def) || !pawn.Downed ||
+            if (pawn == null || pawn.Dead || SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
+                !pawn.Downed ||
                 !pawn.Awake())
             {
                 continue;
@@ -554,7 +555,7 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.apparel?.WornApparel?.Any(apparel =>
                     SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
 
-            var drowningHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            var drowningHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (drowningHediff != null)
             {
                 if (cannotDrown)
@@ -563,7 +564,7 @@ public class FloatingThings_MapComponent : MapComponent
                     return;
                 }
 
-                drowningHediff.Severity += 0.05f;
+                drowningHediff.Severity += SomeThingsFloat.CalculateDrowningValue(pawn);
             }
             else
             {
@@ -573,14 +574,16 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
-                hediff.Severity = 0.1f;
-                pawn.health.AddHediff(hediff);
-                Find.TickManager.TogglePaused();
-                if (pawn.Faction.IsPlayer)
+                hediff.Severity = SomeThingsFloat.CalculateDrowningValue(pawn);
+                pawn.health?.AddHediff(hediff);
+                if (pawn.Faction?.IsPlayer != true)
                 {
-                    Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
-                        MessageTypeDefOf.ThreatBig);
+                    continue;
                 }
+
+                Find.TickManager.TogglePaused();
+                Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
+                    MessageTypeDefOf.ThreatBig);
             }
         }
     }
@@ -639,7 +642,8 @@ public class FloatingThings_MapComponent : MapComponent
                 continue;
             }
 
-            if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null)
+            if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null &&
+                !underCellsWithWater.Contains(adjacentCell))
             {
                 SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
                 continue;

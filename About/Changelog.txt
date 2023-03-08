@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.11 - Things can float under bridges with buildings on them, drowning mechanics take pawn capacities into account (thanks Tonas1997), fixed faction-checks
+
+
 1.4.10 - Added info about items when floating under bridges, fixed the pathfinding under bridges..
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 
