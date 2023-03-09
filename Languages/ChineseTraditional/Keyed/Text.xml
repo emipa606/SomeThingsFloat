@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <STF.VerboseLogging>詳細記錄</STF.VerboseLogging>
+  <STF.VerboseLoggingTT>用於調試</STF.VerboseLoggingTT>
+  <STF.ForbidWhenMoving>允許儲存區物品漂離</STF.ForbidWhenMoving>
+  <STF.ForbidWhenMovingTT>從儲存區中漂走的物品標記為【禁用】。這將阻止單位不斷來回搬運。『譯者:你在河流上設置了停屍區，河流帶走屍體時，此選項關閉後，你家殖民者跟機械族不會像傻瓜一樣來回搬。』</STF.ForbidWhenMovingTT>
+  <STF.FloatUnderBridges>漂流物經過橋下</STF.FloatUnderBridges>
+  <STF.FloatUnderBridgesTT>東西會漂浮在橋下，貼圖經過路徑時會隱藏起來</STF.FloatUnderBridgesTT>
+  <STF.DownedPawnsFloat>倒地單位漂浮</STF.DownedPawnsFloat>
+  <STF.DownedPawnsFloatTT>被擊倒的單位也會浮起，但速度比屍體慢。</STF.DownedPawnsFloatTT>
+  <STF.DownedPawnsDrown>啟用溺水可能</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>落入水中的單位可能會淹死。帶有太空標籤的頭盔可以防止這種情況發生。</STF.DownedPawnsDrownTT>
+ <STF.PawnsCanFall>啟用水中滑倒</STF.PawnsCanFall>
+  <STF.PawnsCanFallTT>單位有可能在流水中滑倒並暫時倒地。這與他們的操作技巧成比例</STF.PawnsCanFallTT>
+  <STF.DespawnAtMapEdge>漂離地圖</STF.DespawnAtMapEdge>
+  <STF.DespawnAtMapEdgeTT>漂浮的東西會消失而不是被地圖邊緣擋住。</STF.DespawnAtMapEdgeTT>
+  <STF.SpawnNewItems>啟用漂流物生成</STF.SpawnNewItems>
+  <STF.SpawnNewItemsTT>啟用後，如果地圖有流動河流，東西可能會在邊緣生成。</STF.SpawnNewItemsTT>
+  <STF.MaxSpawnValue>物品生成－最大價值： {0}</STF.MaxSpawnValue>
+  <STF.MaxSpawnValueTT>河流生成物品的最大值。</STF.MaxSpawnValueTT>
+  <STF.MinTimeBetweenItems>物品生成－最小時隔： {0}</STF.MinTimeBetweenItems>
+  <STF.MinTimeBetweenItemsTT>在河流中生成事物的最短時間</STF.MinTimeBetweenItemsTT>
+  <STF.ForbidSpawningItems>禁用漂流物</STF.ForbidSpawningItems>
+  <STF.ForbidSpawningItemsTT>默認禁止河流生成物品</STF.ForbidSpawningItemsTT>
+  <STF.HaulUrgently>物品生成－標記緊急</STF.HaulUrgently>
+  <STF.HaulUrgentlyTT>從河流生成的物品將默認標記為緊急搬運。</STF.HaulUrgentlyTT>
+  <STF.SpawnLivingPawns>落水事件</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>啟用後，河流會生成倒地單位(還有一口氣)，如果你願意，你可以選擇營救。</STF.SpawnLivingPawnsTT>
+  <STF.PawnIsFloatingAway>單位飄走</STF.PawnIsFloatingAway>
+  <STF.PawnIsFloatingAwayTT>{0} 墜落並漂浮在水中。</STF.PawnIsFloatingAwayTT>
+  <STF.ThingsUnderBridge>漂浮在橋下的東西</STF.ThingsUnderBridge>
+  <STF.ThingsUnderBridgeTT>目前漂浮在橋下的東西：{0}</STF.ThingsUnderBridgeTT>
+  <STF.PawnIsDrowning>{0}溺水，急需救援！</STF.PawnIsDrowning>
+  <STF.PawnHasFallen>{0}在水中滑倒了！</STF.PawnHasFallen>
+  <STF.PawnHasFallenAndFloats>{0}在水中滑倒了，越漂越遠！</STF.PawnHasFallenAndFloats>
+  <STF.PawnIsLostTitle>{0} 已經飄走了</STF.PawnIsLostTitle>
+  <STF.PawnIsLostMessage>你未能救{0}上岸，已經漂出了視線之外。希望老天保佑，但你可能再也見不到{0}了。</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>落水者求救</STF.PawnSpawnedTitle>
+  <STF.PawnSpawnedMessage>你發現有人落水，向你發出求救信號</STF.PawnSpawnedMessage>
+  <STF.CurrentModVersion>模組版本：{0}</STF.CurrentModVersion>
+
+</LanguageData>
