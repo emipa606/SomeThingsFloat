@@ -2,7 +2,7 @@
 <LanguageData>
   <STF.VerboseLogging>詳細記錄</STF.VerboseLogging>
   <STF.VerboseLoggingTT>用於調試</STF.VerboseLoggingTT>
-  <STF.ForbidWhenMoving>允許儲存區物品漂離</STF.ForbidWhenMoving>
+  <STF.ForbidWhenMoving>禁止儲存區物品漂離</STF.ForbidWhenMoving>
   <STF.ForbidWhenMovingTT>從儲存區中漂走的物品標記為【禁用】。這將阻止單位不斷來回搬運。『譯者:你在河流上設置了停屍區，河流帶走屍體時，此選項關閉後，你家殖民者跟機械族不會像傻瓜一樣來回搬。』</STF.ForbidWhenMovingTT>
   <STF.FloatUnderBridges>漂流物經過橋下</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>東西會漂浮在橋下，貼圖經過路徑時會隱藏起來</STF.FloatUnderBridgesTT>
