@@ -10,7 +10,7 @@
   <STF.DownedPawnsFloatTT>被擊倒的單位也會浮起，但速度比屍體慢。</STF.DownedPawnsFloatTT>
   <STF.DownedPawnsDrown>啟用溺水可能</STF.DownedPawnsDrown>
   <STF.DownedPawnsDrownTT>落入水中的單位可能會淹死。帶有太空標籤的頭盔可以防止這種情況發生。</STF.DownedPawnsDrownTT>
- <STF.PawnsCanFall>啟用水中滑倒</STF.PawnsCanFall>
+  <STF.PawnsCanFall>啟用水中滑倒</STF.PawnsCanFall>
   <STF.PawnsCanFallTT>單位有可能在流水中滑倒並暫時倒地。這與他們的操作技巧成比例</STF.PawnsCanFallTT>
   <STF.DespawnAtMapEdge>漂離地圖</STF.DespawnAtMapEdge>
   <STF.DespawnAtMapEdgeTT>漂浮的東西會消失而不是被地圖邊緣擋住。</STF.DespawnAtMapEdgeTT>
@@ -38,5 +38,4 @@
   <STF.PawnSpawnedTitle>落水者求救</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>你發現有人落水，向你發出求救信號</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>模組版本：{0}</STF.CurrentModVersion>
-
 </LanguageData>

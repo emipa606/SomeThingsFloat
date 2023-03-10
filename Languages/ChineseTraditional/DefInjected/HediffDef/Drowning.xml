@@ -1,11 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-
   <STF_Drowning.label>溺水</STF_Drowning.label>
   <STF_Drowning.description>努力保持漂浮，並有溺水的危險。</STF_Drowning.description>
   <STF_Drowning.stages.0.label>緊張</STF_Drowning.stages.0.label>
   <STF_Drowning.stages.1.label>沉重</STF_Drowning.stages.1.label>
   <STF_Drowning.stages.2.label>危急</STF_Drowning.stages.2.label>
-
-
 </LanguageData>

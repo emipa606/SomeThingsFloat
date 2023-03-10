@@ -14,7 +14,8 @@ public class Alert_ColonistIsFloatingAway : Alert
 
     public override TaggedString GetExplanation()
     {
-        return "STF.PawnIsFloatingAwayTT".Translate(string.Join(", ", floatingPawns()));
+        return "STF.PawnIsFloatingAwayTT".Translate(string.Join(", ",
+            floatingPawns().ConvertAll(input => input.NameFullColored)));
     }
 
     public override AlertReport GetReport()

@@ -27,7 +27,7 @@
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.PawnIsFloatingAway>Pawns floating away</STF.PawnIsFloatingAway>
-  <STF.PawnIsFloatingAwayTT>{0} downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
+  <STF.PawnIsFloatingAwayTT>{0} is downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
   <STF.ThingsUnderBridge>Things floating under bridges</STF.ThingsUnderBridge>
   <STF.ThingsUnderBridgeTT>Things that are currently floating under bridges: {0}</STF.ThingsUnderBridgeTT>
   <STF.PawnIsDrowning>{0} is downed in the water and drowning, they are in desperate need of rescue!</STF.PawnIsDrowning>

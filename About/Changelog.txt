@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.12 - Updated Chinese translation, thanks shiuanyue. Fixed the alert-label
+
+
 1.4.11 - Things can float under bridges with buildings on them, drowning mechanics take pawn capacities into account (thanks Tonas1997), fixed faction-checks
 
 
