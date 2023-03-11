@@ -21,6 +21,8 @@ public class SomeThingsFloat
 
     public static readonly List<ThingDef> PawnsThatFloat;
 
+    public static readonly bool SwimmingKitLoaded;
+
     static SomeThingsFloat()
     {
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
@@ -36,6 +38,7 @@ public class SomeThingsFloat
             def.race is { IsFlesh: true }).ToList();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
+        SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit") != null;
     }
 
     public static float GetFloatingValue(Thing thing)
@@ -48,13 +51,24 @@ public class SomeThingsFloat
             case Corpse corpse when corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
             case Pawn pawn:
-                if (SomeThingsFloatMod.instance.Settings.DownedPawnsFloat && PawnsThatFloat.Contains(pawn.def) &&
-                    pawn.Downed && pawn.Awake())
+                if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat || !PawnsThatFloat.Contains(pawn.def) ||
+                    !pawn.Downed || !pawn.Awake())
+                {
+                    return 0;
+                }
+
+                if (!SwimmingKitLoaded || !pawn.def.statBases.Any(modifier => modifier.stat.defName == "SwimSpeed"))
                 {
                     return 0.5f;
                 }
 
-                return 0;
+                var swimspeed = pawn.def.statBases.First(modifier => modifier.stat == StatDef.Named("SwimSpeed"))
+                    .value;
+                var moveSpeed = pawn.def.statBases.First(modifier => modifier.stat == StatDefOf.MoveSpeed)
+                    .value;
+
+                return 0.5f * (moveSpeed / Math.Max(swimspeed, 0.01f));
+
             case Building:
                 return 0;
             case MinifiedThing minifiedThing:

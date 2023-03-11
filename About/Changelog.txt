@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.13 - Nimble pawns are half as likely to loose their footing. If [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1542399915]SwimmingKit[/url] is loaded, higher swimspeed will result in slower float away speed.
+
+
 1.4.12 - Updated Chinese translation, thanks shiuanyue. Fixed the alert-label
 
 

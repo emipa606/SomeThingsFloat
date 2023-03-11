@@ -480,6 +480,11 @@ public class FloatingThings_MapComponent : MapComponent
                 continue;
             }
 
+            if (pawn.story?.traits?.HasTrait(TraitDef.Named("Nimble")) == true && Rand.Bool)
+            {
+                continue;
+            }
+
             SomeThingsFloat.LogMessage($"{pawn} failed the Manipulation-check ({manipulationFiltered}/{rand})");
 
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
