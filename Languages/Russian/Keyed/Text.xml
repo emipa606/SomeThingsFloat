@@ -39,4 +39,7 @@
   <STF.PawnIsDrowning>{0} спустился в воду и тонет, они отчаянно нуждаются в спасении!</STF.PawnIsDrowning>
   <STF.ThingsUnderBridge>Вещи, плавающие под мостами</STF.ThingsUnderBridge>
   <STF.ThingsUnderBridgeTT>Вещи, которые в настоящее время плавают под мостами: {0}</STF.ThingsUnderBridgeTT>
+  <STF.NotifyOfSpawningItems>Уведомлять обо всех нерестящихся предметах</STF.NotifyOfSpawningItems>
+  <STF.NotifyOfSpawningItemsTT>Покажет сообщение обо всем, что нерестится в реке</STF.NotifyOfSpawningItemsTT>
+  <STF.ThingsFloatedIntoTheMap>{0} появился плывущий по реке</STF.ThingsFloatedIntoTheMap>
 </LanguageData>

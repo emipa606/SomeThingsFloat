@@ -39,4 +39,7 @@
   <STF.PawnIsDrowning>{0}倒在水里，溺水了，他们急需救援!</STF.PawnIsDrowning>
   <STF.ThingsUnderBridge>桥下漂浮的东西</STF.ThingsUnderBridge>
   <STF.ThingsUnderBridgeTT>目前在桥下漂浮的东西。{0}</STF.ThingsUnderBridgeTT>
+  <STF.NotifyOfSpawningItems>通知所有产卵的物品</STF.NotifyOfSpawningItems>
+  <STF.NotifyOfSpawningItemsTT>将显示有关河流中任何产卵的信息</STF.NotifyOfSpawningItemsTT>
+  <STF.ThingsFloatedIntoTheMap>{0}出现在河上漂流</STF.ThingsFloatedIntoTheMap>
 </LanguageData>

@@ -98,6 +98,9 @@ internal class SomeThingsFloatMod : Mod
 
             listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,
                 "STF.SpawnLivingPawnsTT".Translate());
+            listing_Standard.CheckboxLabeled("STF.NotifyOfSpawningItems".Translate(),
+                ref Settings.NotifyOfSpawningItems,
+                "STF.NotifyOfSpawningItemsTT".Translate());
         }
 
         listing_Standard.CheckboxLabeled("STF.VerboseLogging".Translate(), ref Settings.VerboseLogging,

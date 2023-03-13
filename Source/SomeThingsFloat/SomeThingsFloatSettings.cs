@@ -17,6 +17,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool HaulUrgently;
     public float MaxSpawnValue = 50f;
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
+    public bool NotifyOfSpawningItems = true;
     public bool PawnsCanFall = true;
     public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
@@ -39,6 +40,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref DownedPawnsDrown, "DownedPawnsDrown", true);
         Scribe_Values.Look(ref PawnsCanFall, "PawnsCanFall", true);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
+        Scribe_Values.Look(ref NotifyOfSpawningItems, "NotifyOfSpawningItems", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
         Scribe_Values.Look(ref MinTimeBetweenItems, "MinTimeBetweenItems", GenDate.TicksPerHour * 18);
     }

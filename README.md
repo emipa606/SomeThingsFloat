@@ -11,6 +11,8 @@ There is also a possibility that things spawn in the river that you can get use 
 
 Pawns may also loose their footing in moving water. They can also drown if being downed in water. Certain apparel will prevent this, such as the power-armor helmet. Any headgear with the EVA-tag from SOS2 will be considered a breathable helmet.
 
+If https://steamcommunity.com/sharedfiles/filedetails/?id=1542399915]SwimmingKit is loaded, pawns with higher swimspeed will float slower when downed. Also pawns with the Nimble trait will be half as likely to loose their footing.
+
 Technically the mod looks at all items in water-tiles and calculates their floating value. This is based on what stuff is used to build the item, but some things like corpses have a default float value. Its also possible to add floatable-values to other things via patches, there is a patch for barrels of fecal-matter from https://steamcommunity.com/sharedfiles/filedetails/?id=836308268]Dubs Bad Hygiene that can be used as an example. Higher floatable values makes things move quicker in the water.
 
 I made it mostly for my own playthrough but hopefully someone else can get joy from it!
@@ -34,4 +36,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/Utx6OIH.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-11
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-13

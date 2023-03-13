@@ -340,6 +340,14 @@ public class FloatingThings_MapComponent : MapComponent
                 Find.LetterStack.ReceiveLetter("STF.PawnSpawnedTitle".Translate(), "STF.PawnSpawnedMessage".Translate(),
                     LetterDefOf.NeutralEvent, pawn);
             }
+            else
+            {
+                if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+                {
+                    Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(pawn.NameFullColored), pawn,
+                        MessageTypeDefOf.NeutralEvent);
+                }
+            }
 
             lastSpawnTick = GenTicks.TicksGame;
             return;
@@ -384,6 +392,12 @@ public class FloatingThings_MapComponent : MapComponent
         if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
         {
             map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
+        }
+
+        if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+        {
+            Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
+                MessageTypeDefOf.NeutralEvent);
         }
 
         lastSpawnTick = GenTicks.TicksGame;
