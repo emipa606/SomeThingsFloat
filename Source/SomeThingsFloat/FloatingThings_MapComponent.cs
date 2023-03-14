@@ -595,7 +595,9 @@ public class FloatingThings_MapComponent : MapComponent
                 var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
                 hediff.Severity = SomeThingsFloat.CalculateDrowningValue(pawn);
                 pawn.health?.AddHediff(hediff);
-                if (pawn.Faction?.IsPlayer != true)
+                if (!SomeThingsFloatMod.instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer != true ||
+                    SomeThingsFloatMod.instance.Settings.WarnForAllFriendlyPawns &&
+                    pawn.Faction.HostileTo(Faction.OfPlayer))
                 {
                     continue;
                 }

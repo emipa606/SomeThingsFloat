@@ -59,6 +59,9 @@ internal class SomeThingsFloatMod : Mod
             "STF.DownedPawnsFloatTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsDrown".Translate(), ref Settings.DownedPawnsDrown,
             "STF.DownedPawnsDrownTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.WarnForAllFriendlyPawns".Translate(),
+            ref Settings.WarnForAllFriendlyPawns,
+            "STF.WarnForAllFriendlyPawnsTT".Translate());
         listing_Standard.CheckboxLabeled("STF.PawnsCanFall".Translate(), ref Settings.PawnsCanFall,
             "STF.PawnsCanFallTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,

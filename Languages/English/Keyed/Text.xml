@@ -28,6 +28,8 @@
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.NotifyOfSpawningItems>Notify on all spawning items</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Will show a message about anything spawning in the river</STF.NotifyOfSpawningItemsTT>
+  <STF.WarnForAllFriendlyPawns>Warn about any drowning non-enemy</STF.WarnForAllFriendlyPawns>
+  <STF.WarnForAllFriendlyPawnsTT>Will notify about any non-enemy drowning</STF.WarnForAllFriendlyPawnsTT>
   <STF.PawnIsFloatingAway>Pawns floating away</STF.PawnIsFloatingAway>
   <STF.PawnIsFloatingAwayTT>{0} is downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
   <STF.ThingsUnderBridge>Things floating under bridges</STF.ThingsUnderBridge>

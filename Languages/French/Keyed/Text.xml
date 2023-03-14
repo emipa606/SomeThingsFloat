@@ -42,4 +42,6 @@
   <STF.NotifyOfSpawningItems>Notification de tous les objets en gestation</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Affiche un message sur tout ce qui fraye dans la rivière.</STF.NotifyOfSpawningItemsTT>
   <STF.ThingsFloatedIntoTheMap>{0} est apparu flottant sur la rivière</STF.ThingsFloatedIntoTheMap>
+  <STF.WarnForAllFriendlyPawns>Avertir de la noyade d'un non-ennemi</STF.WarnForAllFriendlyPawns>
+  <STF.WarnForAllFriendlyPawnsTT>Avertit de toute noyade d'un non-ennemi</STF.WarnForAllFriendlyPawnsTT>
 </LanguageData>

@@ -22,6 +22,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
     public bool VerboseLogging;
+    public bool WarnForAllFriendlyPawns;
 
     /// <summary>
     ///     Saving and loading the values
@@ -32,6 +33,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref VerboseLogging, "VerboseLogging");
         Scribe_Values.Look(ref ForbidSpawningItems, "ForbidSpawningItems");
         Scribe_Values.Look(ref HaulUrgently, "HaulUrgently");
+        Scribe_Values.Look(ref WarnForAllFriendlyPawns, "WarnForAllFriendlyPawns");
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);

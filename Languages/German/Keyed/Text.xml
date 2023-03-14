@@ -42,4 +42,6 @@
   <STF.NotifyOfSpawningItems>Benachrichtigung über alle spawnenden Gegenstände</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Zeigt eine Meldung über alles an, was im Fluss laicht</STF.NotifyOfSpawningItemsTT>
   <STF.ThingsFloatedIntoTheMap>{0} erschien flussabwärts treibend</STF.ThingsFloatedIntoTheMap>
+  <STF.WarnForAllFriendlyPawns>Warnung vor ertrinkenden Nicht-Feinden</STF.WarnForAllFriendlyPawns>
+  <STF.WarnForAllFriendlyPawnsTT>Informiert über jedes Ertrinken von Nicht-Feinden</STF.WarnForAllFriendlyPawnsTT>
 </LanguageData>

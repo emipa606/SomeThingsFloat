@@ -42,4 +42,6 @@
   <STF.NotifyOfSpawningItems>Уведомлять обо всех нерестящихся предметах</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Покажет сообщение обо всем, что нерестится в реке</STF.NotifyOfSpawningItemsTT>
   <STF.ThingsFloatedIntoTheMap>{0} появился плывущий по реке</STF.ThingsFloatedIntoTheMap>
+  <STF.WarnForAllFriendlyPawns>Предупредить о любом тонущем не-враге</STF.WarnForAllFriendlyPawns>
+  <STF.WarnForAllFriendlyPawnsTT>Сообщит о любом утопленнике, не являющемся врагом.</STF.WarnForAllFriendlyPawnsTT>
 </LanguageData>

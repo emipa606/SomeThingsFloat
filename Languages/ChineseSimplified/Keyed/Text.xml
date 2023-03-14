@@ -42,4 +42,6 @@
   <STF.NotifyOfSpawningItems>通知所有产卵的物品</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>将显示有关河流中任何产卵的信息</STF.NotifyOfSpawningItemsTT>
   <STF.ThingsFloatedIntoTheMap>{0}出现在河上漂流</STF.ThingsFloatedIntoTheMap>
+  <STF.WarnForAllFriendlyPawns>警告任何溺水的非敌方人员</STF.WarnForAllFriendlyPawns>
+  <STF.WarnForAllFriendlyPawnsTT>将通知任何非敌方的溺水事件</STF.WarnForAllFriendlyPawnsTT>
 </LanguageData>
