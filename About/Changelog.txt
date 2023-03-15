@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.16 - Updated Chinese translation, thanks shiuanyue
+
+
 1.4.15 - Added option to warn about any non-enemy pawn starting to drown.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

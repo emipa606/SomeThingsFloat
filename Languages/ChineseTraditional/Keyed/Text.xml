@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <STF.VerboseLogging>詳細記錄</STF.VerboseLogging>
   <STF.VerboseLoggingTT>用於調試</STF.VerboseLoggingTT>
@@ -16,7 +16,6 @@
   <STF.DespawnAtMapEdgeTT>漂浮的東西會消失而不是被地圖邊緣擋住。</STF.DespawnAtMapEdgeTT>
   <STF.SpawnNewItems>啟用漂流物生成</STF.SpawnNewItems>
   <STF.SpawnNewItemsTT>啟用後，如果地圖有流動河流，會在邊緣生成。</STF.SpawnNewItemsTT>
-  <STF.MaxSpawnValue>
   <STF.MaxSpawnValue>物品生成－最大價值： {0}</STF.MaxSpawnValue>
   <STF.MaxSpawnValueTT>河流生成物品的最大價值。</STF.MaxSpawnValueTT>
   <STF.MinTimeBetweenItems>物品生成－最小時隔： {0}</STF.MinTimeBetweenItems>
@@ -44,5 +43,4 @@
   <STF.PawnSpawnedTitle>落水者求救</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>發現有人落水，向你發出求救信號</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>模組版本：{0}</STF.CurrentModVersion>
-
 </LanguageData>
