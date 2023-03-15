@@ -44,4 +44,6 @@
   <STF.ThingsFloatedIntoTheMap>{0} появился плывущий по реке</STF.ThingsFloatedIntoTheMap>
   <STF.WarnForAllFriendlyPawns>Предупредить о любом тонущем не-враге</STF.WarnForAllFriendlyPawns>
   <STF.WarnForAllFriendlyPawnsTT>Сообщит о любом утопленнике, не являющемся врагом.</STF.WarnForAllFriendlyPawnsTT>
+  <STF.ReservedItemsWillNotMove>Зарезервированные предметы не будут перемещаться</STF.ReservedItemsWillNotMove>
+  <STF.ReservedItemsWillNotMoveTT>Заставляет предметы, предназначенные для использования в труде, оставаться неподвижными, чтобы не создавать проблем при работе</STF.ReservedItemsWillNotMoveTT>
 </LanguageData>

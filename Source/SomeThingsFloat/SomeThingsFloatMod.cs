@@ -64,6 +64,9 @@ internal class SomeThingsFloatMod : Mod
             "STF.WarnForAllFriendlyPawnsTT".Translate());
         listing_Standard.CheckboxLabeled("STF.PawnsCanFall".Translate(), ref Settings.PawnsCanFall,
             "STF.PawnsCanFallTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.ReservedItemsWillNotMove".Translate(),
+            ref Settings.ReservedItemsWillNotMove,
+            "STF.ReservedItemsWillNotMoveTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,
             "STF.DespawnAtMapEdgeTT".Translate());
         listing_Standard.CheckboxLabeled("STF.SpawnNewItems".Translate(), ref Settings.SpawnNewItems,

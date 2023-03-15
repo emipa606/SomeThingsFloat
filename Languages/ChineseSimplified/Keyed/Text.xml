@@ -44,4 +44,6 @@
   <STF.ThingsFloatedIntoTheMap>{0}出现在河上漂流</STF.ThingsFloatedIntoTheMap>
   <STF.WarnForAllFriendlyPawns>警告任何溺水的非敌方人员</STF.WarnForAllFriendlyPawns>
   <STF.WarnForAllFriendlyPawnsTT>将通知任何非敌方的溺水事件</STF.WarnForAllFriendlyPawnsTT>
+  <STF.ReservedItemsWillNotMove>保留的项目将不会移动</STF.ReservedItemsWillNotMove>
+  <STF.ReservedItemsWillNotMoveTT>将使保留在劳作中使用的物品保持静止，以便在工作时不会造成问题。</STF.ReservedItemsWillNotMoveTT>
 </LanguageData>

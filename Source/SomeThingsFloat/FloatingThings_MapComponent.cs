@@ -81,6 +81,18 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
+        if (SomeThingsFloatMod.instance.Settings.ReservedItemsWillNotMove)
+        {
+            if (map.reservationManager.AllReservedThings().Contains(thing))
+            {
+                SomeThingsFloat.LogMessage($"{thing} will not move since its reserved");
+                setNextUpdateTime(thing);
+                return;
+            }
+
+            SomeThingsFloat.LogMessage($"{thing} is not reserved");
+        }
+
         if (!tryToFindNewPostition(thing, out var newPosition))
         {
             SomeThingsFloat.LogMessage($"{thing} cannot find a new postition");

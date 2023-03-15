@@ -19,6 +19,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
     public bool NotifyOfSpawningItems = true;
     public bool PawnsCanFall = true;
+    public bool ReservedItemsWillNotMove;
     public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
     public bool VerboseLogging;
@@ -33,6 +34,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref VerboseLogging, "VerboseLogging");
         Scribe_Values.Look(ref ForbidSpawningItems, "ForbidSpawningItems");
         Scribe_Values.Look(ref HaulUrgently, "HaulUrgently");
+        Scribe_Values.Look(ref ReservedItemsWillNotMove, "ReservedItemsWillNotMove");
         Scribe_Values.Look(ref WarnForAllFriendlyPawns, "WarnForAllFriendlyPawns");
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);

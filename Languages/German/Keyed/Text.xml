@@ -44,4 +44,6 @@
   <STF.ThingsFloatedIntoTheMap>{0} erschien flussabwärts treibend</STF.ThingsFloatedIntoTheMap>
   <STF.WarnForAllFriendlyPawns>Warnung vor ertrinkenden Nicht-Feinden</STF.WarnForAllFriendlyPawns>
   <STF.WarnForAllFriendlyPawnsTT>Informiert über jedes Ertrinken von Nicht-Feinden</STF.WarnForAllFriendlyPawnsTT>
+  <STF.ReservedItemsWillNotMove>Reservierte Artikel werden nicht verschoben</STF.ReservedItemsWillNotMove>
+  <STF.ReservedItemsWillNotMoveTT>Wird Gegenstände, die reserviert sind, um in einer Arbeit verwendet werden, um still zu bleiben, um nicht zu Problemen bei der Arbeit</STF.ReservedItemsWillNotMoveTT>
 </LanguageData>
