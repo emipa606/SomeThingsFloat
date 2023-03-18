@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.18 - Things on buildings will not move (fish nets etc.). Things can spawn in on ocean tiles..
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.17 - Added option to stop reserved things from moving.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

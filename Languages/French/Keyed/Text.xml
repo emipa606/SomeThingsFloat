@@ -46,4 +46,7 @@
   <STF.WarnForAllFriendlyPawnsTT>Avertit de toute noyade d'un non-ennemi</STF.WarnForAllFriendlyPawnsTT>
   <STF.ReservedItemsWillNotMove>Les articles réservés ne seront pas déplacés</STF.ReservedItemsWillNotMove>
   <STF.ReservedItemsWillNotMoveTT>Faire en sorte que les objets réservés à être utilisés dans un atelier restent immobiles pour ne pas causer de problèmes pendant le travail.</STF.ReservedItemsWillNotMoveTT>
+  <STF.SpawnInOceanTiles>Permettre le frai sur les tuiles océaniques</STF.SpawnInOceanTiles>
+  <STF.SpawnInOceanTilesTT>Les objets peuvent également apparaître sur les carreaux de bord du type océan, sans garantie qu'ils restent sur la carte.</STF.SpawnInOceanTilesTT>
+  <STF.ThingsFloatedInFromTheOcean>{0} est apparu flottant dans l'océan</STF.ThingsFloatedInFromTheOcean>
 </LanguageData>

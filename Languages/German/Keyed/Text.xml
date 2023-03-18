@@ -46,4 +46,7 @@
   <STF.WarnForAllFriendlyPawnsTT>Informiert über jedes Ertrinken von Nicht-Feinden</STF.WarnForAllFriendlyPawnsTT>
   <STF.ReservedItemsWillNotMove>Reservierte Artikel werden nicht verschoben</STF.ReservedItemsWillNotMove>
   <STF.ReservedItemsWillNotMoveTT>Wird Gegenstände, die reserviert sind, um in einer Arbeit verwendet werden, um still zu bleiben, um nicht zu Problemen bei der Arbeit</STF.ReservedItemsWillNotMoveTT>
+  <STF.SpawnInOceanTiles>Laichen auf Meereskacheln zulassen</STF.SpawnInOceanTiles>
+  <STF.SpawnInOceanTilesTT>Dinge können auch auf den Randkacheln des Ozeantyps spawnen, ohne Garantie, dass sie auf der Karte bleiben.</STF.SpawnInOceanTilesTT>
+  <STF.ThingsFloatedInFromTheOcean>{0} erschien schwimmend im Ozean</STF.ThingsFloatedInFromTheOcean>
 </LanguageData>

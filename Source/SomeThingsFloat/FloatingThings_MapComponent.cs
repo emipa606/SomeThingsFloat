@@ -272,8 +272,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (!mapEdgeCells.Any())
         {
-            var possibleMapEdgeCells = cellsWithWater.Where(vec3 =>
-                vec3.x == 0 || vec3.x == map.Size.x - 1 || vec3.z == 0 || vec3.z == map.Size.z - 1).ToList();
+            var possibleMapEdgeCells = cellsWithWater.Intersect(CellRect.WholeMap(map).EdgeCells);
 
             if (!possibleMapEdgeCells.Any())
             {
@@ -282,9 +281,17 @@ public class FloatingThings_MapComponent : MapComponent
 
             foreach (var mapEdgeCell in possibleMapEdgeCells)
             {
+                if (SomeThingsFloatMod.instance.Settings.SpawnInOceanTiles &&
+                    mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
+                {
+                    mapEdgeCells.Add(mapEdgeCell);
+                    continue;
+                }
+
                 var flowAtCell = map.waterInfo.GetWaterMovement(mapEdgeCell.ToVector3Shifted());
                 if (flowAtCell == Vector3.zero)
                 {
+                    SomeThingsFloat.LogMessage($"{mapEdgeCell} ! {flowAtCell}");
                     continue;
                 }
 
@@ -341,6 +348,22 @@ public class FloatingThings_MapComponent : MapComponent
                 GenSpawn.Spawn(pawn.Corpse, cellToPlaceIt, map);
                 pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
                 lastSpawnTick = GenTicks.TicksGame;
+
+                pawn.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
+                if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
+                {
+                    map.designationManager.AddDesignation(new Designation(pawn, SomeThingsFloat.HaulUrgentlyDef));
+                }
+
+                if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+                {
+                    Messages.Message(
+                        cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
+                            ? "STF.ThingsFloatedInFromTheOcean".Translate(pawn.LabelCap)
+                            : "STF.ThingsFloatedIntoTheMap".Translate(pawn.LabelCap), pawn,
+                        MessageTypeDefOf.NeutralEvent);
+                }
+
                 return;
             }
 
@@ -408,7 +431,10 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
         {
-            Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
+            Messages.Message(
+                cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
+                    ? "STF.ThingsFloatedInFromTheOcean".Translate(thing.LabelCap)
+                    : "STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
                 MessageTypeDefOf.NeutralEvent);
         }
 
@@ -627,6 +653,12 @@ public class FloatingThings_MapComponent : MapComponent
         if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
+            if (originalPosition.GetFirstBuilding(map) != null)
+            {
+                SomeThingsFloat.LogMessage($"{thing} is on something else, assuming it should not move");
+                resultingCell = originalPosition;
+                return false;
+            }
         }
 
         resultingCell = originalPosition;
@@ -660,7 +692,9 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!adjacentCell.InBounds(map))
             {
-                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
+                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge &&
+                    !Messages.liveMessages.Any(message =>
+                        message.lookTargets?.targets.Contains(thing) == true))
                 {
                     resultingCell = IntVec3.Invalid;
                     return true;
@@ -731,6 +765,11 @@ public class FloatingThings_MapComponent : MapComponent
         return false;
     }
 
+
+    public void ClearEdgeCells()
+    {
+        mapEdgeCells.Clear();
+    }
 
     public List<Pawn> DownedPawnsInWater()
     {

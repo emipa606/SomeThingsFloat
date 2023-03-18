@@ -26,6 +26,8 @@
   <STF.HaulUrgentlyTT>Items spawning in the river will by default be marked to be hauled urgently</STF.HaulUrgentlyTT>
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
+  <STF.SpawnInOceanTiles>Allow spawning in on ocean-tiles</STF.SpawnInOceanTiles>
+  <STF.SpawnInOceanTilesTT>Things can also spawn in on edge-tiles of ocean type, no guarantees for it to stay on the map.</STF.SpawnInOceanTilesTT>
   <STF.NotifyOfSpawningItems>Notify on all spawning items</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Will show a message about anything spawning in the river</STF.NotifyOfSpawningItemsTT>
   <STF.ReservedItemsWillNotMove>Reserved items will not move</STF.ReservedItemsWillNotMove>
@@ -37,6 +39,7 @@
   <STF.ThingsUnderBridge>Things floating under bridges</STF.ThingsUnderBridge>
   <STF.ThingsUnderBridgeTT>Things that are currently floating under bridges: {0}</STF.ThingsUnderBridgeTT>
   <STF.ThingsFloatedIntoTheMap>{0} appeared floating down the river</STF.ThingsFloatedIntoTheMap>
+  <STF.ThingsFloatedInFromTheOcean>{0} appeared floating in the ocean</STF.ThingsFloatedInFromTheOcean>
   <STF.PawnIsDrowning>{0} is downed in the water and drowning, they are in desperate need of rescue!</STF.PawnIsDrowning>
   <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>

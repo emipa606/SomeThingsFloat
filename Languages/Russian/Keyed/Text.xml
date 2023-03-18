@@ -46,4 +46,7 @@
   <STF.WarnForAllFriendlyPawnsTT>Сообщит о любом утопленнике, не являющемся врагом.</STF.WarnForAllFriendlyPawnsTT>
   <STF.ReservedItemsWillNotMove>Зарезервированные предметы не будут перемещаться</STF.ReservedItemsWillNotMove>
   <STF.ReservedItemsWillNotMoveTT>Заставляет предметы, предназначенные для использования в труде, оставаться неподвижными, чтобы не создавать проблем при работе</STF.ReservedItemsWillNotMoveTT>
+  <STF.SpawnInOceanTiles>Разрешить нереститься на океанских плитках</STF.SpawnInOceanTiles>
+  <STF.SpawnInOceanTilesTT>Вещи также могут появляться на краевых плитках типа океан, без гарантии, что они останутся на карте.</STF.SpawnInOceanTilesTT>
+  <STF.ThingsFloatedInFromTheOcean>{0} оказался плавающим в океане</STF.ThingsFloatedInFromTheOcean>
 </LanguageData>

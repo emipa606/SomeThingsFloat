@@ -46,4 +46,7 @@
   <STF.WarnForAllFriendlyPawnsTT>将通知任何非敌方的溺水事件</STF.WarnForAllFriendlyPawnsTT>
   <STF.ReservedItemsWillNotMove>保留的项目将不会移动</STF.ReservedItemsWillNotMove>
   <STF.ReservedItemsWillNotMoveTT>将使保留在劳作中使用的物品保持静止，以便在工作时不会造成问题。</STF.ReservedItemsWillNotMoveTT>
+  <STF.SpawnInOceanTiles>允许在海洋瓷砖上产卵</STF.SpawnInOceanTiles>
+  <STF.SpawnInOceanTilesTT>东西也可以在海洋类型的边缘瓷砖上产卵，不保证它能留在地图上。</STF.SpawnInOceanTilesTT>
+  <STF.ThingsFloatedInFromTheOcean>{0}出现在海洋中漂浮</STF.ThingsFloatedInFromTheOcean>
 </LanguageData>

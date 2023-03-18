@@ -94,6 +94,17 @@ internal class SomeThingsFloatMod : Mod
                 }
             }
 
+            var originalSpawnInOceanTilesValue = Settings.SpawnInOceanTiles;
+            listing_Standard.CheckboxLabeled("STF.SpawnInOceanTiles".Translate(), ref Settings.SpawnInOceanTiles,
+                "STF.SpawnInOceanTilesTT".Translate());
+            if (originalSpawnInOceanTilesValue != Settings.SpawnInOceanTiles)
+            {
+                foreach (var floatingThingsMapComponent in SomeThingsFloat.FloatingMapComponents)
+                {
+                    floatingThingsMapComponent.Value.ClearEdgeCells();
+                }
+            }
+
             var originalForbidValue = Settings.ForbidSpawningItems;
             listing_Standard.CheckboxLabeled("STF.ForbidSpawningItems".Translate(), ref Settings.ForbidSpawningItems,
                 "STF.ForbidSpawningItemsTT".Translate());
