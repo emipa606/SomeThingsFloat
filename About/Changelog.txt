@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.19 - Things under bridges should now continue to tick and deteriorate if possible. Downed pawns under bridges that recover will respawn in the nearest uncovered water-tile
+
+
 1.4.18 - Things on buildings will not move (fish nets etc.). Things can spawn in on ocean tiles..
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

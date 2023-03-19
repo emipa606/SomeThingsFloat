@@ -9,10 +9,10 @@ namespace SomeThingsFloat;
 
 public class FloatingThings_MapComponent : MapComponent
 {
-    private readonly Dictionary<Thing, float> floatingValues;
     private readonly List<IntVec3> mapEdgeCells;
     private List<IntVec3> cellsWithRiver;
     private List<IntVec3> cellsWithWater;
+    private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
     private List<IntVec3> hiddenPositionsValues;
@@ -60,6 +60,47 @@ public class FloatingThings_MapComponent : MapComponent
             if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
             {
                 checkForPawnsThatCanDrown();
+            }
+        }
+
+        if (hiddenPositions.Any())
+        {
+            var thingsDestroyed = new List<Thing>();
+            var thingsToRespawn = new List<Thing>();
+            foreach (var hiddenPositionsKey in hiddenPositions.Keys)
+            {
+                hiddenPositionsKey.Tick();
+                if (hiddenPositionsKey.Destroyed)
+                {
+                    thingsDestroyed.Add(hiddenPositionsKey);
+                }
+                else
+                {
+                    if (floatingValues[hiddenPositionsKey] == 0)
+                    {
+                        thingsToRespawn.Add(hiddenPositionsKey);
+                    }
+                }
+            }
+
+            foreach (var destroyedThing in thingsDestroyed)
+            {
+                SomeThingsFloat.LogMessage($"{destroyedThing} is destroyed, removing");
+                hiddenPositions.Remove(destroyedThing);
+            }
+
+            foreach (var respawningThing in thingsToRespawn)
+            {
+                var radius = 1;
+                IntVec3 spawnCell;
+                while (!CellFinder.TryFindRandomCellNear(hiddenPositions[respawningThing], map, radius,
+                           cellsWithWater.Contains, out spawnCell))
+                {
+                    radius++;
+                }
+
+                GenPlace.TryPlaceThing(respawningThing, spawnCell, map, ThingPlaceMode.Direct);
+                hiddenPositions.Remove(respawningThing);
             }
         }
 
@@ -126,7 +167,7 @@ public class FloatingThings_MapComponent : MapComponent
                 PawnDiedOrDownedThoughtsUtility.TryGiveThoughts(pawn, null, PawnDiedOrDownedThoughtsKind.Lost);
             }
 
-            floatingValues.Remove(thing);
+            floatingValues?.Remove(thing);
 
             if (thing.def == ThingDefOf.Wastepack)
             {
@@ -443,15 +484,21 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatingThings()
     {
+        if (floatingValues == null)
+        {
+            floatingValues = new Dictionary<Thing, float>();
+        }
+
         foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
         {
             foreach (var possibleThing in possibleThings)
             {
-                if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+                if (possibleThing == null || possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
                 {
                     continue;
                 }
 
+                SomeThingsFloat.LogMessage($"{possibleThing} float-value?");
                 floatingValues[possibleThing] = SomeThingsFloat.GetFloatingValue(possibleThing);
                 SomeThingsFloat.LogMessage($"{possibleThing} float-value: {floatingValues[possibleThing]}");
                 if (!(floatingValues[possibleThing] > 0))
@@ -466,11 +513,12 @@ public class FloatingThings_MapComponent : MapComponent
         foreach (var hiddenPosition in hiddenPositions)
         {
             var possibleThing = hiddenPosition.Key;
-            if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+            if (possibleThing == null || possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
             {
                 continue;
             }
 
+            SomeThingsFloat.LogMessage($"{possibleThing} float-value?");
             floatingValues[possibleThing] = SomeThingsFloat.GetFloatingValue(possibleThing);
             SomeThingsFloat.LogMessage($"{possibleThing} float-value: {floatingValues[possibleThing]}");
             if (!(floatingValues[possibleThing] > 0))
@@ -765,6 +813,78 @@ public class FloatingThings_MapComponent : MapComponent
         return false;
     }
 
+
+    public void UnSpawnedDeterioration(IntVec3 c)
+    {
+        if (!hiddenPositions.Values.Contains(c))
+        {
+            return;
+        }
+
+        var thing = hiddenPositions.First(pair => pair.Value == c).Key;
+        float num;
+        if (thing is Corpse corpse && corpse.InnerPawn.apparel != null)
+        {
+            var wornApparel = corpse.InnerPawn.apparel.WornApparel;
+            // ReSharper disable once ForCanBeConvertedToForeach Can destroy
+            for (var i = 0; i < wornApparel.Count; i++)
+            {
+                var apparel = wornApparel[i];
+                if (!apparel.def.CanEverDeteriorate)
+                {
+                    continue;
+                }
+
+                num = unspawnedDeteriorationRate(thing);
+
+                if (num < 0.001f)
+                {
+                    continue;
+                }
+
+                if (Rand.Chance(num / 36f))
+                {
+                    thing.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, 1f));
+                }
+            }
+        }
+
+        if (!thing.def.CanEverDeteriorate)
+        {
+            return;
+        }
+
+        if (ModsConfig.BiotechActive && thing is Genepack { Deteriorating: false })
+        {
+            return;
+        }
+
+        num = unspawnedDeteriorationRate(thing);
+        if (num < 0.001f)
+        {
+            return;
+        }
+
+        if (Rand.Chance(num / 36f))
+        {
+            thing.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, 1f));
+        }
+    }
+
+    private float unspawnedDeteriorationRate(Thing thing)
+    {
+        var num = thing.GetStatValue(StatDefOf.DeteriorationRate, false);
+
+        if (!thing.def.deteriorateFromEnvironmentalEffects)
+        {
+            return num;
+        }
+
+        num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetUnroofed;
+        num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetOutdoors;
+        num *= map.terrainGrid.UnderTerrainAt(hiddenPositions[thing]).extraDeteriorationFactor;
+        return num;
+    }
 
     public void ClearEdgeCells()
     {

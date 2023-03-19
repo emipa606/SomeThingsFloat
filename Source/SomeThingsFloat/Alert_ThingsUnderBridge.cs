@@ -17,7 +17,10 @@ public class Alert_ThingsUnderBridge : Alert
     public override TaggedString GetExplanation()
     {
         return "STF.ThingsUnderBridgeTT".Translate(string.Join("\n",
-            thingsUnderBridge(out _).Keys.ToList().ConvertAll(input => input.LabelCap)));
+            thingsUnderBridge(out _).Keys.ToList().ConvertAll(input =>
+                input.def.useHitPoints
+                    ? $"{input.LabelCap} ({input.HitPoints}/{input.MaxHitPoints})"
+                    : input.LabelCap)));
     }
 
     public override AlertReport GetReport()

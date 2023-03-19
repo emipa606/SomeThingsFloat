@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -25,6 +27,7 @@ public class SomeThingsFloat
 
     static SomeThingsFloat()
     {
+        new Harmony("Mlie.SomeThingsFloat").PatchAll(Assembly.GetExecutingAssembly());
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
             .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
             .ToList();
@@ -48,10 +51,11 @@ public class SomeThingsFloat
         {
             case null:
                 return 0;
-            case Corpse corpse when corpse.InnerPawn.RaceProps.IsFlesh:
+            case Corpse corpse when corpse.InnerPawn == null || corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
             case Pawn pawn:
-                if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat || !PawnsThatFloat.Contains(pawn.def) ||
+                if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat ||
+                    PawnsThatFloat?.Contains(pawn.def) == false ||
                     !pawn.Downed || !pawn.Awake())
                 {
                     return 0;
