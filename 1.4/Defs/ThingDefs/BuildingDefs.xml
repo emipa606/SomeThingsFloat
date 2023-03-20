@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef Name="STF_Nets" ParentName="BuildingBase" Abstract="True">
+    <blockWind>false</blockWind>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <blockLight>false</blockLight>
+    <canOverlapZones>true</canOverlapZones>
+    <coversFloor>false</coversFloor>
+    <passability>Standable</passability>
+    <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
+    <terrainAffordanceNeeded>Bridgeable</terrainAffordanceNeeded>
+    <placingDraggableDimensions>1</placingDraggableDimensions>
+    <neverMultiSelect>true</neverMultiSelect>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Basic</linkType>
+      <linkFlags>
+        <li>404</li>
+      </linkFlags>
+    </graphicData>
+    <building>
+      <allowAutoroof>false</allowAutoroof>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <paintable>true</paintable>
+    </building>
+    <damageMultipliers>
+      <li>
+        <damageDef>Bomb</damageDef>
+        <multiplier>2</multiplier>
+      </li>
+    </damageMultipliers>
+    <statBases>
+      <Beauty>0</Beauty>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+  </ThingDef>
+  <ThingDef ParentName="STF_Nets">
+    <defName>STF_Bars</defName>
+    <label>bars</label>
+    <description>Built in water, these bars catch large floating items, such as furniture, corpses and live pawns.</description>
+    <graphicData>
+      <texPath>Things/Bars/Bars</texPath>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>150</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <uiIconPath>Things/Bars/Bars_icon</uiIconPath>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+    </stuffCategories>
+    <costStuffCount>5</costStuffCount>
+    <rotatable>false</rotatable>
+    <designationCategory>Structure</designationCategory>
+    <building>
+      <blueprintGraphicData>
+        <texPath>Things/Bars/Bars_blueprint</texPath>
+      </blueprintGraphicData>
+    </building>
+  </ThingDef>
+</Defs>

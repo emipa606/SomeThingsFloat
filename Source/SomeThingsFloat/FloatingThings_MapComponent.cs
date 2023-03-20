@@ -169,7 +169,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             floatingValues?.Remove(thing);
 
-            if (thing.def == ThingDefOf.Wastepack)
+            if (thing.def == RimWorld.ThingDefOf.Wastepack)
             {
                 var neighbor = Find.World.grid[map.Tile].Rivers.FirstOrDefault().neighbor;
                 if (neighbor == 0)
@@ -701,7 +701,9 @@ public class FloatingThings_MapComponent : MapComponent
         if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
-            if (originalPosition.GetFirstBuilding(map) != null)
+            var foundBuilding = originalPosition.GetFirstBuilding(map);
+            if (foundBuilding != null &&
+                (foundBuilding.def != ThingDefOf.STF_Bars || SomeThingsFloat.IsLargeThing(thing)))
             {
                 SomeThingsFloat.LogMessage($"{thing} is on something else, assuming it should not move");
                 resultingCell = originalPosition;
@@ -760,8 +762,12 @@ public class FloatingThings_MapComponent : MapComponent
             if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null &&
                 !underCellsWithWater.Contains(adjacentCell))
             {
-                SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
-                continue;
+                var foundBuilding = adjacentCell.GetFirstBuilding(map);
+                if (foundBuilding == null || foundBuilding.def != ThingDefOf.STF_Bars)
+                {
+                    SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
+                    continue;
+                }
             }
 
             SomeThingsFloat.LogMessage($"Cell {adjacentCell} for {thing} was valid");

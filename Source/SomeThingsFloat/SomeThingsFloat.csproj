@@ -6,7 +6,7 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>None</DebugType>
     <LangVersion>latest</LangVersion>
-    <FileVersion>1.4.19</FileVersion>
+    <FileVersion>1.4.20</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
@@ -21,8 +21,8 @@
     </PackageReference>
     <Publicize Include="Assembly-CSharp" />
     <PackageReference Include="Lib.Harmony">
-	    <Version>*</Version>
-	    <ExcludeAssets>runtime</ExcludeAssets>
+      <Version>*</Version>
+      <ExcludeAssets>runtime</ExcludeAssets>
     </PackageReference>
   </ItemGroup>
 </Project>

@@ -136,6 +136,22 @@ public class SomeThingsFloat
         }
     }
 
+    public static bool IsLargeThing(Thing thing)
+    {
+        switch (thing)
+        {
+            case null:
+                return false;
+            case Corpse:
+            case Pawn:
+            case Building:
+            case MinifiedThing:
+                return true;
+        }
+
+        return thing.def.IsWeapon || thing.def.IsApparel;
+    }
+
 
     private static bool TryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue)
     {

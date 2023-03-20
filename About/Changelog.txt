@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.20 - Added bars buildable in bridgable water that will catch larger objects like corpses, living pawns, weapons and apparel. If I can fix some more textures a 'catch-all' net is next to be added.
+
+
 1.4.19 - Things under bridges should now continue to tick and deteriorate if possible. Downed pawns under bridges that recover will respawn in the nearest uncovered water-tile
 
 
