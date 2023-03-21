@@ -49,4 +49,6 @@
   <STF.SpawnInOceanTiles>Разрешить нереститься на океанских плитках</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>Вещи также могут появляться на краевых плитках типа океан, без гарантии, что они останутся на карте.</STF.SpawnInOceanTilesTT>
   <STF.ThingsFloatedInFromTheOcean>{0} оказался плавающим в океане</STF.ThingsFloatedInFromTheOcean>
+  <STF.RelativeFloatSpeed>Относительная плавающая скорость {0}</STF.RelativeFloatSpeed>
+  <STF.RelativeFloatSpeedTT>Более низкая скорость плавания приведет к тому, что позиции элементов будут меняться реже и снизит потребность в производительности мода.</STF.RelativeFloatSpeedTT>
 </LanguageData>

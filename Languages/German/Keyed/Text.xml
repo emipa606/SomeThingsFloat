@@ -49,4 +49,6 @@
   <STF.SpawnInOceanTiles>Laichen auf Meereskacheln zulassen</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>Dinge können auch auf den Randkacheln des Ozeantyps spawnen, ohne Garantie, dass sie auf der Karte bleiben.</STF.SpawnInOceanTilesTT>
   <STF.ThingsFloatedInFromTheOcean>{0} erschien schwimmend im Ozean</STF.ThingsFloatedInFromTheOcean>
+  <STF.RelativeFloatSpeed>Relative gleitende Geschwindigkeit {0}</STF.RelativeFloatSpeed>
+  <STF.RelativeFloatSpeedTT>Eine langsamere Gleitgeschwindigkeit führt dazu, dass sich die Positionen der Gegenstände weniger häufig ändern und der Leistungsbedarf des Mods geringer ist.</STF.RelativeFloatSpeedTT>
 </LanguageData>

@@ -19,6 +19,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
     public bool NotifyOfSpawningItems = true;
     public bool PawnsCanFall = true;
+    public float RelativeFloatSpeed = 1f;
     public bool ReservedItemsWillNotMove;
     public bool SpawnInOceanTiles;
     public bool SpawnLivingPawns = true;
@@ -38,6 +39,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref ReservedItemsWillNotMove, "ReservedItemsWillNotMove");
         Scribe_Values.Look(ref WarnForAllFriendlyPawns, "WarnForAllFriendlyPawns");
         Scribe_Values.Look(ref SpawnInOceanTiles, "SpawnInOceanTiles");
+        Scribe_Values.Look(ref RelativeFloatSpeed, "RelativeFloatSpeed", 1f);
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);

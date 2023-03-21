@@ -7,6 +7,7 @@ namespace SomeThingsFloat;
 public static class ThingDefOf
 {
     public static ThingDef STF_Bars;
+    public static ThingDef STF_Net;
 
     static ThingDefOf()
     {

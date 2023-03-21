@@ -49,4 +49,6 @@
   <STF.SpawnInOceanTiles>允许在海洋瓷砖上产卵</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>东西也可以在海洋类型的边缘瓷砖上产卵，不保证它能留在地图上。</STF.SpawnInOceanTilesTT>
   <STF.ThingsFloatedInFromTheOcean>{0}出现在海洋中漂浮</STF.ThingsFloatedInFromTheOcean>
+  <STF.RelativeFloatSpeed>相对浮动速度{0}。</STF.RelativeFloatSpeed>
+  <STF.RelativeFloatSpeedTT>较慢的浮动速度将导致项目位置的变化不那么频繁，并降低对MOD的性能需求。</STF.RelativeFloatSpeedTT>
 </LanguageData>

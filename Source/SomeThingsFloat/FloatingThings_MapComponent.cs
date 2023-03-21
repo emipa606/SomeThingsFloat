@@ -127,7 +127,7 @@ public class FloatingThings_MapComponent : MapComponent
             if (map.reservationManager.AllReservedThings().Contains(thing))
             {
                 SomeThingsFloat.LogMessage($"{thing} will not move since its reserved");
-                setNextUpdateTime(thing);
+                setNextUpdateTime(thing, true);
                 return;
             }
 
@@ -137,11 +137,12 @@ public class FloatingThings_MapComponent : MapComponent
         if (!tryToFindNewPostition(thing, out var newPosition))
         {
             SomeThingsFloat.LogMessage($"{thing} cannot find a new postition");
-            setNextUpdateTime(thing);
+            setNextUpdateTime(thing, true);
             return;
         }
 
         var wasInStorage = false;
+        var wasUnspawned = false;
         if (!hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
@@ -155,6 +156,7 @@ public class FloatingThings_MapComponent : MapComponent
         else
         {
             hiddenPositions.Remove(thing);
+            wasUnspawned = true;
         }
 
         if (newPosition == IntVec3.Invalid)
@@ -214,7 +216,21 @@ public class FloatingThings_MapComponent : MapComponent
         if (!GenPlace.TryPlaceThing(thing, newPosition, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be placed at its new position");
+            if (wasUnspawned)
+            {
+                hiddenPositions[thing] = originalPosition;
+                return;
+            }
+
             GenPlace.TryPlaceThing(thing, originalPosition, map, ThingPlaceMode.Direct);
+        }
+        else
+        {
+            if (wasUnspawned && SomeThingsFloat.HaulUrgentlyDef != null &&
+                SomeThingsFloatMod.instance.Settings.HaulUrgently)
+            {
+                map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
+            }
         }
 
         if (!SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
@@ -532,7 +548,7 @@ public class FloatingThings_MapComponent : MapComponent
         SomeThingsFloat.LogMessage($"Found {floatingValues.Count} items in water");
     }
 
-    private void setNextUpdateTime(Thing thing)
+    private void setNextUpdateTime(Thing thing, bool longTime = false)
     {
         if (thing == null)
         {
@@ -544,9 +560,11 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
+        var timeIncrease = longTime ? 5 : 1;
         var nextupdate = GenTicks.TicksGame +
                          (int)Math.Round(
-                             (GenTicks.TickRareInterval / floatingValues[thing]) +
+                             (GenTicks.TickRareInterval / floatingValues[thing] /
+                                 SomeThingsFloatMod.instance.Settings.RelativeFloatSpeed * timeIncrease) +
                              Rand.Range(-10, 10));
         while (updateValues.ContainsKey(nextupdate))
         {
@@ -763,7 +781,8 @@ public class FloatingThings_MapComponent : MapComponent
                 !underCellsWithWater.Contains(adjacentCell))
             {
                 var foundBuilding = adjacentCell.GetFirstBuilding(map);
-                if (foundBuilding == null || foundBuilding.def != ThingDefOf.STF_Bars)
+                if (foundBuilding == null ||
+                    foundBuilding.def != ThingDefOf.STF_Bars && foundBuilding.def != ThingDefOf.STF_Net)
                 {
                     SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
                     continue;

@@ -51,6 +51,9 @@ internal class SomeThingsFloatMod : Mod
         var listing_Standard = new Listing_Standard();
         listing_Standard.Begin(rect);
         listing_Standard.Gap();
+        Settings.RelativeFloatSpeed = listing_Standard.SliderLabeled(
+            "STF.RelativeFloatSpeed".Translate(Settings.RelativeFloatSpeed.ToStringPercent()),
+            Settings.RelativeFloatSpeed, 0.1f, 2.5f, 0.5f, "STF.RelativeFloatSpeedTT".Translate());
         listing_Standard.CheckboxLabeled("STF.ForbidWhenMoving".Translate(), ref Settings.ForbidWhenMoving,
             "STF.ForbidWhenMovingTT".Translate());
         listing_Standard.CheckboxLabeled("STF.FloatUnderBridges".Translate(), ref Settings.FloatUnderBridges,
@@ -83,16 +86,6 @@ internal class SomeThingsFloatMod : Mod
                 "STF.MinTimeBetweenItemsTT".Translate());
             Settings.MinTimeBetweenItems =
                 (float)Math.Round(listing_Standard.Slider(Settings.MinTimeBetweenItems, 0, GenDate.TicksPerDay * 7));
-            if (SomeThingsFloat.HaulUrgentlyDef != null)
-            {
-                var originalHaulValue = Settings.HaulUrgently;
-                listing_Standard.CheckboxLabeled("STF.HaulUrgently".Translate(), ref Settings.HaulUrgently,
-                    "STF.HaulUrgentlyTT".Translate());
-                if (originalHaulValue != Settings.HaulUrgently && Settings.HaulUrgently)
-                {
-                    Settings.ForbidSpawningItems = false;
-                }
-            }
 
             var originalSpawnInOceanTilesValue = Settings.SpawnInOceanTiles;
             listing_Standard.CheckboxLabeled("STF.SpawnInOceanTiles".Translate(), ref Settings.SpawnInOceanTiles,
@@ -102,6 +95,17 @@ internal class SomeThingsFloatMod : Mod
                 foreach (var floatingThingsMapComponent in SomeThingsFloat.FloatingMapComponents)
                 {
                     floatingThingsMapComponent.Value.ClearEdgeCells();
+                }
+            }
+
+            if (SomeThingsFloat.HaulUrgentlyDef != null)
+            {
+                var originalHaulValue = Settings.HaulUrgently;
+                listing_Standard.CheckboxLabeled("STF.HaulUrgently".Translate(), ref Settings.HaulUrgently,
+                    "STF.HaulUrgentlyTT".Translate());
+                if (originalHaulValue != Settings.HaulUrgently && Settings.HaulUrgently)
+                {
+                    Settings.ForbidSpawningItems = false;
                 }
             }
 

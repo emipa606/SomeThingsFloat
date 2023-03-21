@@ -4,6 +4,8 @@
   <STF.VerboseLoggingTT>For debugging</STF.VerboseLoggingTT>
   <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>
   <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
+  <STF.RelativeFloatSpeed>Relative floating-speed {0}</STF.RelativeFloatSpeed>
+  <STF.RelativeFloatSpeedTT>A slower floating speed will cause item positions to change less frequently and lower the performance need for the mod.</STF.RelativeFloatSpeedTT>
   <STF.FloatUnderBridges>Things can float under bridges</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>

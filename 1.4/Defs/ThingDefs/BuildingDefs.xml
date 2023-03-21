@@ -12,6 +12,8 @@
     <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
     <terrainAffordanceNeeded>Bridgeable</terrainAffordanceNeeded>
     <placingDraggableDimensions>1</placingDraggableDimensions>
+    <pathCostIgnoreRepeat>true</pathCostIgnoreRepeat>
+    <pathCost>80</pathCost>
     <neverMultiSelect>true</neverMultiSelect>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
@@ -26,6 +28,8 @@
       <ai_chillDestination>false</ai_chillDestination>
       <paintable>true</paintable>
     </building>
+    <designationCategory>Structure</designationCategory>
+    <costStuffCount>5</costStuffCount>
     <damageMultipliers>
       <li>
         <damageDef>Bomb</damageDef>
@@ -42,25 +46,47 @@
     <label>bars</label>
     <description>Built in water, these bars catch large floating items, such as furniture, corpses and live pawns.</description>
     <graphicData>
-      <texPath>Things/Bars/Bars</texPath>
+      <texPath>STF_Things/Bars/Bars</texPath>
     </graphicData>
     <statBases>
       <WorkToBuild>150</WorkToBuild>
       <MaxHitPoints>100</MaxHitPoints>
       <Flammability>0.2</Flammability>
     </statBases>
-    <uiIconPath>Things/Bars/Bars_icon</uiIconPath>
+    <uiIconPath>STF_Things/Bars/Bars_icon</uiIconPath>
     <stuffCategories>
       <li>Metallic</li>
       <li>Woody</li>
     </stuffCategories>
-    <costStuffCount>5</costStuffCount>
-    <rotatable>false</rotatable>
-    <designationCategory>Structure</designationCategory>
     <building>
       <blueprintGraphicData>
-        <texPath>Things/Bars/Bars_blueprint</texPath>
+        <texPath>STF_Things/Bars/Bars_blueprint</texPath>
       </blueprintGraphicData>
     </building>
+  </ThingDef>
+  <ThingDef ParentName="STF_Nets">
+    <defName>STF_Net</defName>
+    <label>net</label>
+    <description>Built in water, this net catches any floating item.</description>
+    <graphicData>
+      <texPath>STF_Things/Net/Net</texPath>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>200</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <uiIconPath>STF_Things/Net/Net_icon</uiIconPath>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <building>
+      <blueprintGraphicData>
+        <texPath>STF_Things/Net/Net_blueprint</texPath>
+      </blueprintGraphicData>
+    </building>
+    <researchPrerequisites>
+      <li>Smithing</li>
+    </researchPrerequisites>
   </ThingDef>
 </Defs>

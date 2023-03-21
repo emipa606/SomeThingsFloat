@@ -49,4 +49,6 @@
   <STF.SpawnInOceanTiles>Permettre le frai sur les tuiles océaniques</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>Les objets peuvent également apparaître sur les carreaux de bord du type océan, sans garantie qu'ils restent sur la carte.</STF.SpawnInOceanTilesTT>
   <STF.ThingsFloatedInFromTheOcean>{0} est apparu flottant dans l'océan</STF.ThingsFloatedInFromTheOcean>
+  <STF.RelativeFloatSpeed>Vitesse flottante relative {0}</STF.RelativeFloatSpeed>
+  <STF.RelativeFloatSpeedTT>Une vitesse de flottement plus lente entraînera un changement moins fréquent des positions des éléments et réduira les besoins en performances du modèle.</STF.RelativeFloatSpeedTT>
 </LanguageData>
