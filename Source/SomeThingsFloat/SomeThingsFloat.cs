@@ -36,7 +36,7 @@ public class SomeThingsFloat
             def.apparel.layers.Contains(ApparelLayerDefOf.Overhead)).ToList();
         PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
-            PawnCapacityUtility.BodyCanEverDoCapacity(def.race.body, PawnCapacityDefOf.Breathing)).ToList();
+            def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToList();
         PawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true }).ToList();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();

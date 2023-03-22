@@ -7,7 +7,9 @@ Let the river wash your trash away!
 
 This mod lets things float in water and move with the stream. In non-streaming water things will move about at random. Things can leave the map this way so can be used to dispose of things you dont want, corpses for example.
 
-There is also a possibility that things spawn in the river that you can get use of, or even downed pawns you can choose to rescue. If https://steamcommunity.com/sharedfiles/filedetails/?id=761421485]Allow Tool is active you can set all spawning items to be hauled urgently automatically. There is also bars that can be built in water that can catch large objects like corpses, living pawns, weapons and apparel.
+There is a possibility that things spawn in the river that you can get use of, or even downed pawns you can choose to rescue. If https://steamcommunity.com/sharedfiles/filedetails/?id=761421485]Allow Tool is active you can set all spawning items to be hauled urgently automatically. 
+
+There is also bars and nets that can be built in water. The bars can catch large objects like corpses, living pawns, weapons and apparel while the metal net can catch all items.
 
 Pawns may also loose their footing in moving water. They can also drown if being downed in water. Certain apparel will prevent this, such as the power-armor helmet. Any headgear with the EVA-tag from SOS2 will be considered a breathable helmet.
 
@@ -36,4 +38,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/Utx6OIH.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-21
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-03-22

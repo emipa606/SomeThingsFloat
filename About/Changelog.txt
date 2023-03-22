@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.22 - Changed the way to look for pawns that can breathe. Hopefully works better now
+
+
 1.4.21 - Added metal net to catch all items. Added slider to change the relative floating-speed of items for performance. Haul urgently should now be applied after respawning from under bridges if enabled..
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 
