@@ -721,7 +721,9 @@ public class FloatingThings_MapComponent : MapComponent
             originalPosition = thing.Position;
             var foundBuilding = originalPosition.GetFirstBuilding(map);
             if (foundBuilding != null &&
-                (foundBuilding.def != ThingDefOf.STF_Bars || SomeThingsFloat.IsLargeThing(thing)))
+                (foundBuilding.def != ThingDefOf.STF_Bars || SomeThingsFloat.IsLargeThing(thing)) &&
+                !foundBuilding.def.IsBlueprint &&
+                !foundBuilding.def.IsFrame)
             {
                 SomeThingsFloat.LogMessage($"{thing} is on something else, assuming it should not move");
                 resultingCell = originalPosition;
@@ -780,9 +782,10 @@ public class FloatingThings_MapComponent : MapComponent
             if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null &&
                 !underCellsWithWater.Contains(adjacentCell))
             {
-                var foundBuilding = adjacentCell.GetFirstBuilding(map);
-                if (foundBuilding == null ||
-                    foundBuilding.def != ThingDefOf.STF_Bars && foundBuilding.def != ThingDefOf.STF_Net)
+                var buidingDef = adjacentCell.GetFirstBuilding(map)?.def;
+
+                if (buidingDef != null && buidingDef != ThingDefOf.STF_Bars && buidingDef != ThingDefOf.STF_Net &&
+                    !buidingDef.IsBlueprint && !buidingDef.IsFrame)
                 {
                     SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
                     continue;

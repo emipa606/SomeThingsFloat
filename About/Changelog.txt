@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.23 - Things floating should now ignore blueprints and frames since they are not finished buildings yet
+
+
 1.4.22 - Changed the way to look for pawns that can breathe. Hopefully works better now
 
 
