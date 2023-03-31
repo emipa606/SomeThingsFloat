@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.24 - Added setting to auto-allow things caught in nets or stuck on the bars.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.23 - Things floating should now ignore blueprints and frames since they are not finished buildings yet
 
 

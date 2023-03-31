@@ -8,6 +8,7 @@ namespace SomeThingsFloat;
 /// </summary>
 internal class SomeThingsFloatSettings : ModSettings
 {
+    public bool AllowOnStuck = true;
     public bool DespawnAtMapEdge = true;
     public bool DownedPawnsDrown = true;
     public bool DownedPawnsFloat = true;
@@ -41,6 +42,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref SpawnInOceanTiles, "SpawnInOceanTiles");
         Scribe_Values.Look(ref RelativeFloatSpeed, "RelativeFloatSpeed", 1f);
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
+        Scribe_Values.Look(ref AllowOnStuck, "AllowOnStuck", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);
         Scribe_Values.Look(ref SpawnNewItems, "SpawnNewItems", true);

@@ -51,4 +51,6 @@
   <STF.ThingsFloatedInFromTheOcean>{0} erschien schwimmend im Ozean</STF.ThingsFloatedInFromTheOcean>
   <STF.RelativeFloatSpeed>Relative gleitende Geschwindigkeit {0}</STF.RelativeFloatSpeed>
   <STF.RelativeFloatSpeedTT>Eine langsamere Gleitgeschwindigkeit führt dazu, dass sich die Positionen der Gegenstände weniger häufig ändern und der Leistungsbedarf des Mods geringer ist.</STF.RelativeFloatSpeedTT>
+  <STF.AllowOnStuck>Gefangene Gegenstände zulassen</STF.AllowOnStuck>
+  <STF.AllowOnStuckTT>Lässt automatisch Gegenstände zu, die in einem Netz stecken bleiben oder durch Gitter blockiert werden</STF.AllowOnStuckTT>
 </LanguageData>

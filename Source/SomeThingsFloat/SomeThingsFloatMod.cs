@@ -70,6 +70,9 @@ internal class SomeThingsFloatMod : Mod
         listing_Standard.CheckboxLabeled("STF.ReservedItemsWillNotMove".Translate(),
             ref Settings.ReservedItemsWillNotMove,
             "STF.ReservedItemsWillNotMoveTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.AllowOnStuck".Translate(),
+            ref Settings.AllowOnStuck,
+            "STF.AllowOnStuckTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,
             "STF.DespawnAtMapEdgeTT".Translate());
         listing_Standard.CheckboxLabeled("STF.SpawnNewItems".Translate(), ref Settings.SpawnNewItems,

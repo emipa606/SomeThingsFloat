@@ -226,10 +226,20 @@ public class FloatingThings_MapComponent : MapComponent
         }
         else
         {
-            if (wasUnspawned && SomeThingsFloat.HaulUrgentlyDef != null &&
-                SomeThingsFloatMod.instance.Settings.HaulUrgently)
+            if (SomeThingsFloatMod.instance.Settings.HaulUrgently && wasUnspawned &&
+                SomeThingsFloat.HaulUrgentlyDef != null)
             {
                 map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
+            }
+
+            if (SomeThingsFloatMod.instance.Settings.AllowOnStuck)
+            {
+                var buidingDef = newPosition.GetFirstBuilding(map)?.def;
+                if (buidingDef != null && (buidingDef == ThingDefOf.STF_Bars && SomeThingsFloat.IsLargeThing(thing) ||
+                                           buidingDef == ThingDefOf.STF_Net))
+                {
+                    thing.SetForbidden(false, false);
+                }
             }
         }
 
@@ -575,7 +585,6 @@ public class FloatingThings_MapComponent : MapComponent
         updateValues[nextupdate] = thing;
     }
 
-
     private void checkForPawnsThatCanFall()
     {
         foreach (var pawn in map.mapPawns.AllPawns)
@@ -643,7 +652,6 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
     }
-
 
     private void checkForPawnsThatCanDrown()
     {
@@ -829,8 +837,14 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null)
             {
-                SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
-                continue;
+                var buidingDef = adjacentCell.GetFirstBuilding(map)?.def;
+
+                if (buidingDef != null && buidingDef != ThingDefOf.STF_Bars && buidingDef != ThingDefOf.STF_Net &&
+                    !buidingDef.IsBlueprint && !buidingDef.IsFrame)
+                {
+                    SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way");
+                    continue;
+                }
             }
 
             SomeThingsFloat.LogMessage($"Cell {adjacentCell} for {thing} was valid");

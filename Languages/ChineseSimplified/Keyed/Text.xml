@@ -51,4 +51,6 @@
   <STF.ThingsFloatedInFromTheOcean>{0}出现在海洋中漂浮</STF.ThingsFloatedInFromTheOcean>
   <STF.RelativeFloatSpeed>相对浮动速度{0}。</STF.RelativeFloatSpeed>
   <STF.RelativeFloatSpeedTT>较慢的浮动速度将导致项目位置的变化不那么频繁，并降低对MOD的性能需求。</STF.RelativeFloatSpeedTT>
+  <STF.AllowOnStuck>允许捕获的项目</STF.AllowOnStuck>
+  <STF.AllowOnStuckTT>将自动允许被网卡住或被栏杆挡住的物品。</STF.AllowOnStuckTT>
 </LanguageData>
