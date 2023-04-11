@@ -1,5 +1,13 @@
 # Changelog for SomeThingsFloat
 
+1.4.25 - Forbid fix for corpses
+Added setting for pawn manipulation check
+Added setting for shallow water check
+Trees should now float
+Will now ignore swimming pawns.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.24 - Added setting to auto-allow things caught in nets or stuck on the bars.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

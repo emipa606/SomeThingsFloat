@@ -10,10 +10,14 @@
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
-  <STF.DownedPawnsDrown>Downed pawns in water can drown</STF.DownedPawnsDrown>
-  <STF.DownedPawnsDrownTT>Pawns that are downed in water can drown. Helmets with the EVA-tag will prevent this.</STF.DownedPawnsDrownTT>
+  <STF.DownedPawnsDrown>Downed pawns in non-shallow water can drown</STF.DownedPawnsDrown>
+  <STF.DownedPawnsDrownTT>Pawns that are downed in non-shallow water can drown. Helmets with the EVA-tag will prevent this.</STF.DownedPawnsDrownTT>
   <STF.PawnsCanFall>Pawns can loose footing in moving water</STF.PawnsCanFall>
   <STF.PawnsCanFallTT>There is a chance that pawns can slip in moving water and become downed for a little while. This scales with their manipulation-skill</STF.PawnsCanFallTT>
+  <STF.ManipulationThreshold>Manipulation threshold: {0}</STF.ManipulationThreshold>
+  <STF.ManipulationThresholdTT>The manipulation value below witch pawns can loose their footing when walking in water</STF.ManipulationThresholdTT>
+  <STF.RelativeChanceInShallows>Relative fall-chance in shallow waters: {0}</STF.RelativeChanceInShallows>
+  <STF.RelativeChanceInShallowsTT>Chance of loosing footing in shallow waters is further limited by this setting. Shallow waters include all with "shallow" in the name or that can dry into something else, like Marsh.</STF.RelativeChanceInShallowsTT>
   <STF.AllowOnStuck>Allow caught items</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>Will automatically allow items that gets stuck in a net or blocked by bars</STF.AllowOnStuckTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
@@ -21,15 +25,15 @@
   <STF.SpawnNewItems>Spawn items at river map-edge</STF.SpawnNewItems>
   <STF.SpawnNewItemsTT>Things can spawn at the edge of the map if there is a river flowing.</STF.SpawnNewItemsTT>
   <STF.MaxSpawnValue>Maximum value of spawned items: {0}</STF.MaxSpawnValue>
-  <STF.MaxSpawnValueTT>The maximum value of each stack of items spawned in rivers.</STF.MaxSpawnValueTT>
+  <STF.MaxSpawnValueTT>The maximum value of each stack of items spawned</STF.MaxSpawnValueTT>
   <STF.MinTimeBetweenItems>Minimum time between items spawning: {0}</STF.MinTimeBetweenItems>
   <STF.MinTimeBetweenItemsTT>The minimum time between things spawning in the river.</STF.MinTimeBetweenItemsTT>
   <STF.ForbidSpawningItems>Forbid spawning items</STF.ForbidSpawningItems>
   <STF.ForbidSpawningItemsTT>Items spawning in the river will by default be forbidden</STF.ForbidSpawningItemsTT>
   <STF.HaulUrgently>Mark spawning items to be hauled urgently</STF.HaulUrgently>
   <STF.HaulUrgentlyTT>Items spawning in the river will by default be marked to be hauled urgently</STF.HaulUrgentlyTT>
-  <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn in rivers.</STF.SpawnLivingPawns>
-  <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn in the river, you can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
+  <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn</STF.SpawnLivingPawns>
+  <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn. You can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.SpawnInOceanTiles>Allow spawning in on ocean-tiles</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>Things can also spawn in on edge-tiles of ocean type, no guarantees for it to stay on the map.</STF.SpawnInOceanTilesTT>
   <STF.NotifyOfSpawningItems>Notify on all spawning items</STF.NotifyOfSpawningItems>

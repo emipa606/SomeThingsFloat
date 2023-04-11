@@ -16,10 +16,12 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool ForbidSpawningItems;
     public bool ForbidWhenMoving = true;
     public bool HaulUrgently;
+    public float ManipulationThreshold = 0.99f;
     public float MaxSpawnValue = 50f;
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
     public bool NotifyOfSpawningItems = true;
     public bool PawnsCanFall = true;
+    public float RelativeChanceInShallows = 0.5f;
     public float RelativeFloatSpeed = 1f;
     public bool ReservedItemsWillNotMove;
     public bool SpawnInOceanTiles;
@@ -41,6 +43,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref WarnForAllFriendlyPawns, "WarnForAllFriendlyPawns");
         Scribe_Values.Look(ref SpawnInOceanTiles, "SpawnInOceanTiles");
         Scribe_Values.Look(ref RelativeFloatSpeed, "RelativeFloatSpeed", 1f);
+        Scribe_Values.Look(ref ManipulationThreshold, "ManipulationThreshold", 0.99f);
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref AllowOnStuck, "AllowOnStuck", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
@@ -49,6 +52,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref DownedPawnsFloat, "DownedPawnsFloat", true);
         Scribe_Values.Look(ref DownedPawnsDrown, "DownedPawnsDrown", true);
         Scribe_Values.Look(ref PawnsCanFall, "PawnsCanFall", true);
+        Scribe_Values.Look(ref RelativeChanceInShallows, "RelativeChanceInShallows", 0.5f);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
         Scribe_Values.Look(ref NotifyOfSpawningItems, "NotifyOfSpawningItems", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);

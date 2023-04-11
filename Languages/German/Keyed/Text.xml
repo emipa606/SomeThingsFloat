@@ -53,4 +53,8 @@
   <STF.RelativeFloatSpeedTT>Eine langsamere Gleitgeschwindigkeit führt dazu, dass sich die Positionen der Gegenstände weniger häufig ändern und der Leistungsbedarf des Mods geringer ist.</STF.RelativeFloatSpeedTT>
   <STF.AllowOnStuck>Gefangene Gegenstände zulassen</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>Lässt automatisch Gegenstände zu, die in einem Netz stecken bleiben oder durch Gitter blockiert werden</STF.AllowOnStuckTT>
+  <STF.ManipulationThreshold>Manipulationsschwelle: {0}</STF.ManipulationThreshold>
+  <STF.ManipulationThresholdTT>Der Manipulationswert, unter dem die Spielfiguren beim Laufen im Wasser den Halt verlieren können</STF.ManipulationThresholdTT>
+  <STF.RelativeChanceInShallows>Relative Fallwahrscheinlichkeit in flachen Gewässern: {0}</STF.RelativeChanceInShallows>
+  <STF.RelativeChanceInShallowsTT>Die Gefahr, in flachen Gewässern den Halt zu verlieren, wird durch diese Einstellung weiter eingeschränkt. Zu den seichten Gewässern gehören alle, die "seicht" im Namen tragen oder zu etwas anderem, wie z. B. Sumpf, austrocknen können.</STF.RelativeChanceInShallowsTT>
 </LanguageData>

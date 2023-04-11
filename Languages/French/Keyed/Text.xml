@@ -53,4 +53,8 @@
   <STF.RelativeFloatSpeedTT>Une vitesse de flottement plus lente entraînera un changement moins fréquent des positions des éléments et réduira les besoins en performances du modèle.</STF.RelativeFloatSpeedTT>
   <STF.AllowOnStuck>Autoriser les objets capturés</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>Autorise automatiquement les objets coincés dans un filet ou bloqués par des barres.</STF.AllowOnStuckTT>
+  <STF.ManipulationThreshold>Seuil de manipulation : {0}</STF.ManipulationThreshold>
+  <STF.ManipulationThresholdTT>La valeur de manipulation en dessous de laquelle les pions peuvent perdre pied lorsqu'ils marchent dans l'eau.</STF.ManipulationThresholdTT>
+  <STF.RelativeChanceInShallows>Chance de chute relative dans les eaux peu profondes : {0}</STF.RelativeChanceInShallows>
+  <STF.RelativeChanceInShallowsTT>Le risque de perdre pied dans les eaux peu profondes est encore plus limité par ce paramètre. Les eaux peu profondes comprennent toutes les eaux dont le nom contient le mot "peu profond" ou qui peuvent se transformer en quelque chose d'autre, comme les marais.</STF.RelativeChanceInShallowsTT>
 </LanguageData>

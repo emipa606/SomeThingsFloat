@@ -16,6 +16,8 @@ internal class SomeThingsFloatMod : Mod
 
     private static string currentVersion;
 
+    private Vector2 scrollPosition;
+
     /// <summary>
     ///     Constructor
     /// </summary>
@@ -48,9 +50,13 @@ internal class SomeThingsFloatMod : Mod
     /// <param name="rect"></param>
     public override void DoSettingsWindowContents(Rect rect)
     {
+        var viewContainer = rect.ContractedBy(10);
+        var innerContainer = viewContainer.ContractedBy(6);
+        innerContainer.width -= 20;
+        innerContainer.height += 100;
+        Widgets.BeginScrollView(viewContainer, ref scrollPosition, innerContainer);
         var listing_Standard = new Listing_Standard();
-        listing_Standard.Begin(rect);
-        listing_Standard.Gap();
+        listing_Standard.Begin(innerContainer);
         Settings.RelativeFloatSpeed = listing_Standard.SliderLabeled(
             "STF.RelativeFloatSpeed".Translate(Settings.RelativeFloatSpeed.ToStringPercent()),
             Settings.RelativeFloatSpeed, 0.1f, 2.5f, 0.5f, "STF.RelativeFloatSpeedTT".Translate());
@@ -67,6 +73,19 @@ internal class SomeThingsFloatMod : Mod
             "STF.WarnForAllFriendlyPawnsTT".Translate());
         listing_Standard.CheckboxLabeled("STF.PawnsCanFall".Translate(), ref Settings.PawnsCanFall,
             "STF.PawnsCanFallTT".Translate());
+        if (Settings.PawnsCanFall)
+        {
+            listing_Standard.Label(
+                "STF.ManipulationThreshold".Translate(Settings.ManipulationThreshold.ToStringPercent()), -1,
+                "STF.ManipulationThresholdTT".Translate());
+            Settings.ManipulationThreshold = listing_Standard.Slider(Settings.ManipulationThreshold, 0, 1f);
+
+            listing_Standard.Label(
+                "STF.RelativeChanceInShallows".Translate(Settings.RelativeChanceInShallows.ToStringPercent()), -1,
+                "STF.RelativeChanceInShallowsTT".Translate());
+            Settings.RelativeChanceInShallows = listing_Standard.Slider(Settings.RelativeChanceInShallows, 0, 1f);
+        }
+
         listing_Standard.CheckboxLabeled("STF.ReservedItemsWillNotMove".Translate(),
             ref Settings.ReservedItemsWillNotMove,
             "STF.ReservedItemsWillNotMoveTT".Translate());
@@ -138,5 +157,6 @@ internal class SomeThingsFloatMod : Mod
         }
 
         listing_Standard.End();
+        Widgets.EndScrollView();
     }
 }

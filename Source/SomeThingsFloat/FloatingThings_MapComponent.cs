@@ -389,7 +389,7 @@ public class FloatingThings_MapComponent : MapComponent
         var cellToPlaceIt = mapEdgeCells.RandomElement();
 
         // Sometimes we spawn a pawn or corpse
-        if (Rand.Value > 0.9f)
+        if (Rand.Value < 0.9f)
         {
             var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
                     where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
@@ -416,18 +416,19 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
                 lastSpawnTick = GenTicks.TicksGame;
 
-                pawn.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
+                pawn.Corpse.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
                 if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
                 {
-                    map.designationManager.AddDesignation(new Designation(pawn, SomeThingsFloat.HaulUrgentlyDef));
+                    map.designationManager.AddDesignation(new Designation(pawn.Corpse,
+                        SomeThingsFloat.HaulUrgentlyDef));
                 }
 
                 if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
                 {
                     Messages.Message(
                         cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
-                            ? "STF.ThingsFloatedInFromTheOcean".Translate(pawn.LabelCap)
-                            : "STF.ThingsFloatedIntoTheMap".Translate(pawn.LabelCap), pawn,
+                            ? "STF.ThingsFloatedInFromTheOcean".Translate(pawn.Corpse.LabelCap)
+                            : "STF.ThingsFloatedIntoTheMap".Translate(pawn.Corpse.LabelCap), pawn,
                         MessageTypeDefOf.NeutralEvent);
                 }
 
@@ -587,34 +588,97 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void checkForPawnsThatCanFall()
     {
-        foreach (var pawn in map.mapPawns.AllPawns)
+        // ReSharper disable once ForCanBeConvertedToForeach, May change during execution
+        for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
         {
+            var pawn = map.mapPawns.AllPawns[index];
+            var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
             if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null)
             {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
                 continue;
             }
 
             if (cellsWithRiver?.Contains(pawn.Position) == false)
             {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
+                continue;
+            }
+
+            if (pawn.CurJobDef?.defName.ToLower().Contains("swim") == true)
+            {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
+                SomeThingsFloat.LogMessage($"{pawn} is swimming, ignoring fall check");
                 continue;
             }
 
             var manipulation = Math.Max(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation), 0.1f);
+
+            if (manipulation >= SomeThingsFloatMod.instance.Settings.ManipulationThreshold)
+            {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
+                SomeThingsFloat.LogMessage($"{pawn} has too high manipulation value: {manipulation}");
+                continue;
+            }
+
             var manipulationFiltered = Math.Max(Math.Min(manipulation, 0.999f), 0.5f);
+
+            if (SomeThingsFloat.ShallowTerrainDefs.Contains(pawn.Position.GetTerrain(map)))
+            {
+                SomeThingsFloat.LogMessage($"{pawn} is in shallow waters");
+                if (SomeThingsFloatMod.instance.Settings.RelativeChanceInShallows == 0)
+                {
+                    if (lostFootingHediff != null)
+                    {
+                        lostFootingHediff.Severity = 0;
+                    }
+
+                    continue;
+                }
+
+                manipulationFiltered += (1 - manipulationFiltered) *
+                                        (1 - SomeThingsFloatMod.instance.Settings.RelativeChanceInShallows);
+            }
+
             var rand = Rand.Value;
             if (rand < manipulationFiltered)
             {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
                 continue;
             }
 
             if (pawn.story?.traits?.HasTrait(TraitDef.Named("Nimble")) == true && Rand.Bool)
             {
+                if (lostFootingHediff != null)
+                {
+                    lostFootingHediff.Severity = 0;
+                }
+
                 continue;
             }
 
             SomeThingsFloat.LogMessage($"{pawn} failed the Manipulation-check ({manipulationFiltered}/{rand})");
 
-            var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
             if (lostFootingHediff != null)
             {
                 lostFootingHediff.Severity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulation));
@@ -666,12 +730,15 @@ public class FloatingThings_MapComponent : MapComponent
                 continue;
             }
 
+            var inShallowWater = false;
             if (pawn.Spawned)
             {
                 if (cellsWithWater?.Contains(pawn.Position) == false)
                 {
                     continue;
                 }
+
+                inShallowWater = SomeThingsFloat.ShallowTerrainDefs.Contains(pawn.Position.GetTerrain(map));
             }
             else
             {
@@ -689,7 +756,7 @@ public class FloatingThings_MapComponent : MapComponent
             var drowningHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (drowningHediff != null)
             {
-                if (cannotDrown)
+                if (cannotDrown || inShallowWater)
                 {
                     drowningHediff.Severity = 0;
                     return;
@@ -699,7 +766,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
             else
             {
-                if (cannotDrown)
+                if (cannotDrown || inShallowWater)
                 {
                     return;
                 }
@@ -720,7 +787,6 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
     }
-
 
     private bool tryToFindNewPostition(Thing thing, out IntVec3 resultingCell)
     {
@@ -800,6 +866,13 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
+            var itemInCell = adjacentCell.GetFirstItem(map);
+            if (itemInCell != null && (itemInCell.def != thing.def || thing.def.stackLimit < 2))
+            {
+                SomeThingsFloat.LogMessage($"{adjacentCell} position has an unstackable item in the way");
+                continue;
+            }
+
             SomeThingsFloat.LogMessage($"Cell {adjacentCell} for {thing} was valid");
             resultingCell = adjacentCell;
             return true;
@@ -854,7 +927,6 @@ public class FloatingThings_MapComponent : MapComponent
 
         return false;
     }
-
 
     public void UnSpawnedDeterioration(IntVec3 c)
     {

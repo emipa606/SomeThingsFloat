@@ -53,4 +53,8 @@
   <STF.RelativeFloatSpeedTT>Более низкая скорость плавания приведет к тому, что позиции элементов будут меняться реже и снизит потребность в производительности мода.</STF.RelativeFloatSpeedTT>
   <STF.AllowOnStuck>Разрешить пойманные предметы</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>Автоматически пропускает предметы, застрявшие в сетке или заблокированные решетками</STF.AllowOnStuckTT>
+  <STF.ManipulationThreshold>Порог манипуляции: {0}</STF.ManipulationThreshold>
+  <STF.ManipulationThresholdTT>Значение манипуляции, ниже которого пешка может потерять опору при ходьбе по воде</STF.ManipulationThresholdTT>
+  <STF.RelativeChanceInShallows>Относительная вероятность падения на мелководье: {0}</STF.RelativeChanceInShallows>
+  <STF.RelativeChanceInShallowsTT>Шанс потерять опору на мелководье дополнительно ограничивается этой настройкой. К мелким водам относятся все, в названии которых есть слово "мелкий" или которые могут пересыхать во что-то другое, например в болото.</STF.RelativeChanceInShallowsTT>
 </LanguageData>
