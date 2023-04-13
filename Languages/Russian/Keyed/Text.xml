@@ -57,4 +57,5 @@
   <STF.ManipulationThresholdTT>Значение манипуляции, ниже которого пешка может потерять опору при ходьбе по воде</STF.ManipulationThresholdTT>
   <STF.RelativeChanceInShallows>Относительная вероятность падения на мелководье: {0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>Шанс потерять опору на мелководье дополнительно ограничивается этой настройкой. К мелким водам относятся все, в названии которых есть слово "мелкий" или которые могут пересыхать во что-то другое, например в болото.</STF.RelativeChanceInShallowsTT>
+  <STF.SpawnNewItemsDisabled>Порождение предметов отключено в настройках мода</STF.SpawnNewItemsDisabled>
 </LanguageData>

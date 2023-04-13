@@ -57,4 +57,5 @@
   <STF.ManipulationThresholdTT>在水里行走时，低于巫师的操纵值会松开脚步</STF.ManipulationThresholdTT>
   <STF.RelativeChanceInShallows>浅水区的相对跌落机会：{0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>在浅水区失足的机会被这种设置进一步限制。浅水区包括所有名称中带有 "浅 "字的水域，或者可以干涸成其他东西，如沼泽。</STF.RelativeChanceInShallowsTT>
+  <STF.SpawnNewItemsDisabled>在mod-settings中禁用物品的再生。</STF.SpawnNewItemsDisabled>
 </LanguageData>

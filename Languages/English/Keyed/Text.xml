@@ -22,6 +22,7 @@
   <STF.AllowOnStuckTT>Will automatically allow items that gets stuck in a net or blocked by bars</STF.AllowOnStuckTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
   <STF.DespawnAtMapEdgeTT>Floating things will despawn instead of being stopped by the map edge.</STF.DespawnAtMapEdgeTT>
+  <STF.SpawnNewItemsDisabled>Spawning of items is disabled in the mod-settings</STF.SpawnNewItemsDisabled>
   <STF.SpawnNewItems>Spawn items at river map-edge</STF.SpawnNewItems>
   <STF.SpawnNewItemsTT>Things can spawn at the edge of the map if there is a river flowing.</STF.SpawnNewItemsTT>
   <STF.MaxSpawnValue>Maximum value of spawned items: {0}</STF.MaxSpawnValue>

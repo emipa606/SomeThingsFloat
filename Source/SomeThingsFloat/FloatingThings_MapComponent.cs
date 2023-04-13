@@ -12,6 +12,7 @@ public class FloatingThings_MapComponent : MapComponent
     private readonly List<IntVec3> mapEdgeCells;
     private List<IntVec3> cellsWithRiver;
     private List<IntVec3> cellsWithWater;
+    public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
@@ -21,6 +22,7 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
     private List<Thing> updateValuesValues;
+    public int WastePacksFloated;
 
     public FloatingThings_MapComponent(Map map) : base(map)
     {
@@ -46,7 +48,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (ticksGame % GenTicks.TickLongInterval == 0)
         {
             updateListOfWaterCells();
-            spawnThingAtMapEdge();
+            TrySpawnThingAtMapEdge();
             updateListOfFloatingThings();
         }
 
@@ -173,6 +175,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (thing.def == RimWorld.ThingDefOf.Wastepack)
             {
+                WastePacksFloated += thing.stackCount;
                 var neighbor = Find.World.grid[map.Tile].Rivers.FirstOrDefault().neighbor;
                 if (neighbor == 0)
                 {
@@ -266,6 +269,8 @@ public class FloatingThings_MapComponent : MapComponent
         base.ExposeData();
 
         Scribe_Values.Look(ref lastSpawnTick, "lastSpawnTick");
+        Scribe_Values.Look(ref WastePacksFloated, "WastePacksFloated");
+        Scribe_Values.Look(ref EnemyPawnsDrowned, "EnemyPawnsDrowned");
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithRiver, "cellsWithRiver", LookMode.Value);
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
@@ -312,29 +317,29 @@ public class FloatingThings_MapComponent : MapComponent
         SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
     }
 
-    private void spawnThingAtMapEdge()
+    public bool TrySpawnThingAtMapEdge(bool force = false)
     {
         if (!SomeThingsFloatMod.instance.Settings.SpawnNewItems)
         {
-            return;
+            return false;
         }
 
         if (!cellsWithWater.Any())
         {
             SomeThingsFloat.LogMessage("No water cells to spawn in");
-            return;
+            return false;
         }
 
-        if (Rand.Value < 0.9f)
+        if (!force && Rand.Value < 0.9f)
         {
-            return;
+            return false;
         }
 
-        if (lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems > GenTicks.TicksGame)
+        if (!force && lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems > GenTicks.TicksGame)
         {
             SomeThingsFloat.LogMessage(
                 $"Not time to spawn yet, next spawn: {lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems}, current time {GenTicks.TicksGame}");
-            return;
+            return false;
         }
 
         if (!mapEdgeCells.Any())
@@ -343,7 +348,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!possibleMapEdgeCells.Any())
             {
-                return;
+                return false;
             }
 
             foreach (var mapEdgeCell in possibleMapEdgeCells)
@@ -383,7 +388,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (!mapEdgeCells.Any())
         {
             SomeThingsFloat.LogMessage("Found no map-edge cells with river");
-            return;
+            return false;
         }
 
         var cellToPlaceIt = mapEdgeCells.RandomElement();
@@ -414,7 +419,10 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.Corpse.Age = Rand.Range(1, 900000);
                 GenSpawn.Spawn(pawn.Corpse, cellToPlaceIt, map);
                 pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
-                lastSpawnTick = GenTicks.TicksGame;
+                if (!force)
+                {
+                    lastSpawnTick = GenTicks.TicksGame;
+                }
 
                 pawn.Corpse.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
                 if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
@@ -432,7 +440,7 @@ public class FloatingThings_MapComponent : MapComponent
                         MessageTypeDefOf.NeutralEvent);
                 }
 
-                return;
+                return true;
             }
 
             pawn.equipment?.DestroyAllEquipment();
@@ -452,8 +460,12 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
-            lastSpawnTick = GenTicks.TicksGame;
-            return;
+            if (!force)
+            {
+                lastSpawnTick = GenTicks.TicksGame;
+            }
+
+            return true;
         }
 
         var thingToMake = SomeThingsFloat.ThingsToCreate
@@ -464,20 +476,20 @@ public class FloatingThings_MapComponent : MapComponent
         if (amountToSpawn == 0)
         {
             SomeThingsFloat.LogMessage($"Value of {thingToMake} too high, could not spawn");
-            return;
+            return false;
         }
 
         var thing = ThingMaker.MakeThing(thingToMake);
         if (thing is Corpse corpse && (corpse.Bugged || !corpse.InnerPawn.RaceProps.IsFlesh))
         {
-            return;
+            return false;
         }
 
         if (GenPlace.HaulPlaceBlockerIn(thing, cellToPlaceIt, map, true) != null)
         {
             SomeThingsFloat.LogMessage(
                 $"{thing} could not be created at map edge: {cellToPlaceIt}, something in the way");
-            return;
+            return false;
         }
 
         if (thing.def.stackLimit > 1)
@@ -488,7 +500,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (!GenPlace.TryPlaceThing(thing, cellToPlaceIt, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be created at map edge: {cellToPlaceIt}");
-            return;
+            return false;
         }
 
         thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
@@ -506,7 +518,12 @@ public class FloatingThings_MapComponent : MapComponent
                 MessageTypeDefOf.NeutralEvent);
         }
 
-        lastSpawnTick = GenTicks.TicksGame;
+        if (!force)
+        {
+            lastSpawnTick = GenTicks.TicksGame;
+        }
+
+        return true;
     }
 
     private void updateListOfFloatingThings()
@@ -681,12 +698,12 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (lostFootingHediff != null)
             {
-                lostFootingHediff.Severity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulation));
+                lostFootingHediff.Severity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulationFiltered));
             }
             else
             {
                 var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_LostFooting, pawn);
-                hediff.Severity = 0.05f / manipulation;
+                hediff.Severity = 0.1f / manipulationFiltered;
                 pawn.health.AddHediff(hediff);
             }
 
@@ -784,6 +801,11 @@ public class FloatingThings_MapComponent : MapComponent
                 Find.TickManager.TogglePaused();
                 Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
                     MessageTypeDefOf.ThreatBig);
+            }
+
+            if (drowningHediff?.Severity >= 1)
+            {
+                EnemyPawnsDrowned++;
             }
         }
     }

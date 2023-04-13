@@ -233,6 +233,28 @@ public class SomeThingsFloat
         return drownValue;
     }
 
+    public static int GetWastepacksFloated()
+    {
+        var returnValue = 0;
+        foreach (var floatingThingsMapComponent in FloatingMapComponents)
+        {
+            returnValue += floatingThingsMapComponent.Value.WastePacksFloated;
+        }
+
+        return returnValue;
+    }
+
+    public static int GetEnemyPawnsDrowned()
+    {
+        var returnValue = 0;
+        foreach (var floatingThingsMapComponent in FloatingMapComponents)
+        {
+            returnValue += floatingThingsMapComponent.Value.EnemyPawnsDrowned;
+        }
+
+        return returnValue;
+    }
+
     public static void LogMessage(string message)
     {
         if (SomeThingsFloatMod.instance.Settings.VerboseLogging)

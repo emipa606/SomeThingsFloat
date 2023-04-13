@@ -6,7 +6,7 @@
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>None</DebugType>
     <LangVersion>latest</LangVersion>
-    <FileVersion>1.4.25</FileVersion>
+    <FileVersion>1.4.26</FileVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
@@ -23,6 +23,9 @@
     <PackageReference Include="Lib.Harmony">
       <Version>*</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
+    </PackageReference>
+    <PackageReference Include="AchievementsExpanded">
+	    <Version>1.4.82</Version>
     </PackageReference>
   </ItemGroup>
 </Project>
