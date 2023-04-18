@@ -394,8 +394,9 @@ public class FloatingThings_MapComponent : MapComponent
         var cellToPlaceIt = mapEdgeCells.RandomElement();
 
         // Sometimes we spawn a pawn or corpse
-        if (Rand.Value < 0.9f)
+        if (Rand.Value > 0.9f)
         {
+            var currentMarketValue = 0f;
             var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
                     where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
                     select kindDef)
@@ -408,12 +409,40 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKindDef, faction, allowDead: false));
+            if (pawn.equipment?.HasAnything() == true)
+            {
+                pawn.equipment.DestroyAllEquipment();
+            }
+
+            if (pawn.inventory?.innerContainer?.Any() == true)
+            {
+                pawn.inventory.DestroyAll();
+            }
 
             if (!SomeThingsFloatMod.instance.Settings.SpawnLivingPawns || Rand.Value > 0.1f)
             {
                 if (!pawn.Dead)
                 {
                     pawn.Kill(null);
+                }
+
+                if (pawn.apparel?.WornApparel?.Any() == true)
+                {
+                    // ReSharper disable once ForCanBeConvertedToForeach
+                    for (var index = 0; index < pawn.apparel.WornApparel.Count; index++)
+                    {
+                        var apparel = pawn.apparel.WornApparel[index];
+                        if (apparel.MarketValue + currentMarketValue <
+                            SomeThingsFloatMod.instance.Settings.MaxSpawnValue)
+                        {
+                            currentMarketValue += apparel.MarketValue;
+                            continue;
+                        }
+
+                        SomeThingsFloat.LogMessage(
+                            $"Destroying worn apparel {apparel} since it has too high value ({apparel.MarketValue})");
+                        apparel.Destroy();
+                    }
                 }
 
                 pawn.Corpse.Age = Rand.Range(1, 900000);
@@ -443,7 +472,6 @@ public class FloatingThings_MapComponent : MapComponent
                 return true;
             }
 
-            pawn.equipment?.DestroyAllEquipment();
             HealthUtility.DamageUntilDowned(pawn);
             GenSpawn.Spawn(pawn, cellToPlaceIt, map);
             if (!pawn.RaceProps.Animal)

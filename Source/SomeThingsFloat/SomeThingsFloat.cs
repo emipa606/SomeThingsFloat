@@ -31,7 +31,8 @@ public class SomeThingsFloat
     {
         new Harmony("Mlie.SomeThingsFloat").PatchAll(Assembly.GetExecutingAssembly());
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
-            .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue) && floatingValue > 0)
+            .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue, out var minimized) &&
+                          floatingValue > 0 && !minimized)
             .ToList();
         ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.IsApparel && def.apparel.tags.Contains("EVA") &&
@@ -91,7 +92,7 @@ public class SomeThingsFloat
         }
 
         // Check if its a special thing
-        if (TryGetSpecialFloatingValue(actualThing.def, out var floatingValue))
+        if (TryGetSpecialFloatingValue(actualThing.def, out var floatingValue, out _))
         {
             return floatingValue;
         }
@@ -108,7 +109,7 @@ public class SomeThingsFloat
         {
             foreach (var thingDefCountClass in actualThing.def.CostList)
             {
-                TryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue);
+                TryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue, out _);
                 totalIngredients += thingDefCountClass.count;
                 totalValue += thingDefCountClass.count * floatingValue;
             }
@@ -116,7 +117,7 @@ public class SomeThingsFloat
 
         if (!actualThing.def.stuffCategories.NullOrEmpty())
         {
-            TryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue);
+            TryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue, out _);
             totalIngredients += actualThing.def.CostStuffCount;
             totalValue += actualThing.def.CostStuffCount * floatingValue;
         }
@@ -157,9 +158,10 @@ public class SomeThingsFloat
     }
 
 
-    private static bool TryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue)
+    private static bool TryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue, out bool onlyIfMinimized)
     {
         floatingValue = 1;
+        onlyIfMinimized = false;
 
         if (thingDef.IsStuff)
         {
@@ -209,6 +211,7 @@ public class SomeThingsFloat
 
         if (thingDef.IsPlant)
         {
+            onlyIfMinimized = true;
             return true;
         }
 
