@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.28 - Fertilized eggs that spawn in should now hatch tame animals
+
+
 1.4.27 - Spawning dead pawns should now not have items of greater worth then defined in the mod-settings
 
 

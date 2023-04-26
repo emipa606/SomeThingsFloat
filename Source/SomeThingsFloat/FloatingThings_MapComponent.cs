@@ -525,6 +525,11 @@ public class FloatingThings_MapComponent : MapComponent
             thing.stackCount = Rand.RangeInclusive(1, Math.Min(thing.def.stackLimit, amountToSpawn));
         }
 
+        if (thing.TryGetComp<CompHatcher>() is { } compHatcher)
+        {
+            compHatcher.hatcheeFaction = Faction.OfPlayerSilentFail;
+        }
+
         if (!GenPlace.TryPlaceThing(thing, cellToPlaceIt, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be created at map edge: {cellToPlaceIt}");
