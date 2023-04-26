@@ -145,6 +145,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         var wasInStorage = false;
         var wasUnspawned = false;
+        var wasSelected = Find.Selector.IsSelected(thing);
         if (!hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
@@ -246,14 +247,14 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
 
-        if (!SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
-        {
-            return;
-        }
-
-        if (wasInStorage != thing.IsInValidStorage())
+        if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving && wasInStorage != thing.IsInValidStorage())
         {
             thing.SetForbidden(wasInStorage, false);
+        }
+
+        if (wasSelected)
+        {
+            Find.Selector.Select(thing, false);
         }
     }
 

@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.29 - Selected floating things should no longer loose focus when they change position.
+
+
 1.4.28 - Fertilized eggs that spawn in should now hatch tame animals
 
 
