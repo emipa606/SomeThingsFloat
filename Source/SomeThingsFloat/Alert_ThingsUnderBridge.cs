@@ -47,6 +47,11 @@ public class Alert_ThingsUnderBridge : Alert
         }
 
         map = Find.CurrentMap;
+        if (map == null)
+        {
+            return new Dictionary<Thing, IntVec3>();
+        }
+
         var component = SomeThingsFloat.FloatingMapComponents[map];
         return component == null ? new Dictionary<Thing, IntVec3>() : component.ThingsUnderBridge();
     }

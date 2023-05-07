@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.30 - Aquatic animals from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2038001322]Biomes! Islands[/url] will no longer loose their footing or drown
+
+
 1.4.29 - Selected floating things should no longer loose focus when they change position.
 
 

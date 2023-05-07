@@ -36,6 +36,11 @@ public class Alert_ColonistIsFloatingAway : Alert
         }
 
         var map = Find.CurrentMap;
+        if (map == null)
+        {
+            return new List<Pawn>();
+        }
+
         var component = SomeThingsFloat.FloatingMapComponents[map];
         return component == null ? new List<Pawn>() : component.DownedPawnsInWater();
     }

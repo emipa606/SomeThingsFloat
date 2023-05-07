@@ -25,6 +25,8 @@ public class SomeThingsFloat
 
     public static readonly List<TerrainDef> ShallowTerrainDefs;
 
+    public static readonly List<ThingDef> AquaticRaces;
+
     public static readonly bool SwimmingKitLoaded;
 
     static SomeThingsFloat()
@@ -47,6 +49,26 @@ public class SomeThingsFloat
         SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit") != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
             def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToList();
+        AquaticRaces = new List<ThingDef>();
+        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") == null)
+        {
+            return;
+        }
+
+        foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+                     def.race != null && def.modExtensions?.Any() == true &&
+                     def.modExtensions.Any(extension => extension.GetType().Name == "AquaticExtension")))
+        {
+            var modExtension =
+                possibleAquaticAnimal.modExtensions.First(extension =>
+                    extension.GetType().Name == "AquaticExtension");
+            if ((bool)modExtension.GetType().GetField("aquatic").GetValue(modExtension))
+            {
+                AquaticRaces.Add(possibleAquaticAnimal);
+            }
+        }
+
+        LogMessage($"Found {AquaticRaces.Count} aquatic races: {string.Join(", ", AquaticRaces)}", true);
     }
 
     public static float GetFloatingValue(Thing thing)
@@ -258,9 +280,9 @@ public class SomeThingsFloat
         return returnValue;
     }
 
-    public static void LogMessage(string message)
+    public static void LogMessage(string message, bool force = false)
     {
-        if (SomeThingsFloatMod.instance.Settings.VerboseLogging)
+        if (SomeThingsFloatMod.instance.Settings.VerboseLogging || force)
         {
             Log.Message($"[SomeThingsFloat]: {message}");
         }

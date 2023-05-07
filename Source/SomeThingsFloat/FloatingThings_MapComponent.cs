@@ -400,6 +400,7 @@ public class FloatingThings_MapComponent : MapComponent
             var currentMarketValue = 0f;
             var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
                     where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
+                                                    && !SomeThingsFloat.AquaticRaces.Contains(kindDef.race)
                     select kindDef)
                 .RandomElement();
             Faction faction = null;
@@ -571,12 +572,21 @@ public class FloatingThings_MapComponent : MapComponent
         {
             foreach (var possibleThing in possibleThings)
             {
-                if (possibleThing == null || possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+                if (possibleThing == null)
                 {
                     continue;
                 }
 
-                SomeThingsFloat.LogMessage($"{possibleThing} float-value?");
+                if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+                {
+                    continue;
+                }
+
+                if (possibleThing is Pawn pawn && SomeThingsFloat.AquaticRaces.Contains(pawn.def))
+                {
+                    continue;
+                }
+
                 floatingValues[possibleThing] = SomeThingsFloat.GetFloatingValue(possibleThing);
                 SomeThingsFloat.LogMessage($"{possibleThing} float-value: {floatingValues[possibleThing]}");
                 if (!(floatingValues[possibleThing] > 0))
@@ -643,6 +653,11 @@ public class FloatingThings_MapComponent : MapComponent
         for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
         {
             var pawn = map.mapPawns.AllPawns[index];
+            if (SomeThingsFloat.AquaticRaces.Contains(pawn.def))
+            {
+                continue;
+            }
+
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
             if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null)
             {
@@ -774,9 +789,9 @@ public class FloatingThings_MapComponent : MapComponent
         for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
         {
             var pawn = map.mapPawns.AllPawns[index];
+
             if (pawn == null || pawn.Dead || SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
-                !pawn.Downed ||
-                !pawn.Awake())
+                SomeThingsFloat.AquaticRaces.Contains(pawn.def) || !pawn.Downed || !pawn.Awake())
             {
                 continue;
             }
