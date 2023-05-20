@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.31 - Updated chinese translation, thanks shiuanyue
+
+
 1.4.30 - Aquatic animals from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2038001322]Biomes! Islands[/url] will no longer loose their footing or drown
 
 
