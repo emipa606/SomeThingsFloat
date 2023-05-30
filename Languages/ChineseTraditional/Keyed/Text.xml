@@ -1,9 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <STF.VerboseLogging>詳細記錄</STF.VerboseLogging>
   <STF.VerboseLoggingTT>用於調試</STF.VerboseLoggingTT>
-  <STF.ForbidWhenMoving>禁止儲存區物品漂離</STF.ForbidWhenMoving>
-  <STF.ForbidWhenMovingTT>關閉後，從儲存區中漂走的物品標記為【禁用】。這將阻止單位不斷來回搬運。『譯者:此選項關閉後，你在河流上設置了停屍區，屍體漂走時，你家殖民者跟機械族不會像傻瓜一樣來回搬。』</STF.ForbidWhenMovingTT>
+  <STF.ForbidWhenMoving>儲存區－物品漂離</STF.ForbidWhenMoving>
+  <STF.ForbidWhenMovingTT>關閉後，若儲存區設至在水域上，當中物品漂走自動標記為【禁用】。這將阻止單位不斷來回搬運。『譯者:在河流上設置了停屍區，屍體漂走時，你家殖民者跟機械族不會像傻瓜一樣來回搬。』</STF.ForbidWhenMovingTT>
   <STF.RelativeFloatSpeed>相對漂浮速度 {0}</STF.RelativeFloatSpeed>
   <STF.RelativeFloatSpeedTT>漂浮速度越慢，物品位置的變化頻率就會越低，這會降低模組的性能需求。</STF.RelativeFloatSpeedTT>
   <STF.FloatUnderBridges>漂流物經過橋下</STF.FloatUnderBridges>
@@ -17,11 +17,11 @@
   <STF.ManipulationThreshold>操作閾值: {0}</STF.ManipulationThreshold>
   <STF.ManipulationThresholdTT>水中行走時，操作值低於此值時可能滑倒。</STF.ManipulationThresholdTT>
   <STF.RelativeChanceInShallows>淺水相對滑倒機率: {0}</STF.RelativeChanceInShallows>
-  <STF.RelativeChanceInShallowsTT>在淺水中失去立足點的機率受此設置進一步限制。包括名稱中帶有"shallow"或可轉形態（如沼澤）的地形。</STF.RelativeChanceInShallowsTT>
+  <STF.RelativeChanceInShallowsTT>該設定調整在淺水地形(含沼澤)移動時滑倒的機率。</STF.RelativeChanceInShallowsTT>
   <STF.AllowOnStuck>自動允許－攔截物</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>將自動允許水柵跟漂網卡住阻擋的物品。</STF.AllowOnStuckTT>
   <STF.DespawnAtMapEdge>漂離地圖</STF.DespawnAtMapEdge>
-  <STF.DespawnAtMapEdgeTT>漂浮的東西會消失而不是被地圖邊緣擋住。</STF.DespawnAtMapEdgeTT>
+  <STF.DespawnAtMapEdgeTT>物品漂到邊緣時會直接消失。</STF.DespawnAtMapEdgeTT>
   <STF.SpawnNewItemsDisabled>模組設置中已禁用物品生成</STF.SpawnNewItemsDisabled>
   <STF.SpawnNewItems>啟用漂流物生成</STF.SpawnNewItems>
   <STF.SpawnNewItemsTT>啟用後，如果地圖有流動河流，會在邊緣生成。</STF.SpawnNewItemsTT>
@@ -36,7 +36,7 @@
   <STF.SpawnLivingPawns>生成－存活單位（倒地）。</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>啟用後，河流會生成倒地單位(還有一口氣)，如果你願意，可以選擇營救。</STF.SpawnLivingPawnsTT>
   <STF.SpawnInOceanTiles>允許海洋生成</STF.SpawnInOceanTiles>
-  <STF.SpawnInOceanTilesTT>海洋類形的地塊也可以生城物品，但無法保證會留在地圖上。</STF.SpawnInOceanTilesTT>
+  <STF.SpawnInOceanTilesTT>海洋區域也可以生城物品，但無法保證會留在地圖上。</STF.SpawnInOceanTilesTT>
   <STF.NotifyOfSpawningItems>生成通知</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>顯示河流生成物品的消息</STF.NotifyOfSpawningItemsTT>
   <STF.ReservedItemsWillNotMove>保留物品不移動</STF.ReservedItemsWillNotMove>
@@ -53,7 +53,7 @@
   <STF.PawnHasFallen>{0}在水中滑倒了！</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0}在水中滑倒了，越漂越遠！</STF.PawnHasFallenAndFloats>
   <STF.PawnIsLostTitle>{0}被沖走了</STF.PawnIsLostTitle>
-  <STF.PawnIsLostMessage>未能救援{0}上岸，已經漂出了視線之外。希望老天保佑，但你可能再也見不到{0}了。</STF.PawnIsLostMessage>
+  <STF.PawnIsLostMessage>未能救援{0}上岸，已經漂出了視線之外，希望老天保佑。但你可能再也見不到{0}了。</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>落水者求救</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>發現有人落水，向你發出求救信號</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>模組版本：{0}</STF.CurrentModVersion>
