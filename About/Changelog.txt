@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.32 - Updated chinese translation, thanks shiuanyue
+
+
 1.4.31 - Updated chinese translation, thanks shiuanyue
 
 
