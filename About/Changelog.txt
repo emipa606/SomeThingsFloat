@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.33 - Clears the underbridges cache if the option is turned off
+
+
 1.4.32 - Updated chinese translation, thanks shiuanyue
 
 

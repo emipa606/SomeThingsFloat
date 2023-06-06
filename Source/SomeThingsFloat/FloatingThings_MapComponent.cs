@@ -305,6 +305,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (!SomeThingsFloatMod.instance.Settings.FloatUnderBridges)
         {
+            underCellsWithWater = new List<IntVec3>();
             return;
         }
 
