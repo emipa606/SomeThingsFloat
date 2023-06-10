@@ -25,6 +25,11 @@ public class Alert_ThingsUnderBridge : Alert
 
     public override AlertReport GetReport()
     {
+        if (!SomeThingsFloatMod.instance.Settings.FloatUnderBridgesInfo)
+        {
+            return false;
+        }
+
         var things = thingsUnderBridge(out var map);
         if (things == null || !things.Any())
         {

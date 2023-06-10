@@ -8,6 +8,8 @@
   <STF.RelativeFloatSpeedTT>A slower floating speed will cause item positions to change less frequently and lower the performance need for the mod.</STF.RelativeFloatSpeedTT>
   <STF.FloatUnderBridges>Things can float under bridges</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
+  <STF.FloatUnderBridgesInfo>   Nofify on items under bridges</STF.FloatUnderBridgesInfo>
+  <STF.FloatUnderBridgesInfoTT>Show a message when there are items floating under bridges</STF.FloatUnderBridgesInfoTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
   <STF.DownedPawnsDrown>Downed pawns in non-shallow water can drown</STF.DownedPawnsDrown>

@@ -64,6 +64,13 @@ internal class SomeThingsFloatMod : Mod
             "STF.ForbidWhenMovingTT".Translate());
         listing_Standard.CheckboxLabeled("STF.FloatUnderBridges".Translate(), ref Settings.FloatUnderBridges,
             "STF.FloatUnderBridgesTT".Translate());
+        if (Settings.FloatUnderBridges)
+        {
+            listing_Standard.CheckboxLabeled("STF.FloatUnderBridgesInfo".Translate(),
+                ref Settings.FloatUnderBridgesInfo,
+                "STF.FloatUnderBridgesInfoTT".Translate());
+        }
+
         listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
             "STF.DownedPawnsFloatTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsDrown".Translate(), ref Settings.DownedPawnsDrown,

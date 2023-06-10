@@ -13,6 +13,7 @@ internal class SomeThingsFloatSettings : ModSettings
     public bool DownedPawnsDrown = true;
     public bool DownedPawnsFloat = true;
     public bool FloatUnderBridges = true;
+    public bool FloatUnderBridgesInfo = true;
     public bool ForbidSpawningItems;
     public bool ForbidWhenMoving = true;
     public bool HaulUrgently;
@@ -47,6 +48,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref AllowOnStuck, "AllowOnStuck", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
+        Scribe_Values.Look(ref FloatUnderBridgesInfo, "FloatUnderBridgesInfo", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);
         Scribe_Values.Look(ref SpawnNewItems, "SpawnNewItems", true);
         Scribe_Values.Look(ref DownedPawnsFloat, "DownedPawnsFloat", true);

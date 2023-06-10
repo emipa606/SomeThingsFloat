@@ -58,4 +58,6 @@
   <STF.RelativeChanceInShallows>Относительная вероятность падения на мелководье: {0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>Шанс потерять опору на мелководье дополнительно ограничивается этой настройкой. К мелким водам относятся все, в названии которых есть слово "мелкий" или которые могут пересыхать во что-то другое, например в болото.</STF.RelativeChanceInShallowsTT>
   <STF.SpawnNewItemsDisabled>Порождение предметов отключено в настройках мода</STF.SpawnNewItemsDisabled>
+  <STF.FloatUnderBridgesInfo>Нотификация на предметы под мостами</STF.FloatUnderBridgesInfo>
+  <STF.FloatUnderBridgesInfoTT>Показывать сообщение, когда под мостами плавают предметы</STF.FloatUnderBridgesInfoTT>
 </LanguageData>

@@ -58,4 +58,6 @@
   <STF.RelativeChanceInShallows>Relative Fallwahrscheinlichkeit in flachen Gewässern: {0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>Die Gefahr, in flachen Gewässern den Halt zu verlieren, wird durch diese Einstellung weiter eingeschränkt. Zu den seichten Gewässern gehören alle, die "seicht" im Namen tragen oder zu etwas anderem, wie z. B. Sumpf, austrocknen können.</STF.RelativeChanceInShallowsTT>
   <STF.SpawnNewItemsDisabled>Spawning von Gegenständen ist in den Mod-Einstellungen deaktiviert</STF.SpawnNewItemsDisabled>
+  <STF.FloatUnderBridgesInfo>Nofify auf Gegenstände unter Brücken</STF.FloatUnderBridgesInfo>
+  <STF.FloatUnderBridgesInfoTT>Anzeige einer Meldung, wenn Gegenstände unter Brücken schwimmen</STF.FloatUnderBridgesInfoTT>
 </LanguageData>

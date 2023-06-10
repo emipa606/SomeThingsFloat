@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.34 - Added option to turn off message about things floating under bridges.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.33 - Clears the underbridges cache if the option is turned off
 
 

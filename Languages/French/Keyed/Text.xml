@@ -58,4 +58,6 @@
   <STF.RelativeChanceInShallows>Chance de chute relative dans les eaux peu profondes : {0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>Le risque de perdre pied dans les eaux peu profondes est encore plus limité par ce paramètre. Les eaux peu profondes comprennent toutes les eaux dont le nom contient le mot "peu profond" ou qui peuvent se transformer en quelque chose d'autre, comme les marais.</STF.RelativeChanceInShallowsTT>
   <STF.SpawnNewItemsDisabled>L'apparition des objets est désactivée dans les paramètres du mod.</STF.SpawnNewItemsDisabled>
+  <STF.FloatUnderBridgesInfo>Nofify sur les éléments sous les ponts</STF.FloatUnderBridgesInfo>
+  <STF.FloatUnderBridgesInfoTT>Afficher un message lorsque des objets flottent sous les ponts</STF.FloatUnderBridgesInfoTT>
 </LanguageData>
