@@ -17,10 +17,27 @@
     <neverMultiSelect>true</neverMultiSelect>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <linkType>Basic</linkType>
+      <linkType>Asymmetric</linkType>
       <linkFlags>
-        <li>404</li>
+        <li>Fences</li>
       </linkFlags>
+      <asymmetricLink>
+        <linkFlags>
+          <li>Wall</li>
+          <li>Rock</li>
+        </linkFlags>
+        <linkToDoors>true</linkToDoors>
+        <drawDoorBorderEast>
+          <color>(0,0,0)</color>
+          <size>(0.04, 0.77)</size>
+          <offset>(0.5, 0, -0.08)</offset>
+        </drawDoorBorderEast>
+        <drawDoorBorderWest>
+          <color>(0,0,0)</color>
+          <size>(0.04, 0.77)</size>
+          <offset>(-0.5, 0, -0.08)</offset>
+        </drawDoorBorderWest>
+      </asymmetricLink>
     </graphicData>
     <building>
       <allowAutoroof>false</allowAutoroof>

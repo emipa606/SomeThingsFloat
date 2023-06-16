@@ -17,6 +17,7 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
     private List<IntVec3> hiddenPositionsValues;
+    private readonly List<AltitudeLayer> ignoredAltitudeLayers;
     private int lastSpawnTick;
     private List<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
@@ -39,6 +40,16 @@ public class FloatingThings_MapComponent : MapComponent
         hiddenPositions = new Dictionary<Thing, IntVec3>();
         hiddenPositionsKeys = new List<Thing>();
         hiddenPositionsValues = new List<IntVec3>();
+        ignoredAltitudeLayers = new List<AltitudeLayer>
+        {
+            AltitudeLayer.Blueprint,
+            AltitudeLayer.Conduits,
+            AltitudeLayer.Filth,
+            AltitudeLayer.Gas,
+            AltitudeLayer.FogOfWar,
+            AltitudeLayer.SmallWire,
+            AltitudeLayer.Weather
+        };
         lastSpawnTick = 0;
     }
 
@@ -869,7 +880,8 @@ public class FloatingThings_MapComponent : MapComponent
             if (foundBuilding != null &&
                 (foundBuilding.def != ThingDefOf.STF_Bars || SomeThingsFloat.IsLargeThing(thing)) &&
                 !foundBuilding.def.IsBlueprint &&
-                !foundBuilding.def.IsFrame)
+                !foundBuilding.def.IsFrame &&
+                !ignoredAltitudeLayers.Contains(foundBuilding.def.altitudeLayer))
             {
                 SomeThingsFloat.LogMessage($"{thing} is on something else, assuming it should not move");
                 resultingCell = originalPosition;

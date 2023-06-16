@@ -11,7 +11,7 @@ There is a possibility that things spawn in the river that you can get use of, o
 
 There is also bars and nets that can be built in water. The bars can catch large objects like corpses, living pawns, weapons and apparel while the metal net can catch all items.
 
-Pawns may also loose their footing in moving water. They can also drown if being downed in water. Certain apparel will prevent this, such as the power-armor helmet. Any headgear with the EVA-tag from SOS2 will be considered a breathable helmet.
+Pawns may also loose their footing in moving water. They can also drown if being downed in water. Certain apparel will prevent this, such as the power-armor helmet. Any headgear with the EVA-tag from SOS2 will be considered a breathable helmet. To avoid guests and pawns accidentally being swept away I suggest using https://steamcommunity.com/sharedfiles/filedetails/?id=2603765747]Clean Pathfinding 2 to make pawns prefer roads and bridges. Combine it with https://steamcommunity.com/sharedfiles/filedetails/?id=2824117092]Enter Here to make pawns spawn in near roads.
 
 If https://steamcommunity.com/sharedfiles/filedetails/?id=1542399915]SwimmingKit is loaded, pawns with higher swimspeed will float slower when downed. Also pawns with the Nimble trait will be half as likely to loose their footing. Aquatic animals from https://steamcommunity.com/sharedfiles/filedetails/?id=2038001322]Biomes! Islands will not loose their footing or drown.
 
@@ -41,4 +41,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/VWG0yff.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-06-10
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-06-16
