@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.36 - Updated chinese translation, thanks shiuanyue
+
+
 1.4.35 - Things should no longer get stuck to buildings like underwater powerconduits. Fences should link better with other fences.
 
 
