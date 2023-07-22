@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.37 - Added some extra nullchecks in FloatingThings_MapComponent.unspawnedDeteriorationRate
+
+
 1.4.36 - Updated chinese translation, thanks shiuanyue
 
 

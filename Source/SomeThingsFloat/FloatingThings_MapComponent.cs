@@ -9,6 +9,7 @@ namespace SomeThingsFloat;
 
 public class FloatingThings_MapComponent : MapComponent
 {
+    private readonly List<AltitudeLayer> ignoredAltitudeLayers;
     private readonly List<IntVec3> mapEdgeCells;
     private List<IntVec3> cellsWithRiver;
     private List<IntVec3> cellsWithWater;
@@ -17,7 +18,6 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
     private List<IntVec3> hiddenPositionsValues;
-    private readonly List<AltitudeLayer> ignoredAltitudeLayers;
     private int lastSpawnTick;
     private List<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
@@ -1071,6 +1071,11 @@ public class FloatingThings_MapComponent : MapComponent
 
     private float unspawnedDeteriorationRate(Thing thing)
     {
+        if (thing == null)
+        {
+            return 0f;
+        }
+
         var num = thing.GetStatValue(StatDefOf.DeteriorationRate, false);
 
         if (!thing.def.deteriorateFromEnvironmentalEffects)
@@ -1078,9 +1083,20 @@ public class FloatingThings_MapComponent : MapComponent
             return num;
         }
 
+        if (hiddenPositions == null || !hiddenPositions.ContainsKey(thing))
+        {
+            return num;
+        }
+
+        var underTerrain = map.terrainGrid?.UnderTerrainAt(hiddenPositions[thing]);
+
         num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetUnroofed;
         num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetOutdoors;
-        num *= map.terrainGrid.UnderTerrainAt(hiddenPositions[thing]).extraDeteriorationFactor;
+        if (underTerrain != null)
+        {
+            num *= underTerrain.extraDeteriorationFactor;
+        }
+
         return num;
     }
 
