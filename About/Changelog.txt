@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.38 - Should now ignore all vehicles using the [url=https://steamcommunity.com/workshop/filedetails/?id=3014915404]Vehicle Framework[/url]
+
+
 1.4.37 - Added some extra nullchecks in FloatingThings_MapComponent.unspawnedDeteriorationRate
 
 

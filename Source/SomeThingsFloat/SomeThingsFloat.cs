@@ -27,6 +27,8 @@ public class SomeThingsFloat
 
     public static readonly List<ThingDef> AquaticRaces;
 
+    public static readonly List<ThingDef> Vehicles;
+
     public static readonly bool SwimmingKitLoaded;
 
     static SomeThingsFloat()
@@ -49,6 +51,15 @@ public class SomeThingsFloat
         SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit") != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
             def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToList();
+
+        Vehicles = new List<ThingDef>();
+        if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework") != null)
+        {
+            Vehicles = DefDatabase<ThingDef>.AllDefsListForReading
+                .Where(def => def.thingClass.Name.Contains("VehiclePawn")).ToList();
+            LogMessage($"Found {Vehicles.Count} vehicles to ignore: {string.Join(", ", Vehicles)}", true);
+        }
+
         AquaticRaces = new List<ThingDef>();
         if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") == null)
         {

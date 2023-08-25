@@ -41,4 +41,4 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/VWG0yff.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-07-22
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-08-25

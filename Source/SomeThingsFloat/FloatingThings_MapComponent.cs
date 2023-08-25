@@ -413,6 +413,7 @@ public class FloatingThings_MapComponent : MapComponent
             var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
                     where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
                                                     && !SomeThingsFloat.AquaticRaces.Contains(kindDef.race)
+                                                    && !SomeThingsFloat.Vehicles.Contains(kindDef.race)
                     select kindDef)
                 .RandomElement();
             Faction faction = null;
@@ -594,7 +595,8 @@ public class FloatingThings_MapComponent : MapComponent
                     continue;
                 }
 
-                if (possibleThing is Pawn pawn && SomeThingsFloat.AquaticRaces.Contains(pawn.def))
+                if (possibleThing is Pawn pawn && (SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
+                                                   SomeThingsFloat.Vehicles.Contains(pawn.def)))
                 {
                     continue;
                 }
@@ -665,7 +667,7 @@ public class FloatingThings_MapComponent : MapComponent
         for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
         {
             var pawn = map.mapPawns.AllPawns[index];
-            if (SomeThingsFloat.AquaticRaces.Contains(pawn.def))
+            if (SomeThingsFloat.AquaticRaces.Contains(pawn.def) || SomeThingsFloat.Vehicles.Contains(pawn.def))
             {
                 continue;
             }
@@ -803,7 +805,8 @@ public class FloatingThings_MapComponent : MapComponent
             var pawn = map.mapPawns.AllPawns[index];
 
             if (pawn == null || pawn.Dead || SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
-                SomeThingsFloat.AquaticRaces.Contains(pawn.def) || !pawn.Downed || !pawn.Awake())
+                SomeThingsFloat.AquaticRaces.Contains(pawn.def) || SomeThingsFloat.Vehicles.Contains(pawn.def) ||
+                !pawn.Downed || !pawn.Awake())
             {
                 continue;
             }
