@@ -60,4 +60,10 @@
   <STF.SpawnNewItemsDisabled>在mod-settings中禁用物品的再生。</STF.SpawnNewItemsDisabled>
   <STF.FloatUnderBridgesInfo>桥下项目的Nofify</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>桥下有物品漂浮时显示信息</STF.FloatUnderBridgesInfoTT>
+  <STF.SmoothAnimation>使用流畅的浮动动画</STF.SmoothAnimation>
+  <STF.SmoothAnimationTT>浮动时，内容会在单元格之间平滑移动。这会增加一些计算量，因此如果发现性能下降，请禁用它。</STF.SmoothAnimationTT>
+  <STF.Bobbing>添加晃动动画</STF.Bobbing>
+  <STF.BobbingTT>漂浮物会做小幅度的圆周运动。</STF.BobbingTT>
+  <STF.SpawnFertilizedEggs>让受精卵产卵</STF.SpawnFertilizedEggs>
+  <STF.SpawnFertilizedEggsTT>受精卵可以产卵，这些卵孵化出的动物将被视为蚁群的一部分。</STF.SpawnFertilizedEggsTT>
 </LanguageData>

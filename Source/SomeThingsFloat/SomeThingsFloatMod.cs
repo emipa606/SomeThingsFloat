@@ -16,7 +16,7 @@ internal class SomeThingsFloatMod : Mod
 
     private static string currentVersion;
 
-    private Vector2 scrollPosition;
+    //private Vector2 scrollPosition;
 
     /// <summary>
     ///     Constructor
@@ -51,12 +51,13 @@ internal class SomeThingsFloatMod : Mod
     public override void DoSettingsWindowContents(Rect rect)
     {
         var viewContainer = rect.ContractedBy(10);
-        var innerContainer = viewContainer.ContractedBy(6);
-        innerContainer.width -= 20;
-        innerContainer.height += 100;
-        Widgets.BeginScrollView(viewContainer, ref scrollPosition, innerContainer);
+        //var innerContainer = viewContainer.ContractedBy(6);
+        //innerContainer.width -= 20;
+        //innerContainer.height += 180;
+        //Widgets.BeginScrollView(viewContainer, ref scrollPosition, innerContainer);
         var listing_Standard = new Listing_Standard();
-        listing_Standard.Begin(innerContainer);
+        listing_Standard.Begin(viewContainer);
+        listing_Standard.ColumnWidth = (viewContainer.width / 2) - 20;
         Settings.RelativeFloatSpeed = listing_Standard.SliderLabeled(
             "STF.RelativeFloatSpeed".Translate(Settings.RelativeFloatSpeed.ToStringPercent()),
             Settings.RelativeFloatSpeed, 0.1f, 2.5f, 0.5f, "STF.RelativeFloatSpeedTT".Translate());
@@ -69,6 +70,14 @@ internal class SomeThingsFloatMod : Mod
             listing_Standard.CheckboxLabeled("STF.FloatUnderBridgesInfo".Translate(),
                 ref Settings.FloatUnderBridgesInfo,
                 "STF.FloatUnderBridgesInfoTT".Translate());
+        }
+
+        listing_Standard.CheckboxLabeled("STF.SmoothAnimation".Translate(), ref Settings.SmoothAnimation,
+            "STF.SmoothAnimationTT".Translate());
+        if (Settings.SmoothAnimation)
+        {
+            listing_Standard.CheckboxLabeled("STF.Bobbing".Translate(), ref Settings.Bobbing,
+                "STF.BobbingTT".Translate());
         }
 
         listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
@@ -93,6 +102,7 @@ internal class SomeThingsFloatMod : Mod
             Settings.RelativeChanceInShallows = listing_Standard.Slider(Settings.RelativeChanceInShallows, 0, 1f);
         }
 
+        listing_Standard.NewColumn();
         listing_Standard.CheckboxLabeled("STF.ReservedItemsWillNotMove".Translate(),
             ref Settings.ReservedItemsWillNotMove,
             "STF.ReservedItemsWillNotMoveTT".Translate());
@@ -148,6 +158,8 @@ internal class SomeThingsFloatMod : Mod
 
             listing_Standard.CheckboxLabeled("STF.SpawnLivingPawns".Translate(), ref Settings.SpawnLivingPawns,
                 "STF.SpawnLivingPawnsTT".Translate());
+            listing_Standard.CheckboxLabeled("STF.SpawnFertilizedEggs".Translate(), ref Settings.SpawnFertilizedEggs,
+                "STF.SpawnFertilizedEggsTT".Translate());
             listing_Standard.CheckboxLabeled("STF.NotifyOfSpawningItems".Translate(),
                 ref Settings.NotifyOfSpawningItems,
                 "STF.NotifyOfSpawningItemsTT".Translate());
@@ -164,6 +176,6 @@ internal class SomeThingsFloatMod : Mod
         }
 
         listing_Standard.End();
-        Widgets.EndScrollView();
+        //Widgets.EndScrollView();
     }
 }

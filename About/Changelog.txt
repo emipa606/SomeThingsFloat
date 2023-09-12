@@ -1,5 +1,12 @@
 # Changelog for SomeThingsFloat
 
+1.4.39 - Added setting for not spawning fertilized eggs
+Added support for [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3006527110]Advanced Bridges[/url]
+Added smooth animations where items actually looks like they are floating along the water
+Added bobbing animation where items also move in a small circle to simulate waves.
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.4.38 - Should now ignore all vehicles using the [url=https://steamcommunity.com/workshop/filedetails/?id=3014915404]Vehicle Framework[/url]
 
 

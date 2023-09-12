@@ -8,7 +8,7 @@
   <STF.RelativeFloatSpeedTT>A slower floating speed will cause item positions to change less frequently and lower the performance need for the mod.</STF.RelativeFloatSpeedTT>
   <STF.FloatUnderBridges>Things can float under bridges</STF.FloatUnderBridges>
   <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
-  <STF.FloatUnderBridgesInfo>   Nofify on items under bridges</STF.FloatUnderBridgesInfo>
+  <STF.FloatUnderBridgesInfo>   Notify on items under bridges</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Show a message when there are items floating under bridges</STF.FloatUnderBridgesInfoTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
@@ -20,6 +20,10 @@
   <STF.ManipulationThresholdTT>The manipulation value below witch pawns can loose their footing when walking in water</STF.ManipulationThresholdTT>
   <STF.RelativeChanceInShallows>Relative fall-chance in shallow waters: {0}</STF.RelativeChanceInShallows>
   <STF.RelativeChanceInShallowsTT>Chance of loosing footing in shallow waters is further limited by this setting. Shallow waters include all with "shallow" in the name or that can dry into something else, like Marsh.</STF.RelativeChanceInShallowsTT>
+  <STF.SmoothAnimation>Use smooth floating animation</STF.SmoothAnimation>
+  <STF.SmoothAnimationTT>Things will move smoothly from cell to cell when floating. This adds some calculations so disable it if you notice a performance loss.</STF.SmoothAnimationTT>
+  <STF.Bobbing>   Add bobbing animation</STF.Bobbing>
+  <STF.BobbingTT>Floating things will move in a small circular motion.</STF.BobbingTT>
   <STF.AllowOnStuck>Allow caught items</STF.AllowOnStuck>
   <STF.AllowOnStuckTT>Will automatically allow items that gets stuck in a net or blocked by bars</STF.AllowOnStuckTT>
   <STF.DespawnAtMapEdge>Despawn at map-edge</STF.DespawnAtMapEdge>
@@ -39,6 +43,8 @@
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn. You can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.SpawnInOceanTiles>Allow spawning in on ocean-tiles</STF.SpawnInOceanTiles>
   <STF.SpawnInOceanTilesTT>Things can also spawn in on edge-tiles of ocean type, no guarantees for it to stay on the map.</STF.SpawnInOceanTilesTT>
+  <STF.SpawnFertilizedEggs>Allow fertilized eggs to spawn</STF.SpawnFertilizedEggs>
+  <STF.SpawnFertilizedEggsTT>Fertilized eggs can spawn, hatched animals from these eggs will be considered part of the colony.</STF.SpawnFertilizedEggsTT>
   <STF.NotifyOfSpawningItems>Notify on all spawning items</STF.NotifyOfSpawningItems>
   <STF.NotifyOfSpawningItemsTT>Will show a message about anything spawning in the river</STF.NotifyOfSpawningItemsTT>
   <STF.ReservedItemsWillNotMove>Reserved items will not move</STF.ReservedItemsWillNotMove>
@@ -55,8 +61,8 @@
   <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>
   <STF.PawnIsLostTitle>{0} has floated away</STF.PawnIsLostTitle>
-  <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselved but you may never see them again.</STF.PawnIsLostMessage>
-  <STF.PawnSpawnedTitle>Someone is struggeling in the river</STF.PawnSpawnedTitle>
+  <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselves but you may never see them again.</STF.PawnIsLostMessage>
+  <STF.PawnSpawnedTitle>Someone is struggling in the river</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>You notice someone in the water, they signal you for help</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>Installed mod-version: {0}</STF.CurrentModVersion>
 </LanguageData>

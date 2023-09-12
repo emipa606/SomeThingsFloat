@@ -60,4 +60,10 @@
   <STF.SpawnNewItemsDisabled>Порождение предметов отключено в настройках мода</STF.SpawnNewItemsDisabled>
   <STF.FloatUnderBridgesInfo>Нотификация на предметы под мостами</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Показывать сообщение, когда под мостами плавают предметы</STF.FloatUnderBridgesInfoTT>
+  <STF.SmoothAnimation>Использование плавной плавающей анимации</STF.SmoothAnimation>
+  <STF.SmoothAnimationTT>При плавающем режиме все будет плавно перемещаться из ячейки в ячейку. Это добавляет некоторые вычисления, поэтому отключите его, если вы заметили снижение производительности.</STF.SmoothAnimationTT>
+  <STF.Bobbing>Добавить анимацию движения</STF.Bobbing>
+  <STF.BobbingTT>Плавающие предметы будут двигаться небольшими круговыми движениями.</STF.BobbingTT>
+  <STF.SpawnFertilizedEggs>Позволить оплодотворенным икринкам нереститься</STF.SpawnFertilizedEggs>
+  <STF.SpawnFertilizedEggsTT>Оплодотворенные яйца могут нереститься, вылупившиеся из них особи будут считаться частью колонии.</STF.SpawnFertilizedEggsTT>
 </LanguageData>

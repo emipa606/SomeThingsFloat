@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<HugsLib.UpdateFeatureDef Abstract="true" Name="SomeThingsFloat_UpdateFeatureBase">
+		<modNameReadable>SomeThingsFloat</modNameReadable>
+		<linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2940072380</linkUrl>
+	</HugsLib.UpdateFeatureDef>
+	<HugsLib.UpdateFeatureDef ParentName="SomeThingsFloat_UpdateFeatureBase">
+		<defName>SomeThingsFloat_1_4_39</defName>
+		<assemblyVersion>1.4.39</assemblyVersion>
+		<content>This update brings a smoother movement of floating items.
+Things will not jump from cell to cell but instead smoothly transition between them.
+There is also a slight bobbing motion to simulate waves.
+Both these options can be disabled in the mod-settings if distracting or if causing performance issues.
+I hope this will add some realism to the mod!</content>
+	</HugsLib.UpdateFeatureDef>
+</Defs>
+

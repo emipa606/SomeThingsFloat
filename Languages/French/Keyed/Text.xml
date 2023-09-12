@@ -60,4 +60,10 @@
   <STF.SpawnNewItemsDisabled>L'apparition des objets est désactivée dans les paramètres du mod.</STF.SpawnNewItemsDisabled>
   <STF.FloatUnderBridgesInfo>Nofify sur les éléments sous les ponts</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Afficher un message lorsque des objets flottent sous les ponts</STF.FloatUnderBridgesInfoTT>
+  <STF.SmoothAnimation>Utiliser une animation flottante fluide</STF.SmoothAnimation>
+  <STF.SmoothAnimationTT>Les objets se déplacent doucement d'une cellule à l'autre lorsqu'ils flottent. Cela ajoute quelques calculs, donc désactivez-le si vous remarquez une perte de performance.</STF.SmoothAnimationTT>
+  <STF.Bobbing>Ajout d'une animation de bobbing</STF.Bobbing>
+  <STF.BobbingTT>Les objets flottants se déplacent dans un petit mouvement circulaire.</STF.BobbingTT>
+  <STF.SpawnFertilizedEggs>Permettre aux œufs fécondés de se reproduire</STF.SpawnFertilizedEggs>
+  <STF.SpawnFertilizedEggsTT>Les œufs fécondés peuvent se reproduire, les animaux issus de ces œufs seront considérés comme faisant partie de la colonie.</STF.SpawnFertilizedEggsTT>
 </LanguageData>

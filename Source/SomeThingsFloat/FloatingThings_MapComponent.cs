@@ -10,6 +10,7 @@ namespace SomeThingsFloat;
 public class FloatingThings_MapComponent : MapComponent
 {
     private readonly List<AltitudeLayer> ignoredAltitudeLayers;
+    private readonly Dictionary<Thing, Tuple<int, IntVec3>> lastPositions;
     private readonly List<IntVec3> mapEdgeCells;
     private List<IntVec3> cellsWithRiver;
     private List<IntVec3> cellsWithWater;
@@ -35,6 +36,7 @@ public class FloatingThings_MapComponent : MapComponent
         mapEdgeCells = new List<IntVec3>();
         floatingValues = new Dictionary<Thing, float>();
         updateValues = new Dictionary<int, Thing>();
+        lastPositions = new Dictionary<Thing, Tuple<int, IntVec3>>();
         updateValuesKeys = new List<int>();
         updateValuesValues = new List<Thing>();
         hiddenPositions = new Dictionary<Thing, IntVec3>();
@@ -100,6 +102,10 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 SomeThingsFloat.LogMessage($"{destroyedThing} is destroyed, removing");
                 hiddenPositions.Remove(destroyedThing);
+                if (lastPositions.ContainsKey(destroyedThing))
+                {
+                    lastPositions.Remove(destroyedThing);
+                }
             }
 
             foreach (var respawningThing in thingsToRespawn)
@@ -112,8 +118,24 @@ public class FloatingThings_MapComponent : MapComponent
                     radius++;
                 }
 
-                GenPlace.TryPlaceThing(respawningThing, spawnCell, map, ThingPlaceMode.Direct);
+                if (GenPlace.TryPlaceThing(respawningThing, spawnCell, map, ThingPlaceMode.Direct))
+                {
+                    lastPositions[respawningThing] = new Tuple<int, IntVec3>(GenTicks.TicksGame, spawnCell);
+                }
+
                 hiddenPositions.Remove(respawningThing);
+            }
+        }
+
+        if ((SomeThingsFloatMod.instance.Settings.Bobbing || SomeThingsFloatMod.instance.Settings.SmoothAnimation) &&
+            updateValues.Any())
+        {
+            foreach (var thingToUpdate in updateValues.Values)
+            {
+                if (thingToUpdate.def.drawerType != DrawerType.RealtimeOnly)
+                {
+                    thingToUpdate.DirtyMapMesh(map);
+                }
             }
         }
 
@@ -124,12 +146,21 @@ public class FloatingThings_MapComponent : MapComponent
 
         var thing = updateValues[ticksGame];
         updateValues.Remove(ticksGame);
+        if (thing == null)
+        {
+            return;
+        }
+
+        lastPositions[thing] = new Tuple<int, IntVec3>(GenTicks.TicksGame, thing.Position);
+
         if (!VerifyThingIsInWater(thing))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
-            if (thing != null)
+            floatingValues.Remove(thing);
+
+            if (lastPositions.ContainsKey(thing))
             {
-                floatingValues.Remove(thing);
+                lastPositions.Remove(thing);
             }
 
             return;
@@ -211,6 +242,11 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
+            if (lastPositions.ContainsKey(thing))
+            {
+                lastPositions.Remove(thing);
+            }
+
             thing.Destroy();
             return;
         }
@@ -223,6 +259,11 @@ public class FloatingThings_MapComponent : MapComponent
             if (thing.Spawned)
             {
                 thing.DeSpawn();
+            }
+
+            if (lastPositions.ContainsKey(thing))
+            {
+                lastPositions.Remove(thing);
             }
 
             return;
@@ -308,8 +349,16 @@ public class FloatingThings_MapComponent : MapComponent
         SomeThingsFloat.LogMessage("Updating water-cells");
         if (cellsWithWater == null || cellsWithRiver == null || !cellsWithWater.Any() || forceUpdate)
         {
-            cellsWithWater = map.AllCells.Where(vec3 => vec3.GetTerrain(map).IsWater).ToList();
-            cellsWithRiver = map.AllCells.Where(vec3 => vec3.GetTerrain(map).IsRiver).ToList();
+            cellsWithWater = map.AllCells.Where(vec3 =>
+            {
+                var terrain = vec3.GetTerrain(map);
+                return terrain.IsWater && !terrain.defName.ToLower().Contains("bridge");
+            }).ToList();
+            cellsWithRiver = map.AllCells.Where(vec3 =>
+            {
+                var terrain = vec3.GetTerrain(map);
+                return terrain.IsRiver && !terrain.defName.ToLower().Contains("bridge");
+            }).ToList();
             SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
             SomeThingsFloat.LogMessage($"Found {cellsWithRiver.Count} river-cells");
         }
@@ -326,7 +375,16 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         underCellsWithWater = map.AllCells
-            .Where(vec3 => map.terrainGrid.UnderTerrainAt(vec3)?.IsWater == true).ToList();
+            .Where(vec3 =>
+            {
+                if (map.terrainGrid.UnderTerrainAt(vec3)?.IsWater == true)
+                {
+                    return true;
+                }
+
+                var terrain = vec3.GetTerrain(map);
+                return terrain.IsWater && !cellsWithWater.Contains(vec3) && !cellsWithRiver.Contains(vec3);
+            }).ToList();
         SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
     }
 
@@ -512,7 +570,16 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         var thingToMake = SomeThingsFloat.ThingsToCreate
-            .Where(def => def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue).RandomElement();
+            .Where(def =>
+            {
+                if (!SomeThingsFloatMod.instance.Settings.SpawnFertilizedEggs)
+                {
+                    return def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue &&
+                           def.thingCategories?.Contains(ThingCategoryDefOf.EggsFertilized) == false;
+                }
+
+                return def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue;
+            }).RandomElement();
         var amountToSpawn =
             (int)Math.Floor(SomeThingsFloatMod.instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
 
@@ -565,6 +632,9 @@ public class FloatingThings_MapComponent : MapComponent
                     : "STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
                 MessageTypeDefOf.NeutralEvent);
         }
+
+
+        lastPositions[thing] = new Tuple<int, IntVec3>(GenTicks.TicksGame, thing.Position);
 
         if (!force)
         {
@@ -1144,5 +1214,50 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         return cellsWithWater?.Contains(thing.Position) == true;
+    }
+
+    public Vector3 GetNewCenter(Thing thing, Vector3 center)
+    {
+        var newPosition = center;
+        if (thing == null)
+        {
+            return newPosition;
+        }
+
+        var lastPosition = lastPositions.TryGetValue(thing);
+        if (lastPosition == null)
+        {
+            return newPosition;
+        }
+
+        if (lastPosition.Item2 == thing.Position)
+        {
+            return SomeThingsFloat.AddWave(newPosition, thing.thingIDNumber);
+        }
+
+        var xDifference = thing.Position.x - lastPosition.Item2.x;
+        var zDifference = thing.Position.z - lastPosition.Item2.z;
+
+        if (xDifference > 1.9f || xDifference < -1.9f || zDifference > 1.9f || zDifference < -1.9f)
+        {
+            return SomeThingsFloat.AddWave(newPosition, thing.thingIDNumber);
+        }
+
+        var nextMove =
+            updateValues.FirstOrFallback(pair => pair.Value == thing, new KeyValuePair<int, Thing>(-1, null));
+
+        if (nextMove.Value == null)
+        {
+            return SomeThingsFloat.AddWave(newPosition, thing.thingIDNumber);
+        }
+
+        var percentMoved = 1 - ((GenTicks.TicksGame - lastPosition.Item1) / (float)(nextMove.Key - lastPosition.Item1));
+
+        newPosition.x -= xDifference * percentMoved;
+        newPosition.z -= zDifference * percentMoved;
+
+        newPosition = SomeThingsFloat.AddWave(newPosition, thing.thingIDNumber);
+
+        return newPosition;
     }
 }

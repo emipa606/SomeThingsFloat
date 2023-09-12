@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<TabulaRasa.UpdateDef Abstract="true" Name="SomeThingsFloat_UpdateInfoBase">
+		<linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2940072380</linkUrl>
+		<banner>UpdateInfo/SomeThingsFloat</banner>
+	</TabulaRasa.UpdateDef>
+	<TabulaRasa.UpdateDef ParentName="SomeThingsFloat_UpdateInfoBase">
+		<defName>SomeThingsFloat_1_4_39</defName>
+		<date>2023/9/12</date>
+		<content>This update brings a smoother movement of floating items.
+Things will not jump from cell to cell but instead smoothly transition between them.
+There is also a slight bobbing motion to simulate waves.
+Both these options can be disabled in the mod-settings if distracting or if causing performance issues.
+I hope this will add some realism to the mod!</content>
+	</TabulaRasa.UpdateDef>
+</Defs>
+

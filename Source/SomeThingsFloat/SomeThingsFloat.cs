@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace SomeThingsFloat;
@@ -289,6 +290,26 @@ public class SomeThingsFloat
         }
 
         return returnValue;
+    }
+
+    public static Vector3 AddWave(Vector3 currentVector, int id)
+    {
+        if (!SomeThingsFloatMod.instance.Settings.Bobbing)
+        {
+            return currentVector;
+        }
+
+        var currentIteration = (GenTicks.TicksGame + id) % 1000 / 1000f;
+
+        var radius = 0.1f;
+        var angle = 360 * currentIteration;
+
+        var radians = angle * Math.PI / 180.0;
+
+        currentVector.x += (float)(radius * Math.Cos(radians));
+        currentVector.z += (float)(radius * Math.Sin(radians));
+
+        return currentVector;
     }
 
     public static void LogMessage(string message, bool force = false)

@@ -9,6 +9,7 @@ namespace SomeThingsFloat;
 internal class SomeThingsFloatSettings : ModSettings
 {
     public bool AllowOnStuck = true;
+    public bool Bobbing = true;
     public bool DespawnAtMapEdge = true;
     public bool DownedPawnsDrown = true;
     public bool DownedPawnsFloat = true;
@@ -25,6 +26,8 @@ internal class SomeThingsFloatSettings : ModSettings
     public float RelativeChanceInShallows = 0.5f;
     public float RelativeFloatSpeed = 1f;
     public bool ReservedItemsWillNotMove;
+    public bool SmoothAnimation = true;
+    public bool SpawnFertilizedEggs;
     public bool SpawnInOceanTiles;
     public bool SpawnLivingPawns = true;
     public bool SpawnNewItems = true;
@@ -47,6 +50,8 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref ManipulationThreshold, "ManipulationThreshold", 0.99f);
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
         Scribe_Values.Look(ref AllowOnStuck, "AllowOnStuck", true);
+        Scribe_Values.Look(ref SmoothAnimation, "SmoothAnimation", true);
+        Scribe_Values.Look(ref Bobbing, "Bobbing", true);
         Scribe_Values.Look(ref FloatUnderBridges, "FloatUnderBridges", true);
         Scribe_Values.Look(ref FloatUnderBridgesInfo, "FloatUnderBridgesInfo", true);
         Scribe_Values.Look(ref DespawnAtMapEdge, "DespawnAtMapEdge", true);
@@ -56,6 +61,7 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref PawnsCanFall, "PawnsCanFall", true);
         Scribe_Values.Look(ref RelativeChanceInShallows, "RelativeChanceInShallows", 0.5f);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
+        Scribe_Values.Look(ref SpawnFertilizedEggs, "SpawnFertilizedEggs");
         Scribe_Values.Look(ref NotifyOfSpawningItems, "NotifyOfSpawningItems", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
         Scribe_Values.Look(ref MinTimeBetweenItems, "MinTimeBetweenItems", GenDate.TicksPerHour * 18);

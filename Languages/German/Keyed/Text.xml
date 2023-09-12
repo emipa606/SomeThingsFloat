@@ -60,4 +60,10 @@
   <STF.SpawnNewItemsDisabled>Spawning von Gegenständen ist in den Mod-Einstellungen deaktiviert</STF.SpawnNewItemsDisabled>
   <STF.FloatUnderBridgesInfo>Nofify auf Gegenstände unter Brücken</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Anzeige einer Meldung, wenn Gegenstände unter Brücken schwimmen</STF.FloatUnderBridgesInfoTT>
+  <STF.SmoothAnimation>Fließende Animation verwenden</STF.SmoothAnimation>
+  <STF.SmoothAnimationTT>Die Dinge bewegen sich reibungslos von Zelle zu Zelle, wenn sie schweben. Dies fügt einige Berechnungen so deaktivieren Sie es, wenn Sie einen Leistungsverlust bemerken.</STF.SmoothAnimationTT>
+  <STF.Bobbing>Hinzufügen einer Wackelanimation</STF.Bobbing>
+  <STF.BobbingTT>Schwebende Gegenstände bewegen sich in einer kleinen Kreisbewegung.</STF.BobbingTT>
+  <STF.SpawnFertilizedEggs>Befruchtete Eier zum Laichen freigeben</STF.SpawnFertilizedEggs>
+  <STF.SpawnFertilizedEggsTT>Befruchtete Eier können ablaichen, die aus diesen Eiern geschlüpften Tiere werden als Teil der Kolonie betrachtet.</STF.SpawnFertilizedEggsTT>
 </LanguageData>

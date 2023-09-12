@@ -41,4 +41,6 @@ https://ko-fi.com/G2G55DDYD]![Image](https://i.imgur.com/VWG0yff.png)
 -  If you have the solution for a problem, please post it to the GitHub repository.
 
 
-https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]Last updated 2023-08-25
+
+https://steamcommunity.com/sharedfiles/filedetails/changelog/2940072380]![Image](https://img.shields.io/github/v/release/emipa606/SomeThingsFloat?label=latest%20version&style=plastic&labelColor=0070cd&color=white)
+
