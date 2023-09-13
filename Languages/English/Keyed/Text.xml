@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <STF.VerboseLogging>Verbose Logging</STF.VerboseLogging>
-  <STF.VerboseLoggingTT>For debugging</STF.VerboseLoggingTT>
+  <STF.DebugLogging>Debug Logging</STF.DebugLogging>
+  <STF.VerboseLoggingTT>For a bit more info, can be used to find the cause of issues.</STF.VerboseLoggingTT>
+  <STF.DebugLoggingTT>Logs everything, this is really just usable when developing the mod</STF.DebugLoggingTT>
   <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>
   <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
   <STF.RelativeFloatSpeed>Relative floating-speed {0}</STF.RelativeFloatSpeed>

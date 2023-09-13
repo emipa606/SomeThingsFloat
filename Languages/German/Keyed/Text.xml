@@ -66,4 +66,6 @@
   <STF.BobbingTT>Schwebende Gegenstände bewegen sich in einer kleinen Kreisbewegung.</STF.BobbingTT>
   <STF.SpawnFertilizedEggs>Befruchtete Eier zum Laichen freigeben</STF.SpawnFertilizedEggs>
   <STF.SpawnFertilizedEggsTT>Befruchtete Eier können ablaichen, die aus diesen Eiern geschlüpften Tiere werden als Teil der Kolonie betrachtet.</STF.SpawnFertilizedEggsTT>
+  <STF.DebugLogging>Debug-Protokollierung</STF.DebugLogging>
+  <STF.DebugLoggingTT>Protokolliert alles, dies ist wirklich nur für die Entwicklung des Mods nützlich</STF.DebugLoggingTT>
 </LanguageData>

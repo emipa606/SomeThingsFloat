@@ -10,6 +10,7 @@ internal class SomeThingsFloatSettings : ModSettings
 {
     public bool AllowOnStuck = true;
     public bool Bobbing = true;
+    public bool DebugLogging;
     public bool DespawnAtMapEdge = true;
     public bool DownedPawnsDrown = true;
     public bool DownedPawnsFloat = true;
@@ -41,6 +42,7 @@ internal class SomeThingsFloatSettings : ModSettings
     {
         base.ExposeData();
         Scribe_Values.Look(ref VerboseLogging, "VerboseLogging");
+        Scribe_Values.Look(ref DebugLogging, "DebugLogging");
         Scribe_Values.Look(ref ForbidSpawningItems, "ForbidSpawningItems");
         Scribe_Values.Look(ref HaulUrgently, "HaulUrgently");
         Scribe_Values.Look(ref ReservedItemsWillNotMove, "ReservedItemsWillNotMove");

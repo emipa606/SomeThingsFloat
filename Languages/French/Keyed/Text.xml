@@ -66,4 +66,6 @@
   <STF.BobbingTT>Les objets flottants se déplacent dans un petit mouvement circulaire.</STF.BobbingTT>
   <STF.SpawnFertilizedEggs>Permettre aux œufs fécondés de se reproduire</STF.SpawnFertilizedEggs>
   <STF.SpawnFertilizedEggsTT>Les œufs fécondés peuvent se reproduire, les animaux issus de ces œufs seront considérés comme faisant partie de la colonie.</STF.SpawnFertilizedEggsTT>
+  <STF.DebugLogging>Journalisation de débogage</STF.DebugLogging>
+  <STF.DebugLoggingTT>Enregistre tout, ceci n'est vraiment utilisable que lors du développement du mod.</STF.DebugLoggingTT>
 </LanguageData>

@@ -12,23 +12,23 @@ namespace SomeThingsFloat;
 [StaticConstructorOnStartup]
 public class SomeThingsFloat
 {
-    public static readonly List<ThingDef> ThingsToCreate;
+    public static readonly HashSet<ThingDef> ThingsToCreate;
 
     public static readonly Dictionary<Map, FloatingThings_MapComponent> FloatingMapComponents;
 
     public static readonly DesignationDef HaulUrgentlyDef;
 
-    public static readonly List<ThingDef> ApparelThatPreventDrowning;
+    public static readonly HashSet<ThingDef> ApparelThatPreventDrowning;
 
-    public static readonly List<ThingDef> PawnsThatBreathe;
+    public static readonly HashSet<ThingDef> PawnsThatBreathe;
 
-    public static readonly List<ThingDef> PawnsThatFloat;
+    public static readonly HashSet<ThingDef> PawnsThatFloat;
 
-    public static readonly List<TerrainDef> ShallowTerrainDefs;
+    public static readonly HashSet<TerrainDef> ShallowTerrainDefs;
 
-    public static readonly List<ThingDef> AquaticRaces;
+    public static readonly HashSet<ThingDef> AquaticRaces;
 
-    public static readonly List<ThingDef> Vehicles;
+    public static readonly HashSet<ThingDef> Vehicles;
 
     public static readonly bool SwimmingKitLoaded;
 
@@ -38,30 +38,30 @@ public class SomeThingsFloat
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
             .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue, out var minimized) &&
                           floatingValue > 0 && !minimized)
-            .ToList();
+            .ToHashSet();
         ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.IsApparel && def.apparel.tags.Contains("EVA") &&
-            def.apparel.layers.Contains(ApparelLayerDefOf.Overhead)).ToList();
+            def.apparel.layers.Contains(ApparelLayerDefOf.Overhead)).ToHashSet();
         PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
-            def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToList();
+            def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToHashSet();
         PawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
-            def.race is { IsFlesh: true }).ToList();
+            def.race is { IsFlesh: true }).ToHashSet();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
         SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit") != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
-            def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToList();
+            def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
 
-        Vehicles = new List<ThingDef>();
+        Vehicles = new HashSet<ThingDef>();
         if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework") != null)
         {
             Vehicles = DefDatabase<ThingDef>.AllDefsListForReading
-                .Where(def => def.thingClass.Name.Contains("VehiclePawn")).ToList();
+                .Where(def => def.thingClass.Name.Contains("VehiclePawn")).ToHashSet();
             LogMessage($"Found {Vehicles.Count} vehicles to ignore: {string.Join(", ", Vehicles)}", true);
         }
 
-        AquaticRaces = new List<ThingDef>();
+        AquaticRaces = new HashSet<ThingDef>();
         if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") == null)
         {
             return;
@@ -272,24 +272,14 @@ public class SomeThingsFloat
 
     public static int GetWastepacksFloated()
     {
-        var returnValue = 0;
-        foreach (var floatingThingsMapComponent in FloatingMapComponents)
-        {
-            returnValue += floatingThingsMapComponent.Value.WastePacksFloated;
-        }
-
-        return returnValue;
+        return FloatingMapComponents.Sum(floatingThingsMapComponent =>
+            floatingThingsMapComponent.Value.WastePacksFloated);
     }
 
     public static int GetEnemyPawnsDrowned()
     {
-        var returnValue = 0;
-        foreach (var floatingThingsMapComponent in FloatingMapComponents)
-        {
-            returnValue += floatingThingsMapComponent.Value.EnemyPawnsDrowned;
-        }
-
-        return returnValue;
+        return FloatingMapComponents.Sum(floatingThingsMapComponent =>
+            floatingThingsMapComponent.Value.EnemyPawnsDrowned);
     }
 
     public static Vector3 AddWave(Vector3 currentVector, int id)
@@ -301,7 +291,7 @@ public class SomeThingsFloat
 
         var currentIteration = (GenTicks.TicksGame + id) % 1000 / 1000f;
 
-        var radius = 0.1f;
+        const float radius = 0.1f;
         var angle = 360 * currentIteration;
 
         var radians = angle * Math.PI / 180.0;
@@ -312,11 +302,18 @@ public class SomeThingsFloat
         return currentVector;
     }
 
-    public static void LogMessage(string message, bool force = false)
+    public static void LogMessage(string message, bool force = false, bool debug = false)
     {
-        if (SomeThingsFloatMod.instance.Settings.VerboseLogging || force)
+        if (!SomeThingsFloatMod.instance.Settings.DebugLogging && debug)
         {
-            Log.Message($"[SomeThingsFloat]: {message}");
+            return;
         }
+
+        if (!SomeThingsFloatMod.instance.Settings.VerboseLogging && !force)
+        {
+            return;
+        }
+
+        Log.Message($"[SomeThingsFloat]: {message}");
     }
 }

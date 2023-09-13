@@ -66,4 +66,6 @@
   <STF.BobbingTT>漂浮物会做小幅度的圆周运动。</STF.BobbingTT>
   <STF.SpawnFertilizedEggs>让受精卵产卵</STF.SpawnFertilizedEggs>
   <STF.SpawnFertilizedEggsTT>受精卵可以产卵，这些卵孵化出的动物将被视为蚁群的一部分。</STF.SpawnFertilizedEggsTT>
+  <STF.DebugLogging>调试日志</STF.DebugLogging>
+  <STF.DebugLoggingTT>记录一切，这实际上只是在开发修改器时可用</STF.DebugLoggingTT>
 </LanguageData>

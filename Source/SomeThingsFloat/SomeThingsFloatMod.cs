@@ -167,6 +167,12 @@ internal class SomeThingsFloatMod : Mod
 
         listing_Standard.CheckboxLabeled("STF.VerboseLogging".Translate(), ref Settings.VerboseLogging,
             "STF.VerboseLoggingTT".Translate());
+        if (Settings.VerboseLogging)
+        {
+            listing_Standard.CheckboxLabeled("STF.DebugLogging".Translate(), ref Settings.DebugLogging,
+                "STF.DebugLoggingTT".Translate());
+        }
+
         if (currentVersion != null)
         {
             listing_Standard.Gap();

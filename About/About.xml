@@ -35,6 +35,8 @@ If [url=https://steamcommunity.com/sharedfiles/filedetails/?id=1542399915]Swimmi
 
 Technically the mod looks at all items in water-tiles and calculates their floating value. This is based on what stuff is used to build the item, but some things like corpses have a default float value. Its also possible to add floatable-values to other things via patches, there is a patch for barrels of fecal-matter from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=836308268]Dubs Bad Hygiene[/url] that can be used as an example. Higher floatable values makes things move quicker in the water.
 
+If the smooth floating animations are causing distractions or performance issues they can be disabled in the mod-settings.
+
 I made it mostly for my own playthrough but hopefully someone else can get joy from it!
 
 [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2288125657][img]https://i.imgur.com/kNldlMg.png[/img][/url]
