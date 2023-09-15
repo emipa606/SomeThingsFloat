@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.41 - When clicking on floating items with smooth animation, it should now select them properly at all times
+
+
 1.4.40 - Hopefully fixed some performance issues as well as the null-esceptions reported. Also found some minor bugs linked to the floating logic when combining stacks.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

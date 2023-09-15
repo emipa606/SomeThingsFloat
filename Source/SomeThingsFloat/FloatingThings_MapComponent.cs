@@ -1309,4 +1309,23 @@ public class FloatingThings_MapComponent : MapComponent
 
         return newPosition;
     }
+
+    public List<Thing> GetFloatingThingsNear(Vector3 clickPoint, List<Thing> currentList)
+    {
+        foreach (var thing in lastPositions.Keys)
+        {
+            if (currentList.Contains(thing))
+            {
+                continue;
+            }
+
+            var difference = clickPoint - thing.TrueCenter();
+            if (GenMath.Sqrt((difference.x * difference.x) + (difference.z * difference.z)) < 0.5f)
+            {
+                currentList.Add(thing);
+            }
+        }
+
+        return currentList;
+    }
 }
