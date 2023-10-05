@@ -173,6 +173,11 @@ internal class SomeThingsFloatMod : Mod
                 "STF.DebugLoggingTT".Translate());
         }
 
+        if (listing_Standard.ButtonText("STF.Reset".Translate()))
+        {
+            Settings.Reset();
+        }
+
         if (currentVersion != null)
         {
             listing_Standard.Gap();

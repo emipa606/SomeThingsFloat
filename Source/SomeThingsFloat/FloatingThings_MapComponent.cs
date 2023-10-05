@@ -20,6 +20,7 @@ public class FloatingThings_MapComponent : MapComponent
     private List<IntVec3> hiddenPositionsValues;
     private Dictionary<Thing, Tuple<int, IntVec3>> lastPositions;
     private int lastSpawnTick;
+    private List<Pawn> mapPawns;
     private HashSet<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
@@ -39,6 +40,7 @@ public class FloatingThings_MapComponent : MapComponent
         lastPositions = new Dictionary<Thing, Tuple<int, IntVec3>>();
         updateValuesKeys = new List<int>();
         updateValuesValues = new List<Thing>();
+        mapPawns = new List<Pawn>();
         hiddenPositions = new Dictionary<Thing, IntVec3>();
         hiddenPositionsKeys = new List<Thing>();
         hiddenPositionsValues = new List<IntVec3>();
@@ -66,18 +68,19 @@ public class FloatingThings_MapComponent : MapComponent
             updateListOfFloatingThings();
         }
 
-        if (ticksGame % GenTicks.TickRareInterval == 0)
+        if (mapPawns == null || ticksGame % GenTicks.TickLongInterval == 0)
         {
-            SomeThingsFloat.LogMessage("Doing TickRareInterval calls", debug: true);
-            if (SomeThingsFloatMod.instance.Settings.PawnsCanFall)
-            {
-                checkForPawnsThatCanFall();
-            }
+            mapPawns = map.mapPawns.AllPawns;
+        }
 
-            if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
-            {
-                checkForPawnsThatCanDrown();
-            }
+        if (SomeThingsFloatMod.instance.Settings.PawnsCanFall)
+        {
+            checkForPawnsThatCanFall();
+        }
+
+        if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
+        {
+            checkForPawnsThatCanDrown();
         }
 
         if (hiddenPositions.Any())
@@ -779,9 +782,15 @@ public class FloatingThings_MapComponent : MapComponent
     private void checkForPawnsThatCanFall()
     {
         // ReSharper disable once ForCanBeConvertedToForeach, May change during execution
-        for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
+        for (var index = 0; index < mapPawns.Count; index++)
         {
-            var pawn = map.mapPawns.AllPawns[index];
+            var pawn = mapPawns[index];
+
+            if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval))
+            {
+                continue;
+            }
+
             if (SomeThingsFloat.AquaticRaces.Contains(pawn.def) || SomeThingsFloat.Vehicles.Contains(pawn.def))
             {
                 continue;
@@ -915,9 +924,14 @@ public class FloatingThings_MapComponent : MapComponent
     private void checkForPawnsThatCanDrown()
     {
         // ReSharper disable once ForCanBeConvertedToForeach
-        for (var index = 0; index < map.mapPawns.AllPawns.Count; index++)
+        for (var index = 0; index < mapPawns.Count; index++)
         {
-            var pawn = map.mapPawns.AllPawns[index];
+            var pawn = mapPawns[index];
+
+            if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval))
+            {
+                continue;
+            }
 
             if (pawn == null || pawn.Dead || SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
                 SomeThingsFloat.AquaticRaces.Contains(pawn.def) || SomeThingsFloat.Vehicles.Contains(pawn.def) ||

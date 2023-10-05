@@ -2,6 +2,7 @@
 <LanguageData>
   <STF.VerboseLogging>Verbose Logging</STF.VerboseLogging>
   <STF.DebugLogging>Debug Logging</STF.DebugLogging>
+  <STF.Reset>Reset</STF.Reset>
   <STF.VerboseLoggingTT>For a bit more info, can be used to find the cause of issues.</STF.VerboseLoggingTT>
   <STF.DebugLoggingTT>Logs everything, this is really just usable when developing the mod</STF.DebugLoggingTT>
   <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>

@@ -68,4 +68,5 @@
   <STF.SpawnFertilizedEggsTT>Оплодотворенные яйца могут нереститься, вылупившиеся из них особи будут считаться частью колонии.</STF.SpawnFertilizedEggsTT>
   <STF.DebugLogging>Ведение журнала отладки</STF.DebugLogging>
   <STF.DebugLoggingTT>Записывает все в журнал, это действительно только полезно при разработке мода</STF.DebugLoggingTT>
+  <STF.Reset>Сброс</STF.Reset>
 </LanguageData>

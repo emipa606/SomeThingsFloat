@@ -68,4 +68,34 @@ internal class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
         Scribe_Values.Look(ref MinTimeBetweenItems, "MinTimeBetweenItems", GenDate.TicksPerHour * 18);
     }
+
+    public void Reset()
+    {
+        AllowOnStuck = true;
+        Bobbing = true;
+        DebugLogging = false;
+        DespawnAtMapEdge = true;
+        DownedPawnsDrown = true;
+        DownedPawnsFloat = true;
+        FloatUnderBridges = true;
+        FloatUnderBridgesInfo = true;
+        ForbidSpawningItems = false;
+        ForbidWhenMoving = true;
+        HaulUrgently = false;
+        ManipulationThreshold = 0.99f;
+        MaxSpawnValue = 50f;
+        MinTimeBetweenItems = GenDate.TicksPerHour * 18;
+        NotifyOfSpawningItems = true;
+        PawnsCanFall = true;
+        RelativeChanceInShallows = 0.5f;
+        RelativeFloatSpeed = 1f;
+        ReservedItemsWillNotMove = false;
+        SmoothAnimation = true;
+        SpawnFertilizedEggs = false;
+        SpawnInOceanTiles = false;
+        SpawnLivingPawns = true;
+        SpawnNewItems = true;
+        VerboseLogging = false;
+        WarnForAllFriendlyPawns = false;
+    }
 }

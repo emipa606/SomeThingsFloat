@@ -68,4 +68,5 @@
   <STF.SpawnFertilizedEggsTT>Les œufs fécondés peuvent se reproduire, les animaux issus de ces œufs seront considérés comme faisant partie de la colonie.</STF.SpawnFertilizedEggsTT>
   <STF.DebugLogging>Journalisation de débogage</STF.DebugLogging>
   <STF.DebugLoggingTT>Enregistre tout, ceci n'est vraiment utilisable que lors du développement du mod.</STF.DebugLoggingTT>
+  <STF.Reset>Remise à zéro</STF.Reset>
 </LanguageData>
