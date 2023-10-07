@@ -1243,8 +1243,8 @@ public class FloatingThings_MapComponent : MapComponent
 
     public List<Pawn> DownedPawnsInWater()
     {
-        return map.mapPawns.AllPawns.Where(pawn =>
-            pawn.Downed && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
+        return mapPawns.Where(pawn =>
+            pawn is { Downed: true } && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
             (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true ||
              hiddenPositions?.TryGetValue(pawn, out _) == true)).ToList();
     }
@@ -1324,7 +1324,8 @@ public class FloatingThings_MapComponent : MapComponent
         return newPosition;
     }
 
-    public List<Thing> GetFloatingThingsNear(Vector3 clickPoint, List<Thing> currentList)
+    public List<Thing> GetFloatingThingsNear(Vector3 clickPoint, List<Thing> currentList,
+        TargetingParameters clickParams, ITargetingSource source)
     {
         foreach (var thing in lastPositions.Keys)
         {
@@ -1334,10 +1335,38 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var difference = clickPoint - thing.TrueCenter();
-            if (GenMath.Sqrt((difference.x * difference.x) + (difference.z * difference.z)) < 0.5f)
+            if (!(GenMath.Sqrt((difference.x * difference.x) + (difference.z * difference.z)) < 0.5f))
             {
-                currentList.Add(thing);
+                continue;
             }
+
+            if (!clickParams.CanTarget(thing, source))
+            {
+                continue;
+            }
+
+            currentList.Add(thing);
+        }
+
+        return currentList;
+    }
+
+    public List<Thing> GetFloatingThingsNear(IntVec3 clickPoint, List<Thing> currentList)
+    {
+        foreach (var thing in lastPositions.Keys)
+        {
+            if (currentList.Contains(thing))
+            {
+                continue;
+            }
+
+            var difference = clickPoint.ToVector3() - thing.TrueCenter();
+            if (!(GenMath.Sqrt((difference.x * difference.x) + (difference.z * difference.z)) < 1f))
+            {
+                continue;
+            }
+
+            currentList.Add(thing);
         }
 
         return currentList;

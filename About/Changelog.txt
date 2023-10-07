@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.43 - Fixed the right-click issue when smooth animation is turned on
+
+
 1.4.42 - Added Reset-button in the mod-settings
 Optimized the logic for iterating over pawns when calculating drowning and losing their footing.
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
