@@ -1350,25 +1350,4 @@ public class FloatingThings_MapComponent : MapComponent
 
         return currentList;
     }
-
-    public List<Thing> GetFloatingThingsNear(IntVec3 clickPoint, List<Thing> currentList)
-    {
-        foreach (var thing in lastPositions.Keys)
-        {
-            if (currentList.Contains(thing))
-            {
-                continue;
-            }
-
-            var difference = clickPoint.ToVector3() - thing.TrueCenter();
-            if (!(GenMath.Sqrt((difference.x * difference.x) + (difference.z * difference.z)) < 1f))
-            {
-                continue;
-            }
-
-            currentList.Add(thing);
-        }
-
-        return currentList;
-    }
 }

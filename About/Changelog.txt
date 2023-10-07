@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.4.44 - Fixed an infinite loop
+
+
 1.4.43 - Fixed the right-click issue when smooth animation is turned on
 
 
