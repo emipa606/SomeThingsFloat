@@ -32,6 +32,7 @@ public class SomeThingsFloat
 
     public static readonly bool SwimmingKitLoaded;
 
+
     static SomeThingsFloat()
     {
         new Harmony("Mlie.SomeThingsFloat").PatchAll(Assembly.GetExecutingAssembly());
@@ -62,26 +63,59 @@ public class SomeThingsFloat
         }
 
         AquaticRaces = new HashSet<ThingDef>();
-        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") == null)
+        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") != null)
         {
-            return;
-        }
-
-        foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
-                     def.race != null && def.modExtensions?.Any() == true &&
-                     def.modExtensions.Any(extension => extension.GetType().Name == "AquaticExtension")))
-        {
-            var modExtension =
-                possibleAquaticAnimal.modExtensions.First(extension =>
-                    extension.GetType().Name == "AquaticExtension");
-            if ((bool)modExtension.GetType().GetField("aquatic").GetValue(modExtension))
+            foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+                         def.race != null && def.modExtensions?.Any() == true &&
+                         def.modExtensions.Any(extension => extension.GetType().Name == "AquaticExtension")))
             {
-                AquaticRaces.Add(possibleAquaticAnimal);
+                var modExtension =
+                    possibleAquaticAnimal.modExtensions.First(extension =>
+                        extension.GetType().Name == "AquaticExtension");
+                if ((bool)modExtension.GetType().GetField("aquatic").GetValue(modExtension))
+                {
+                    AquaticRaces.Add(possibleAquaticAnimal);
+                }
             }
         }
 
-        LogMessage($"Found {AquaticRaces.Count} aquatic races: {string.Join(", ", AquaticRaces)}", true);
+        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") != null)
+        {
+            foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+                         def.race != null && def.modExtensions?.Any() == true &&
+                         def.modExtensions.Any(extension => extension.GetType().Name == "MovementExtension")))
+            {
+                var modExtension =
+                    possibleAquaticAnimal.modExtensions.First(extension =>
+                        extension.GetType().Name == "MovementExtension");
+                var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
+                if (movementType.defName == "PF_Movement_Amphibious")
+                {
+                    AquaticRaces.Add(possibleAquaticAnimal);
+                }
+            }
+
+            foreach (var possibleNonDrowningApparel in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+                         def.apparel != null && def.modExtensions?.Any() == true &&
+                         def.modExtensions.Any(extension => extension.GetType().Name == "MovementExtension")))
+            {
+                var modExtension =
+                    possibleNonDrowningApparel.modExtensions.First(extension =>
+                        extension.GetType().Name == "MovementExtension");
+                var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
+                if (movementType.defName == "PF_Movement_Amphibious")
+                {
+                    ApparelThatPreventDrowning.Add(possibleNonDrowningApparel);
+                }
+            }
+        }
+
+        if (AquaticRaces.Any())
+        {
+            LogMessage($"Found {AquaticRaces.Count} aquatic races: {string.Join(", ", AquaticRaces)}", true);
+        }
     }
+
 
     public static float GetFloatingValue(Thing thing)
     {

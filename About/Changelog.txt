@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.4.45 - Added support for Amphibious movement from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3070914628]Pathfinding Framework[/url]
+Seeds from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2586052937]SeedsPlease: Lite[/url] will now float
+
+
 1.4.44 - Fixed an infinite loop
 
 
