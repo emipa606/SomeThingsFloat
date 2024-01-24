@@ -31,21 +31,21 @@ public class FloatingThings_MapComponent : MapComponent
     {
         this.map = map;
         SomeThingsFloat.FloatingMapComponents[map] = this;
-        underCellsWithWater = new HashSet<IntVec3>();
-        cellsWithWater = new HashSet<IntVec3>();
-        cellsWithRiver = new HashSet<IntVec3>();
-        mapEdgeCells = new HashSet<IntVec3>();
+        underCellsWithWater = [];
+        cellsWithWater = [];
+        cellsWithRiver = [];
+        mapEdgeCells = [];
         floatingValues = new Dictionary<Thing, float>();
         updateValues = new Dictionary<int, Thing>();
         lastPositions = new Dictionary<Thing, Tuple<int, IntVec3>>();
-        updateValuesKeys = new List<int>();
-        updateValuesValues = new List<Thing>();
-        mapPawns = new List<Pawn>();
+        updateValuesKeys = [];
+        updateValuesValues = [];
+        mapPawns = [];
         hiddenPositions = new Dictionary<Thing, IntVec3>();
-        hiddenPositionsKeys = new List<Thing>();
-        hiddenPositionsValues = new List<IntVec3>();
-        ignoredAltitudeLayers = new HashSet<AltitudeLayer>
-        {
+        hiddenPositionsKeys = [];
+        hiddenPositionsValues = [];
+        ignoredAltitudeLayers =
+        [
             AltitudeLayer.Blueprint,
             AltitudeLayer.Conduits,
             AltitudeLayer.Filth,
@@ -53,7 +53,7 @@ public class FloatingThings_MapComponent : MapComponent
             AltitudeLayer.FogOfWar,
             AltitudeLayer.SmallWire,
             AltitudeLayer.Weather
-        };
+        ];
         lastSpawnTick = 0;
     }
 
@@ -201,7 +201,7 @@ public class FloatingThings_MapComponent : MapComponent
         var wasInStorage = false;
         var wasUnspawned = false;
         var wasSelected = Find.Selector.IsSelected(thing);
-        if (!hiddenPositions.TryGetValue(thing, out var originalPosition))
+        if (!hiddenPositions.Remove(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
             if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
@@ -213,7 +213,6 @@ public class FloatingThings_MapComponent : MapComponent
         }
         else
         {
-            hiddenPositions.Remove(thing);
             wasUnspawned = true;
         }
 
@@ -371,17 +370,17 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (cellsWithWater == null)
         {
-            cellsWithWater = new HashSet<IntVec3>();
+            cellsWithWater = [];
         }
 
         if (cellsWithRiver == null)
         {
-            cellsWithRiver = new HashSet<IntVec3>();
+            cellsWithRiver = [];
         }
 
         if (underCellsWithWater == null)
         {
-            underCellsWithWater = new HashSet<IntVec3>();
+            underCellsWithWater = [];
         }
 
         updateListOfWaterCells();
@@ -391,9 +390,9 @@ public class FloatingThings_MapComponent : MapComponent
     private void updateListOfWaterCells()
     {
         SomeThingsFloat.LogMessage("Updating water-cells", debug: true);
-        cellsWithWater = new HashSet<IntVec3>();
-        cellsWithRiver = new HashSet<IntVec3>();
-        underCellsWithWater = new HashSet<IntVec3>();
+        cellsWithWater = [];
+        cellsWithRiver = [];
+        underCellsWithWater = [];
 
         for (var i = 0; i < map.terrainGrid.topGrid.Length; i++)
         {
@@ -620,7 +619,7 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 return def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue;
-            }).RandomElement();
+            }).RandomElementByWeight(def => def.generateCommonality);
         var amountToSpawn =
             (int)Math.Floor(SomeThingsFloatMod.instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
 

@@ -32,16 +32,16 @@ public class Alert_ColonistIsFloatingAway : Alert
     {
         if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat)
         {
-            return new List<Pawn>();
+            return [];
         }
 
         var map = Find.CurrentMap;
         if (map == null)
         {
-            return new List<Pawn>();
+            return [];
         }
 
         var component = SomeThingsFloat.FloatingMapComponents[map];
-        return component == null ? new List<Pawn>() : component.DownedPawnsInWater();
+        return component == null ? [] : component.DownedPawnsInWater();
     }
 }

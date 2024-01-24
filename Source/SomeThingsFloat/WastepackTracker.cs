@@ -23,7 +23,7 @@ public class WastepackTracker : TrackerBase
 
     public override Func<bool> AttachToLongTick => Trigger;
 
-    protected override string[] DebugText => new[] { $"Count: {count}" };
+    protected override string[] DebugText => [$"Count: {count}"];
 
     public override (float percent, string text) PercentComplete => count > 1
         ? ((float)triggeredCount / count, $"{triggeredCount} / {count}")

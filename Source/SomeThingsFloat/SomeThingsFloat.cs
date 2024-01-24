@@ -54,7 +54,7 @@ public class SomeThingsFloat
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
             def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
 
-        Vehicles = new HashSet<ThingDef>();
+        Vehicles = [];
         if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework") != null)
         {
             Vehicles = DefDatabase<ThingDef>.AllDefsListForReading
@@ -62,7 +62,7 @@ public class SomeThingsFloat
             LogMessage($"Found {Vehicles.Count} vehicles to ignore: {string.Join(", ", Vehicles)}", true);
         }
 
-        AquaticRaces = new HashSet<ThingDef>();
+        AquaticRaces = [];
         if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") != null)
         {
             foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
@@ -159,7 +159,7 @@ public class SomeThingsFloat
             return thing.def.GetModExtension<FloatingThing_ModExtension>().floatingValue;
         }
 
-        // Check if its a special thing
+        // Check if it's a special thing
         if (TryGetSpecialFloatingValue(actualThing.def, out var floatingValue, out _))
         {
             return floatingValue;
