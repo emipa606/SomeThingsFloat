@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <HediffDef ParentName="DiseaseBase">
+    <defName>STF_LostFooting</defName>
+    <hediffClass>SomeThingsFloat.Hediff_OnlyFloating</hediffClass>
+    <label>lost footing</label>
+    <description>The pawn has lost their footing in the moving water and is now trying to stay afloat</description>
+    <lethalSeverity>9999</lethalSeverity>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-5</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0.1</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

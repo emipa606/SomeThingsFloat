@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.5.0 - Updated for 1.5
+
+
 1.4.46 - Spawning things will now use the commonality value, should stop things removed with cherry picker from spawning
 
 
