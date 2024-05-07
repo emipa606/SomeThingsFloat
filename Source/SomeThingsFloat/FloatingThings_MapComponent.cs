@@ -425,22 +425,22 @@ public class FloatingThings_MapComponent : MapComponent
         SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
     }
 
-    public void TrySpawnThingAtMapEdge(bool force = false)
+    public bool TrySpawnThingAtMapEdge(bool force = false)
     {
         if (!SomeThingsFloatMod.instance.Settings.SpawnNewItems)
         {
-            return;
+            return false;
         }
 
         if (!cellsWithWater.Any())
         {
             SomeThingsFloat.LogMessage("No water cells to spawn in", debug: true);
-            return;
+            return false;
         }
 
         if (!force && Rand.Value < 0.9f)
         {
-            return;
+            return false;
         }
 
         if (!force && lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems > GenTicks.TicksGame)
@@ -448,7 +448,7 @@ public class FloatingThings_MapComponent : MapComponent
             SomeThingsFloat.LogMessage(
                 $"Not time to spawn yet, next spawn: {lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems}, current time {GenTicks.TicksGame}",
                 debug: true);
-            return;
+            return false;
         }
 
         if (!mapEdgeCells.Any())
@@ -457,7 +457,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!possibleMapEdgeCells.Any())
             {
-                return;
+                return false;
             }
 
             foreach (var mapEdgeCell in possibleMapEdgeCells)
@@ -497,7 +497,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (!mapEdgeCells.Any())
         {
             SomeThingsFloat.LogMessage("Found no map-edge cells with river");
-            return;
+            return false;
         }
 
         var cellToPlaceIt = mapEdgeCells.RandomElement();
@@ -580,7 +580,7 @@ public class FloatingThings_MapComponent : MapComponent
                         MessageTypeDefOf.NeutralEvent);
                 }
 
-                return;
+                return true;
             }
 
             HealthUtility.DamageUntilDowned(pawn);
@@ -604,7 +604,7 @@ public class FloatingThings_MapComponent : MapComponent
                 lastSpawnTick = GenTicks.TicksGame;
             }
 
-            return;
+            return true;
         }
 
         var thingToMake = SomeThingsFloat.ThingsToCreate
@@ -624,20 +624,20 @@ public class FloatingThings_MapComponent : MapComponent
         if (amountToSpawn == 0)
         {
             SomeThingsFloat.LogMessage($"Value of {thingToMake} too high, could not spawn");
-            return;
+            return false;
         }
 
         var thing = ThingMaker.MakeThing(thingToMake);
         if (thing is Corpse corpse && (corpse.Bugged || !corpse.InnerPawn.RaceProps.IsFlesh))
         {
-            return;
+            return false;
         }
 
         if (GenPlace.HaulPlaceBlockerIn(thing, cellToPlaceIt, map, true) != null)
         {
             SomeThingsFloat.LogMessage(
                 $"{thing} could not be created at map edge: {cellToPlaceIt}, something in the way");
-            return;
+            return false;
         }
 
         if (thing.def.stackLimit > 1)
@@ -653,7 +653,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (!GenPlace.TryPlaceThing(thing, cellToPlaceIt, map, ThingPlaceMode.Direct))
         {
             SomeThingsFloat.LogMessage($"{thing} could not be created at map edge: {cellToPlaceIt}");
-            return;
+            return false;
         }
 
         thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
@@ -678,6 +678,8 @@ public class FloatingThings_MapComponent : MapComponent
         {
             lastSpawnTick = GenTicks.TicksGame;
         }
+
+        return true;
     }
 
     private void updateListOfFloatingThings()

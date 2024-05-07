@@ -6,7 +6,7 @@ namespace SomeThingsFloat;
 /// <summary>
 ///     Definition of the settings for the mod
 /// </summary>
-internal class SomeThingsFloatSettings : ModSettings
+public class SomeThingsFloatSettings : ModSettings
 {
     public bool AllowOnStuck = true;
     public bool Bobbing = true;
