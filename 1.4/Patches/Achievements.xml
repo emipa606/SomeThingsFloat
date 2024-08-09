@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Patch>
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/MainButtonDef[defName="Achievements"]</xpath>
@@ -99,7 +99,7 @@
                 <value>
                   <AchievementsExpanded.AchievementDef ParentName="Mlie_OriginalAchievementParent">
                     <defName>STF_ProgressBeforeNature</defName>
-                    <label>Progress &gt; Nature</label>
+                    <label>Progress > Nature</label>
                     <description>Float 50 wastepacks out of the map</description>
                     <tracker Class="SomeThingsFloat.WastepackTracker">
                       <count>50</count>
