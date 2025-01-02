@@ -136,7 +136,6 @@ public class FloatingThings_MapComponent : MapComponent
         if ((SomeThingsFloatMod.instance.Settings.Bobbing || SomeThingsFloatMod.instance.Settings.SmoothAnimation) &&
             updateValues.Any())
         {
-            SomeThingsFloat.LogMessage("Forcing redraw of floating items", debug: true);
             foreach (var thingToUpdate in updateValues.Values)
             {
                 if (thingToUpdate == null)
@@ -153,7 +152,6 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (!updateValues.Remove(ticksGame, out var thing))
         {
-            SomeThingsFloat.LogMessage("Nothing to update", debug: true);
             return;
         }
 
@@ -457,6 +455,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!possibleMapEdgeCells.Any())
             {
+                SomeThingsFloat.LogMessage("No possible edge cells to spawn in", debug: true);
                 return false;
             }
 
@@ -466,6 +465,12 @@ public class FloatingThings_MapComponent : MapComponent
                     mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
                 {
                     mapEdgeCells.Add(mapEdgeCell);
+                    continue;
+                }
+
+                if (mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("moving") != true)
+                {
+                    SomeThingsFloat.LogMessage($"{mapEdgeCell} ! moving", debug: true);
                     continue;
                 }
 

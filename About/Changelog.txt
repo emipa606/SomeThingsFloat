@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.5.3 - Added check for moving water for edge cells
+
+
 1.5.2 - Trashbags from [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3155781848]Vanilla Recycling Expanded[/url] should now float
 
 
