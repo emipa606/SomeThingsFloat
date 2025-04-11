@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.5.4 - Should now also ignore animals that have the PF_Movement_Aquatic-tag
+
+
 1.5.3 - Added check for moving water for edge cells
 
 

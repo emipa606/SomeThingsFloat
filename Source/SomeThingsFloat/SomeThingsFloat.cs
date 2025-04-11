@@ -89,7 +89,7 @@ public class SomeThingsFloat
                     possibleAquaticAnimal.modExtensions.First(extension =>
                         extension.GetType().Name == "MovementExtension");
                 var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
-                if (movementType.defName == "PF_Movement_Amphibious")
+                if (movementType.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
                 {
                     AquaticRaces.Add(possibleAquaticAnimal);
                 }
@@ -103,7 +103,7 @@ public class SomeThingsFloat
                     possibleNonDrowningApparel.modExtensions.First(extension =>
                         extension.GetType().Name == "MovementExtension");
                 var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
-                if (movementType.defName == "PF_Movement_Amphibious")
+                if (movementType.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
                 {
                     ApparelThatPreventDrowning.Add(possibleNonDrowningApparel);
                 }

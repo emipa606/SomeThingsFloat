@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Release" />
+  </Configurations>
+  <Project Path="AchievementsExpanded/AchievementsExpanded_SomeThingsFloat.csproj" />
+  <Project Path="SomeThingsFloat/SomeThingsFloat.csproj" />
+</Solution>
