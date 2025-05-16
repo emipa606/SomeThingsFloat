@@ -28,7 +28,7 @@ public class Alert_ColonistIsFloatingAway : Alert
         };
     }
 
-    private List<Pawn> floatingPawns()
+    private static List<Pawn> floatingPawns()
     {
         if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat)
         {

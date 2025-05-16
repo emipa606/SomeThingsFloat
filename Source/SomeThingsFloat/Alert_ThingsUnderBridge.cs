@@ -43,7 +43,7 @@ public class Alert_ThingsUnderBridge : Alert
         };
     }
 
-    private Dictionary<Thing, IntVec3> thingsUnderBridge(out Map map)
+    private static Dictionary<Thing, IntVec3> thingsUnderBridge(out Map map)
     {
         map = null;
         if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat)

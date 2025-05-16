@@ -75,7 +75,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (SomeThingsFloatMod.instance.Settings.PawnsCanFall)
         {
-            checkForPawnsThatCanFall();
+            CheckForPawnsThatCanFall();
         }
 
         if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
@@ -108,10 +108,7 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 SomeThingsFloat.LogMessage($"{destroyedThing} is destroyed, removing");
                 hiddenPositions.Remove(destroyedThing);
-                if (lastPositions.ContainsKey(destroyedThing))
-                {
-                    lastPositions.Remove(destroyedThing);
-                }
+                lastPositions.Remove(destroyedThing);
             }
 
             foreach (var respawningThing in thingsToRespawn)
@@ -160,10 +157,7 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (lastPositions.ContainsKey(thing))
-        {
-            lastPositions.Remove(thing);
-        }
+        lastPositions.Remove(thing);
 
         if (!VerifyThingIsInWater(thing))
         {
@@ -250,10 +244,7 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
-            if (lastPositions.ContainsKey(thing))
-            {
-                lastPositions.Remove(thing);
-            }
+            lastPositions.Remove(thing);
 
             thing.Destroy();
             return;
@@ -269,10 +260,7 @@ public class FloatingThings_MapComponent : MapComponent
                 thing.DeSpawn();
             }
 
-            if (lastPositions.ContainsKey(thing))
-            {
-                lastPositions.Remove(thing);
-            }
+            lastPositions.Remove(thing);
 
             return;
         }
@@ -344,40 +332,19 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (floatingValues == null)
-        {
-            floatingValues = new Dictionary<Thing, float>();
-        }
+        floatingValues ??= new Dictionary<Thing, float>();
 
-        if (hiddenPositions == null)
-        {
-            hiddenPositions = new Dictionary<Thing, IntVec3>();
-        }
+        hiddenPositions ??= new Dictionary<Thing, IntVec3>();
 
-        if (updateValues == null)
-        {
-            updateValues = new Dictionary<int, Thing>();
-        }
+        updateValues ??= new Dictionary<int, Thing>();
 
-        if (lastPositions == null)
-        {
-            lastPositions = new Dictionary<Thing, Tuple<int, IntVec3>>();
-        }
+        lastPositions ??= new Dictionary<Thing, Tuple<int, IntVec3>>();
 
-        if (cellsWithWater == null)
-        {
-            cellsWithWater = [];
-        }
+        cellsWithWater ??= [];
 
-        if (cellsWithRiver == null)
-        {
-            cellsWithRiver = [];
-        }
+        cellsWithRiver ??= [];
 
-        if (underCellsWithWater == null)
-        {
-            underCellsWithWater = [];
-        }
+        underCellsWithWater ??= [];
 
         updateListOfWaterCells();
         updateListOfFloatingThings();
@@ -689,10 +656,7 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatingThings()
     {
-        if (floatingValues == null)
-        {
-            floatingValues = new Dictionary<Thing, float>();
-        }
+        floatingValues ??= new Dictionary<Thing, float>();
 
         foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
         {
@@ -781,7 +745,7 @@ public class FloatingThings_MapComponent : MapComponent
         updateValues[nextupdate] = thing;
     }
 
-    private void checkForPawnsThatCanFall()
+    private void CheckForPawnsThatCanFall()
     {
         // ReSharper disable once ForCanBeConvertedToForeach, May change during execution
         for (var index = 0; index < mapPawns.Count; index++)
@@ -799,17 +763,8 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null)
-            {
-                if (lostFootingHediff != null)
-                {
-                    lostFootingHediff.Severity = 0;
-                }
-
-                continue;
-            }
-
-            if (cellsWithRiver?.Contains(pawn.Position) == false)
+            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null ||
+                cellsWithRiver?.Contains(pawn.Position) == false)
             {
                 if (lostFootingHediff != null)
                 {
@@ -863,17 +818,8 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var rand = Rand.Value;
-            if (rand < manipulationFiltered)
-            {
-                if (lostFootingHediff != null)
-                {
-                    lostFootingHediff.Severity = 0;
-                }
-
-                continue;
-            }
-
-            if (pawn.story?.traits?.HasTrait(TraitDef.Named("Nimble")) == true && Rand.Bool)
+            if (rand < manipulationFiltered ||
+                pawn.story?.traits?.HasTrait(TraitDef.Named("Nimble")) == true && Rand.Bool)
             {
                 if (lostFootingHediff != null)
                 {

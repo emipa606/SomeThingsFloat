@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.5.5 - Ignore mod-idetifier suffixes for patches
+
+
 1.5.4 - Should now also ignore animals that have the PF_Movement_Aquatic-tag
 
 

@@ -22,7 +22,7 @@ public class SomeThingsFloat
 
     public static readonly HashSet<ThingDef> PawnsThatBreathe;
 
-    public static readonly HashSet<ThingDef> PawnsThatFloat;
+    private static readonly HashSet<ThingDef> PawnsThatFloat;
 
     public static readonly HashSet<TerrainDef> ShallowTerrainDefs;
 
@@ -30,7 +30,7 @@ public class SomeThingsFloat
 
     public static readonly HashSet<ThingDef> Vehicles;
 
-    public static readonly bool SwimmingKitLoaded;
+    private static readonly bool SwimmingKitLoaded;
 
 
     static SomeThingsFloat()
@@ -50,12 +50,12 @@ public class SomeThingsFloat
             def.race is { IsFlesh: true }).ToHashSet();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
-        SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit") != null;
+        SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
             def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
 
         Vehicles = [];
-        if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework") != null)
+        if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework", true) != null)
         {
             Vehicles = DefDatabase<ThingDef>.AllDefsListForReading
                 .Where(def => def.thingClass.Name.Contains("VehiclePawn")).ToHashSet();
@@ -63,7 +63,7 @@ public class SomeThingsFloat
         }
 
         AquaticRaces = [];
-        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") != null)
+        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands", true) != null)
         {
             foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
                          def.race != null && def.modExtensions?.Any() == true &&
@@ -79,7 +79,7 @@ public class SomeThingsFloat
             }
         }
 
-        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands") != null)
+        if (ModLister.GetActiveModWithIdentifier("BiomesTeam.BiomesIslands", true) != null)
         {
             foreach (var possibleAquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
                          def.race != null && def.modExtensions?.Any() == true &&
@@ -238,13 +238,8 @@ public class SomeThingsFloat
                 return true;
             }
 
-            if (thingDef.stuffProps.categories?.Contains(StuffCategoryDefOf.Fabric) == true)
-            {
-                floatingValue = 0.5f;
-                return true;
-            }
-
-            if (thingDef.stuffProps.categories?.Contains(StuffCategoryDefOf.Leathery) == true)
+            if (thingDef.stuffProps.categories?.Contains(StuffCategoryDefOf.Fabric) == true ||
+                thingDef.stuffProps.categories?.Contains(StuffCategoryDefOf.Leathery) == true)
             {
                 floatingValue = 0.5f;
                 return true;
@@ -292,15 +287,15 @@ public class SomeThingsFloat
     {
         var breathing = pawn.health?.capacities?.GetLevel(PawnCapacityDefOf.Breathing) ?? 1;
         var manipulation = pawn.health?.capacities?.GetLevel(PawnCapacityDefOf.Manipulation) ?? 1;
-        var minimumCapacity = 0.1;
-        var hediffBaseValue = 0.025f;
-        var breathingFactor = 0.6f;
-        var manipulationFactor = 0.4f;
-        var capacties = (breathingFactor * (float)Math.Max(breathing, minimumCapacity)) +
-                        (manipulationFactor * (float)Math.Max(manipulation, minimumCapacity));
-        var drownValue = hediffBaseValue * (1 / capacties);
+        const double minimumCapacity = 0.1;
+        const float hediffBaseValue = 0.025f;
+        const float breathingFactor = 0.6f;
+        const float manipulationFactor = 0.4f;
+        var capacities = (breathingFactor * (float)Math.Max(breathing, minimumCapacity)) +
+                         (manipulationFactor * (float)Math.Max(manipulation, minimumCapacity));
+        var drownValue = hediffBaseValue * (1 / capacities);
         LogMessage(
-            $"Drowning value for {pawn}: {drownValue}. Breathing: {breathing}, Manipulation: {manipulation}, Capacities: {capacties}");
+            $"Drowning value for {pawn}: {drownValue}. Breathing: {breathing}, Manipulation: {manipulation}, Capacities: {capacities}");
         return drownValue;
     }
 
