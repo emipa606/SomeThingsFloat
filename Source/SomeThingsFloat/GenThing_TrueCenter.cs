@@ -10,7 +10,7 @@ public static class GenThing_TrueCenter
 {
     public static void Postfix(Thing t, ref Vector3 __result)
     {
-        if (!SomeThingsFloatMod.instance.Settings.SmoothAnimation)
+        if (!SomeThingsFloatMod.Instance.Settings.SmoothAnimation)
         {
             return;
         }

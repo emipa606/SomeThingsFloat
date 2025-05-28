@@ -15,7 +15,7 @@ public class Reward_SpawnRandomItem : AchievementReward
                 reason += "\n" + "NoValidMap".Translate();
             }
 
-            if (!SomeThingsFloatMod.instance.Settings.SpawnNewItems)
+            if (!SomeThingsFloatMod.Instance.Settings.SpawnNewItems)
             {
                 reason += "\n" + "STF.SpawnNewItemsDisabled".Translate();
             }

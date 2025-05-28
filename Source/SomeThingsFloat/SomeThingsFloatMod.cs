@@ -12,7 +12,7 @@ public class SomeThingsFloatMod : Mod
     /// <summary>
     ///     The instance of the settings to be read by the mod
     /// </summary>
-    public static SomeThingsFloatMod instance;
+    public static SomeThingsFloatMod Instance;
 
     private static string currentVersion;
 
@@ -24,7 +24,7 @@ public class SomeThingsFloatMod : Mod
     /// <param name="content"></param>
     public SomeThingsFloatMod(ModContentPack content) : base(content)
     {
-        instance = this;
+        Instance = this;
         Settings = GetSettings<SomeThingsFloatSettings>();
         currentVersion = VersionFromManifest.GetVersionFromModMetaData(content.ModMetaData);
     }

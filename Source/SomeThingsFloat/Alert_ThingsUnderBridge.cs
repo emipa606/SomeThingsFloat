@@ -25,7 +25,7 @@ public class Alert_ThingsUnderBridge : Alert
 
     public override AlertReport GetReport()
     {
-        if (!SomeThingsFloatMod.instance.Settings.FloatUnderBridgesInfo)
+        if (!SomeThingsFloatMod.Instance.Settings.FloatUnderBridgesInfo)
         {
             return false;
         }
@@ -46,7 +46,7 @@ public class Alert_ThingsUnderBridge : Alert
     private static Dictionary<Thing, IntVec3> thingsUnderBridge(out Map map)
     {
         map = null;
-        if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat)
+        if (!SomeThingsFloatMod.Instance.Settings.DownedPawnsFloat)
         {
             return new Dictionary<Thing, IntVec3>();
         }

@@ -30,7 +30,7 @@ public class Alert_ColonistIsFloatingAway : Alert
 
     private static List<Pawn> floatingPawns()
     {
-        if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat)
+        if (!SomeThingsFloatMod.Instance.Settings.DownedPawnsFloat)
         {
             return [];
         }

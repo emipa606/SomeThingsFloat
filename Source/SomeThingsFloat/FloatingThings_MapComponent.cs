@@ -73,12 +73,12 @@ public class FloatingThings_MapComponent : MapComponent
             mapPawns = map.mapPawns.AllPawns;
         }
 
-        if (SomeThingsFloatMod.instance.Settings.PawnsCanFall)
+        if (SomeThingsFloatMod.Instance.Settings.PawnsCanFall)
         {
             CheckForPawnsThatCanFall();
         }
 
-        if (SomeThingsFloatMod.instance.Settings.DownedPawnsDrown)
+        if (SomeThingsFloatMod.Instance.Settings.DownedPawnsDrown)
         {
             checkForPawnsThatCanDrown();
         }
@@ -97,7 +97,7 @@ public class FloatingThings_MapComponent : MapComponent
                 }
                 else
                 {
-                    if (floatingValues[hiddenPositionsKey] == 0)
+                    if (floatingValues.TryGetValue(hiddenPositionsKey, out var floatValue) && floatValue == 0)
                     {
                         thingsToRespawn.Add(hiddenPositionsKey);
                     }
@@ -115,8 +115,13 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 var radius = 1;
                 IntVec3 spawnCell;
-                while (!CellFinder.TryFindRandomCellNear(hiddenPositions[respawningThing], map, radius,
-                           cellsWithWater.Contains, out spawnCell))
+                if (!hiddenPositions.TryGetValue(respawningThing, out var respawnPos))
+                {
+                    continue;
+                }
+
+                while (!CellFinder.TryFindRandomCellNear(respawnPos, map, radius, cellsWithWater.Contains,
+                           out spawnCell))
                 {
                     radius++;
                 }
@@ -130,7 +135,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
 
-        if ((SomeThingsFloatMod.instance.Settings.Bobbing || SomeThingsFloatMod.instance.Settings.SmoothAnimation) &&
+        if ((SomeThingsFloatMod.Instance.Settings.Bobbing || SomeThingsFloatMod.Instance.Settings.SmoothAnimation) &&
             updateValues.Any())
         {
             foreach (var thingToUpdate in updateValues.Values)
@@ -167,7 +172,7 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
 
-        if (SomeThingsFloatMod.instance.Settings.ReservedItemsWillNotMove)
+        if (SomeThingsFloatMod.Instance.Settings.ReservedItemsWillNotMove)
         {
             if (map.reservationManager.AllReservedThings().Contains(thing))
             {
@@ -179,7 +184,7 @@ public class FloatingThings_MapComponent : MapComponent
             SomeThingsFloat.LogMessage($"{thing} is not reserved", debug: true);
         }
 
-        if (!tryToFindNewPostition(thing, out var newPosition))
+        if (!tryToFindNewPosition(thing, out var newPosition))
         {
             SomeThingsFloat.LogMessage($"{thing} cannot find a new postition");
             setNextUpdateTime(thing, true);
@@ -194,7 +199,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (!hiddenPositions.Remove(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
-            if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving)
+            if (SomeThingsFloatMod.Instance.Settings.ForbidWhenMoving)
             {
                 wasInStorage = thing.IsInValidStorage();
             }
@@ -278,13 +283,13 @@ public class FloatingThings_MapComponent : MapComponent
         }
         else
         {
-            if (SomeThingsFloatMod.instance.Settings.HaulUrgently && wasUnspawned &&
+            if (SomeThingsFloatMod.Instance.Settings.HaulUrgently && wasUnspawned &&
                 SomeThingsFloat.HaulUrgentlyDef != null)
             {
                 map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
             }
 
-            if (SomeThingsFloatMod.instance.Settings.AllowOnStuck)
+            if (SomeThingsFloatMod.Instance.Settings.AllowOnStuck)
             {
                 var buidingDef = newPosition.GetFirstBuilding(map)?.def;
                 if (buidingDef != null && (buidingDef == ThingDefOf.STF_Bars && SomeThingsFloat.IsLargeThing(thing) ||
@@ -295,7 +300,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
         }
 
-        if (SomeThingsFloatMod.instance.Settings.ForbidWhenMoving && wasInStorage != thing.IsInValidStorage())
+        if (SomeThingsFloatMod.Instance.Settings.ForbidWhenMoving && wasInStorage != thing.IsInValidStorage())
         {
             thing.SetForbidden(wasInStorage, false);
         }
@@ -361,7 +366,7 @@ public class FloatingThings_MapComponent : MapComponent
         {
             if (map.terrainGrid.topGrid[i].defName.ToLower().Contains("bridge"))
             {
-                if (!SomeThingsFloatMod.instance.Settings.FloatUnderBridges)
+                if (!SomeThingsFloatMod.Instance.Settings.FloatUnderBridges)
                 {
                     continue;
                 }
@@ -392,7 +397,7 @@ public class FloatingThings_MapComponent : MapComponent
 
     public bool TrySpawnThingAtMapEdge(bool force = false)
     {
-        if (!SomeThingsFloatMod.instance.Settings.SpawnNewItems)
+        if (!SomeThingsFloatMod.Instance.Settings.SpawnNewItems)
         {
             return false;
         }
@@ -403,32 +408,32 @@ public class FloatingThings_MapComponent : MapComponent
             return false;
         }
 
-        if (!force && Rand.Value < 0.9f)
+        switch (force)
         {
-            return false;
-        }
-
-        if (!force && lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems > GenTicks.TicksGame)
-        {
-            SomeThingsFloat.LogMessage(
-                $"Not time to spawn yet, next spawn: {lastSpawnTick + SomeThingsFloatMod.instance.Settings.MinTimeBetweenItems}, current time {GenTicks.TicksGame}",
-                debug: true);
-            return false;
+            case false when Rand.Value < 0.9f:
+                return false;
+            case false when lastSpawnTick + SomeThingsFloatMod.Instance.Settings.MinTimeBetweenItems >
+                            GenTicks.TicksGame:
+                SomeThingsFloat.LogMessage(
+                    $"Not time to spawn yet, next spawn: {lastSpawnTick + SomeThingsFloatMod.Instance.Settings.MinTimeBetweenItems}, current time {GenTicks.TicksGame}",
+                    debug: true);
+                return false;
         }
 
         if (!mapEdgeCells.Any())
         {
             var possibleMapEdgeCells = cellsWithWater.Intersect(CellRect.WholeMap(map).EdgeCells);
 
-            if (!possibleMapEdgeCells.Any())
+            var edgeCells = possibleMapEdgeCells as IntVec3[] ?? possibleMapEdgeCells.ToArray();
+            if (!edgeCells.Any())
             {
                 SomeThingsFloat.LogMessage("No possible edge cells to spawn in", debug: true);
                 return false;
             }
 
-            foreach (var mapEdgeCell in possibleMapEdgeCells)
+            foreach (var mapEdgeCell in edgeCells)
             {
-                if (SomeThingsFloatMod.instance.Settings.SpawnInOceanTiles &&
+                if (SomeThingsFloatMod.Instance.Settings.SpawnInOceanTiles &&
                     mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
                 {
                     mapEdgeCells.Add(mapEdgeCell);
@@ -502,7 +507,7 @@ public class FloatingThings_MapComponent : MapComponent
                 pawn.inventory.DestroyAll();
             }
 
-            if (!SomeThingsFloatMod.instance.Settings.SpawnLivingPawns || Rand.Value > 0.1f)
+            if (!SomeThingsFloatMod.Instance.Settings.SpawnLivingPawns || Rand.Value > 0.1f)
             {
                 if (!pawn.Dead)
                 {
@@ -516,7 +521,7 @@ public class FloatingThings_MapComponent : MapComponent
                     {
                         var apparel = pawn.apparel.WornApparel[index];
                         if (apparel.MarketValue + currentMarketValue <
-                            SomeThingsFloatMod.instance.Settings.MaxSpawnValue)
+                            SomeThingsFloatMod.Instance.Settings.MaxSpawnValue)
                         {
                             currentMarketValue += apparel.MarketValue;
                             continue;
@@ -536,14 +541,14 @@ public class FloatingThings_MapComponent : MapComponent
                     lastSpawnTick = GenTicks.TicksGame;
                 }
 
-                pawn.Corpse.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
-                if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
+                pawn.Corpse.SetForbidden(SomeThingsFloatMod.Instance.Settings.ForbidSpawningItems, false);
+                if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.Instance.Settings.HaulUrgently)
                 {
                     map.designationManager.AddDesignation(new Designation(pawn.Corpse,
                         SomeThingsFloat.HaulUrgentlyDef));
                 }
 
-                if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+                if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
                 {
                     Messages.Message(
                         cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
@@ -564,7 +569,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
             else
             {
-                if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+                if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
                 {
                     Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(pawn.NameFullColored), pawn,
                         MessageTypeDefOf.NeutralEvent);
@@ -582,16 +587,16 @@ public class FloatingThings_MapComponent : MapComponent
         var thingToMake = SomeThingsFloat.ThingsToCreate
             .Where(def =>
             {
-                if (!SomeThingsFloatMod.instance.Settings.SpawnFertilizedEggs)
+                if (!SomeThingsFloatMod.Instance.Settings.SpawnFertilizedEggs)
                 {
-                    return def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue &&
+                    return def.BaseMarketValue <= SomeThingsFloatMod.Instance.Settings.MaxSpawnValue &&
                            def.thingCategories?.Contains(ThingCategoryDefOf.EggsFertilized) == false;
                 }
 
-                return def.BaseMarketValue <= SomeThingsFloatMod.instance.Settings.MaxSpawnValue;
+                return def.BaseMarketValue <= SomeThingsFloatMod.Instance.Settings.MaxSpawnValue;
             }).RandomElementByWeight(def => def.generateCommonality);
         var amountToSpawn =
-            (int)Math.Floor(SomeThingsFloatMod.instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
+            (int)Math.Floor(SomeThingsFloatMod.Instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
 
         if (amountToSpawn == 0)
         {
@@ -628,13 +633,13 @@ public class FloatingThings_MapComponent : MapComponent
             return false;
         }
 
-        thing.SetForbidden(SomeThingsFloatMod.instance.Settings.ForbidSpawningItems, false);
-        if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.instance.Settings.HaulUrgently)
+        thing.SetForbidden(SomeThingsFloatMod.Instance.Settings.ForbidSpawningItems, false);
+        if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.Instance.Settings.HaulUrgently)
         {
             map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
         }
 
-        if (SomeThingsFloatMod.instance.Settings.NotifyOfSpawningItems)
+        if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
         {
             Messages.Message(
                 cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
@@ -642,7 +647,6 @@ public class FloatingThings_MapComponent : MapComponent
                     : "STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
                 MessageTypeDefOf.NeutralEvent);
         }
-
 
         lastPositions[thing] = new Tuple<int, IntVec3>(GenTicks.TicksGame, thing.Position);
 
@@ -657,10 +661,10 @@ public class FloatingThings_MapComponent : MapComponent
     private void updateListOfFloatingThings()
     {
         floatingValues ??= new Dictionary<Thing, float>();
-
-        foreach (var possibleThings in cellsWithWater.Select(vec3 => SomeThingsFloat.GetThingsAndPawns(vec3, map)))
+        SomeThingsFloat.LogMessage("Updating floating things", debug: true);
+        foreach (var vec3 in cellsWithWater)
         {
-            foreach (var possibleThing in possibleThings)
+            foreach (var possibleThing in SomeThingsFloat.GetThingsAndPawns(vec3, map))
             {
                 if (possibleThing == null)
                 {
@@ -730,19 +734,19 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         var timeIncrease = longTime ? 5 : 1;
-        var nextupdate = GenTicks.TicksGame +
+        var nextUpdate = GenTicks.TicksGame +
                          (int)Math.Round(
                              (GenTicks.TickRareInterval / floatingValues[thing] /
-                                 SomeThingsFloatMod.instance.Settings.RelativeFloatSpeed * timeIncrease) +
+                                 SomeThingsFloatMod.Instance.Settings.RelativeFloatSpeed * timeIncrease) +
                              Rand.Range(-10, 10));
-        while (updateValues.ContainsKey(nextupdate))
+        while (updateValues.ContainsKey(nextUpdate))
         {
-            nextupdate++;
+            nextUpdate++;
         }
 
-        SomeThingsFloat.LogMessage($"Current tick: {GenTicks.TicksGame}, {thing} next update: {nextupdate}",
+        SomeThingsFloat.LogMessage($"Current tick: {GenTicks.TicksGame}, {thing} next update: {nextUpdate}",
             debug: true);
-        updateValues[nextupdate] = thing;
+        updateValues[nextUpdate] = thing;
     }
 
     private void CheckForPawnsThatCanFall()
@@ -787,7 +791,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             var manipulation = Math.Max(pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation), 0.1f);
 
-            if (manipulation >= SomeThingsFloatMod.instance.Settings.ManipulationThreshold)
+            if (manipulation >= SomeThingsFloatMod.Instance.Settings.ManipulationThreshold)
             {
                 if (lostFootingHediff != null)
                 {
@@ -803,7 +807,7 @@ public class FloatingThings_MapComponent : MapComponent
             if (SomeThingsFloat.ShallowTerrainDefs.Contains(pawn.Position.GetTerrain(map)))
             {
                 SomeThingsFloat.LogMessage($"{pawn} is in shallow waters");
-                if (SomeThingsFloatMod.instance.Settings.RelativeChanceInShallows == 0)
+                if (SomeThingsFloatMod.Instance.Settings.RelativeChanceInShallows == 0)
                 {
                     if (lostFootingHediff != null)
                     {
@@ -814,7 +818,7 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 manipulationFiltered += (1 - manipulationFiltered) *
-                                        (1 - SomeThingsFloatMod.instance.Settings.RelativeChanceInShallows);
+                                        (1 - SomeThingsFloatMod.Instance.Settings.RelativeChanceInShallows);
             }
 
             var rand = Rand.Value;
@@ -932,8 +936,8 @@ public class FloatingThings_MapComponent : MapComponent
                 var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
                 hediff.Severity = SomeThingsFloat.CalculateDrowningValue(pawn);
                 pawn.health?.AddHediff(hediff);
-                if (!SomeThingsFloatMod.instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer != true ||
-                    SomeThingsFloatMod.instance.Settings.WarnForAllFriendlyPawns &&
+                if (!SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer != true ||
+                    SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns &&
                     pawn.Faction.HostileTo(Faction.OfPlayer))
                 {
                     continue;
@@ -951,7 +955,7 @@ public class FloatingThings_MapComponent : MapComponent
         }
     }
 
-    private bool tryToFindNewPostition(Thing thing, out IntVec3 resultingCell)
+    private bool tryToFindNewPosition(Thing thing, out IntVec3 resultingCell)
     {
         if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
@@ -972,8 +976,7 @@ public class FloatingThings_MapComponent : MapComponent
         resultingCell = originalPosition;
 
         var originalFlow = Vector3.zero;
-        if (cellsWithRiver.Contains(originalPosition) ||
-            hiddenPositions?.Values.ToList().Contains(originalPosition) == true)
+        if (cellsWithRiver.Contains(originalPosition) || hiddenPositions?.Values.Contains(originalPosition) == true)
         {
             originalFlow = map.waterInfo.GetWaterMovement(resultingCell.ToVector3Shifted());
         }
@@ -1001,7 +1004,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!adjacentCell.InBounds(map))
             {
-                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge &&
+                if (SomeThingsFloatMod.Instance.Settings.DespawnAtMapEdge &&
                     !Messages.liveMessages.Any(message =>
                         message.lookTargets?.targets.Contains(thing) == true))
                 {
@@ -1021,10 +1024,10 @@ public class FloatingThings_MapComponent : MapComponent
             if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null &&
                 !underCellsWithWater.Contains(adjacentCell))
             {
-                var buidingDef = adjacentCell.GetFirstBuilding(map)?.def;
+                var buildingDef = adjacentCell.GetFirstBuilding(map)?.def;
 
-                if (buidingDef != null && buidingDef != ThingDefOf.STF_Bars && buidingDef != ThingDefOf.STF_Net &&
-                    !buidingDef.IsBlueprint && !buidingDef.IsFrame)
+                if (buildingDef != null && buildingDef != ThingDefOf.STF_Bars && buildingDef != ThingDefOf.STF_Net &&
+                    !buildingDef.IsBlueprint && !buildingDef.IsFrame)
                 {
                     SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way", debug: true);
                     continue;
@@ -1059,7 +1062,7 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!adjacentCell.InBounds(map))
             {
-                if (SomeThingsFloatMod.instance.Settings.DespawnAtMapEdge)
+                if (SomeThingsFloatMod.Instance.Settings.DespawnAtMapEdge)
                 {
                     resultingCell = IntVec3.Invalid;
                     return true;
@@ -1076,10 +1079,10 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) != null)
             {
-                var buidingDef = adjacentCell.GetFirstBuilding(map)?.def;
+                var buildingDef = adjacentCell.GetFirstBuilding(map)?.def;
 
-                if (buidingDef != null && buidingDef != ThingDefOf.STF_Bars && buidingDef != ThingDefOf.STF_Net &&
-                    !buidingDef.IsBlueprint && !buidingDef.IsFrame)
+                if (buildingDef != null && buildingDef != ThingDefOf.STF_Bars && buildingDef != ThingDefOf.STF_Net &&
+                    !buildingDef.IsBlueprint && !buildingDef.IsFrame)
                 {
                     SomeThingsFloat.LogMessage($"{adjacentCell} position has stuff in the way", debug: true);
                     continue;
@@ -1096,14 +1099,13 @@ public class FloatingThings_MapComponent : MapComponent
 
     public void UnSpawnedDeterioration(IntVec3 c)
     {
-        var hiddenThing = hiddenPositions.FirstOrFallback(pair => pair.Value == c,
+        var (thing, _) = hiddenPositions.FirstOrFallback(pair => pair.Value == c,
             new KeyValuePair<Thing, IntVec3>(null, IntVec3.Invalid));
-        if (hiddenThing.Key == null)
+        if (thing == null)
         {
             return;
         }
 
-        var thing = hiddenThing.Key;
         float num;
         if (thing is Corpse corpse && corpse.InnerPawn.apparel != null)
         {
@@ -1162,12 +1164,8 @@ public class FloatingThings_MapComponent : MapComponent
 
         var num = thing.GetStatValue(StatDefOf.DeteriorationRate, false);
 
-        if (!thing.def.deteriorateFromEnvironmentalEffects)
-        {
-            return num;
-        }
-
-        if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var position))
+        if (!thing.def.deteriorateFromEnvironmentalEffects || hiddenPositions == null ||
+            !hiddenPositions.TryGetValue(thing, out var position))
         {
             return num;
         }

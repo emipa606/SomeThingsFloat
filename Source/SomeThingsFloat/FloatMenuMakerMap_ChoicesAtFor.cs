@@ -10,7 +10,7 @@ public static class FloatMenuMakerMap_ChoicesAtFor
 
     public static void Prefix()
     {
-        if (!SomeThingsFloatMod.instance.Settings.SmoothAnimation)
+        if (!SomeThingsFloatMod.Instance.Settings.SmoothAnimation)
         {
             return;
         }

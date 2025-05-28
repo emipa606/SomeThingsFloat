@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.5.6 - Code cleanup
+
+
 1.5.5 - Ignore mod-idetifier suffixes for patches
 
 

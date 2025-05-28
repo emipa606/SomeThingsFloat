@@ -8,14 +8,14 @@ public class Hediff_OnlyFloating : HediffWithComps
     {
         base.Tick();
 
-        if (GenTicks.TicksGame % 50 != 0)
-        {
-            return;
-        }
-
         if (pawn?.Map == null)
         {
             Severity = 0;
+            return;
+        }
+
+        if (!pawn.IsHashIntervalTick(50))
+        {
             return;
         }
 

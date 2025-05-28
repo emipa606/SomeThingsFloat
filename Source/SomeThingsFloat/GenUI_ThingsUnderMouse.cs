@@ -12,7 +12,7 @@ public static class GenUI_ThingsUnderMouse
     public static void Postfix(ref List<Thing> __result, Vector3 clickPos, TargetingParameters clickParams,
         ITargetingSource source)
     {
-        if (!SomeThingsFloatMod.instance.Settings.SmoothAnimation)
+        if (!SomeThingsFloatMod.Instance.Settings.SmoothAnimation)
         {
             return;
         }

@@ -10,7 +10,7 @@ using Verse;
 namespace SomeThingsFloat;
 
 [StaticConstructorOnStartup]
-public class SomeThingsFloat
+public static class SomeThingsFloat
 {
     public static readonly HashSet<ThingDef> ThingsToCreate;
 
@@ -37,7 +37,7 @@ public class SomeThingsFloat
     {
         new Harmony("Mlie.SomeThingsFloat").PatchAll(Assembly.GetExecutingAssembly());
         ThingsToCreate = DefDatabase<ThingDef>.AllDefsListForReading
-            .Where(def => TryGetSpecialFloatingValue(def, out var floatingValue, out var minimized) &&
+            .Where(def => tryGetSpecialFloatingValue(def, out var floatingValue, out var minimized) &&
                           floatingValue > 0 && !minimized)
             .ToHashSet();
         ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
@@ -127,7 +127,7 @@ public class SomeThingsFloat
             case Corpse corpse when corpse.InnerPawn == null || corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
             case Pawn pawn:
-                if (!SomeThingsFloatMod.instance.Settings.DownedPawnsFloat ||
+                if (!SomeThingsFloatMod.Instance.Settings.DownedPawnsFloat ||
                     PawnsThatFloat?.Contains(pawn.def) == false ||
                     !pawn.Downed || !pawn.Awake())
                 {
@@ -160,7 +160,7 @@ public class SomeThingsFloat
         }
 
         // Check if it's a special thing
-        if (TryGetSpecialFloatingValue(actualThing.def, out var floatingValue, out _))
+        if (tryGetSpecialFloatingValue(actualThing.def, out var floatingValue, out _))
         {
             return floatingValue;
         }
@@ -177,7 +177,7 @@ public class SomeThingsFloat
         {
             foreach (var thingDefCountClass in actualThing.def.CostList)
             {
-                TryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue, out _);
+                tryGetSpecialFloatingValue(thingDefCountClass.thingDef, out floatingValue, out _);
                 totalIngredients += thingDefCountClass.count;
                 totalValue += thingDefCountClass.count * floatingValue;
             }
@@ -185,7 +185,7 @@ public class SomeThingsFloat
 
         if (!actualThing.def.stuffCategories.NullOrEmpty())
         {
-            TryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue, out _);
+            tryGetSpecialFloatingValue(actualThing.Stuff, out floatingValue, out _);
             totalIngredients += actualThing.def.CostStuffCount;
             totalValue += actualThing.def.CostStuffCount * floatingValue;
         }
@@ -226,7 +226,7 @@ public class SomeThingsFloat
     }
 
 
-    private static bool TryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue, out bool onlyIfMinimized)
+    private static bool tryGetSpecialFloatingValue(ThingDef thingDef, out float floatingValue, out bool onlyIfMinimized)
     {
         floatingValue = 1;
         onlyIfMinimized = false;
@@ -313,7 +313,7 @@ public class SomeThingsFloat
 
     public static Vector3 AddWave(Vector3 currentVector, int id)
     {
-        if (!SomeThingsFloatMod.instance.Settings.Bobbing)
+        if (!SomeThingsFloatMod.Instance.Settings.Bobbing)
         {
             return currentVector;
         }
@@ -333,12 +333,12 @@ public class SomeThingsFloat
 
     public static void LogMessage(string message, bool force = false, bool debug = false)
     {
-        if (!SomeThingsFloatMod.instance.Settings.DebugLogging && debug)
+        if (!SomeThingsFloatMod.Instance.Settings.DebugLogging && debug)
         {
             return;
         }
 
-        if (!SomeThingsFloatMod.instance.Settings.VerboseLogging && !force)
+        if (!SomeThingsFloatMod.Instance.Settings.VerboseLogging && !force)
         {
             return;
         }
