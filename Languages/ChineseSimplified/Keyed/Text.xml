@@ -69,4 +69,5 @@
   <STF.DebugLogging>调试日志</STF.DebugLogging>
   <STF.DebugLoggingTT>记录一切，这实际上只是在开发修改器时可用</STF.DebugLoggingTT>
   <STF.Reset>重置</STF.Reset>
+  <STF.ThingsFloatedInFromSpace>{0}从太空中漂浮而来</STF.ThingsFloatedInFromSpace>
 </LanguageData>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -9,8 +10,21 @@ namespace SomeThingsFloat;
 
 public class FloatingThings_MapComponent : MapComponent
 {
+    private static readonly List<IntVec3> validDirections =
+    [
+        IntVec3.North,
+        IntVec3.NorthEast,
+        IntVec3.East,
+        IntVec3.SouthEast,
+        IntVec3.South,
+        IntVec3.SouthWest,
+        IntVec3.West,
+        IntVec3.NorthWest
+    ];
+
     private readonly HashSet<AltitudeLayer> ignoredAltitudeLayers;
     private readonly HashSet<IntVec3> mapEdgeCells;
+    private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
     public int EnemyPawnsDrowned;
@@ -18,9 +32,13 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
     private List<IntVec3> hiddenPositionsValues;
+    private bool isSpace;
     private Dictionary<Thing, Tuple<int, IntVec3>> lastPositions;
     private int lastSpawnTick;
     private List<Pawn> mapPawns;
+    private Dictionary<Thing, IntVec3> spaceDirections;
+    private List<Thing> spaceDirectionsKeys;
+    private List<IntVec3> spaceDirectionsValues;
     private HashSet<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
@@ -29,11 +47,12 @@ public class FloatingThings_MapComponent : MapComponent
 
     public FloatingThings_MapComponent(Map map) : base(map)
     {
-        this.map = map;
         SomeThingsFloat.FloatingMapComponents[map] = this;
         underCellsWithWater = [];
         cellsWithWater = [];
         cellsWithRiver = [];
+        cellsWithNothing = [];
+        spaceDirections = [];
         mapEdgeCells = [];
         floatingValues = new Dictionary<Thing, float>();
         updateValues = new Dictionary<int, Thing>();
@@ -55,6 +74,7 @@ public class FloatingThings_MapComponent : MapComponent
             AltitudeLayer.Weather
         ];
         lastSpawnTick = 0;
+        isSpace = map.Tile.LayerDef.isSpace;
     }
 
     public override void MapComponentTick()
@@ -63,7 +83,7 @@ public class FloatingThings_MapComponent : MapComponent
         if (ticksGame % GenTicks.TickLongInterval == 0)
         {
             SomeThingsFloat.LogMessage("Doing TickLongInterval calls", debug: true);
-            updateListOfWaterCells();
+            updateListOfFloatCells();
             TrySpawnThingAtMapEdge();
             updateListOfFloatingThings();
         }
@@ -75,7 +95,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (SomeThingsFloatMod.Instance.Settings.PawnsCanFall)
         {
-            CheckForPawnsThatCanFall();
+            checkForPawnsThatCanFall();
         }
 
         if (SomeThingsFloatMod.Instance.Settings.DownedPawnsDrown)
@@ -164,7 +184,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         lastPositions.Remove(thing);
 
-        if (!VerifyThingIsInWater(thing))
+        if (!isSpace && !VerifyThingIsInWater(thing))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
             floatingValues.Remove(thing);
@@ -204,7 +224,10 @@ public class FloatingThings_MapComponent : MapComponent
                 wasInStorage = thing.IsInValidStorage();
             }
 
-            thing.DeSpawn();
+            if (thing.Spawned)
+            {
+                thing.DeSpawn();
+            }
         }
         else
         {
@@ -226,7 +249,7 @@ public class FloatingThings_MapComponent : MapComponent
             if (thing.def == RimWorld.ThingDefOf.Wastepack)
             {
                 WastePacksFloated += thing.stackCount;
-                var neighbor = Find.World.grid[map.Tile].Rivers.FirstOrDefault().neighbor;
+                var neighbor = ((SurfaceTile)Find.World.grid[map.Tile]).Rivers.FirstOrDefault().neighbor;
                 if (neighbor == 0)
                 {
                     neighbor = Find.World.grid.FindMostReasonableAdjacentTileForDisplayedPathCost(map.Tile);
@@ -298,6 +321,14 @@ public class FloatingThings_MapComponent : MapComponent
                     thing.SetForbidden(false, false);
                 }
             }
+
+            if (isSpace && !cellsWithNothing.Contains(newPosition))
+            {
+                floatingValues.Remove(thing);
+                lastPositions.Remove(thing);
+                updateValues.RemoveAll(pair => pair.Value == thing);
+                SomeThingsFloat.LogMessage($"{thing} is no longer floating in space");
+            }
         }
 
         if (SomeThingsFloatMod.Instance.Settings.ForbidWhenMoving && wasInStorage != thing.IsInValidStorage())
@@ -314,7 +345,7 @@ public class FloatingThings_MapComponent : MapComponent
     public override void MapGenerated()
     {
         base.MapGenerated();
-        updateListOfWaterCells();
+        updateListOfFloatCells();
         updateListOfFloatingThings();
     }
 
@@ -323,11 +354,15 @@ public class FloatingThings_MapComponent : MapComponent
         base.ExposeData();
 
         Scribe_Values.Look(ref lastSpawnTick, "lastSpawnTick");
+        Scribe_Values.Look(ref isSpace, "isSpace");
         Scribe_Values.Look(ref WastePacksFloated, "WastePacksFloated");
         Scribe_Values.Look(ref EnemyPawnsDrowned, "EnemyPawnsDrowned");
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
+        Scribe_Collections.Look(ref cellsWithNothing, "cellsWithNothing", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithRiver, "cellsWithRiver", LookMode.Value);
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
+        Scribe_Collections.Look(ref spaceDirections, "spaceDirections", LookMode.Deep, LookMode.Value,
+            ref spaceDirectionsKeys, ref spaceDirectionsValues);
         Scribe_Collections.Look(ref updateValues, "updateValues", LookMode.Value, LookMode.Reference,
             ref updateValuesKeys, ref updateValuesValues);
         Scribe_Collections.Look(ref hiddenPositions, "hiddenPositions", LookMode.Deep, LookMode.Value,
@@ -341,24 +376,34 @@ public class FloatingThings_MapComponent : MapComponent
 
         hiddenPositions ??= new Dictionary<Thing, IntVec3>();
 
+        spaceDirections ??= new Dictionary<Thing, IntVec3>();
+
         updateValues ??= new Dictionary<int, Thing>();
 
         lastPositions ??= new Dictionary<Thing, Tuple<int, IntVec3>>();
 
         cellsWithWater ??= [];
 
+        cellsWithNothing ??= [];
+
         cellsWithRiver ??= [];
 
         underCellsWithWater ??= [];
 
-        updateListOfWaterCells();
+        if (!isSpace)
+        {
+            isSpace = map.Tile.LayerDef.isSpace;
+        }
+
+        updateListOfFloatCells();
         updateListOfFloatingThings();
     }
 
-    private void updateListOfWaterCells()
+    private void updateListOfFloatCells()
     {
         SomeThingsFloat.LogMessage("Updating water-cells", debug: true);
         cellsWithWater = [];
+        cellsWithNothing = [];
         cellsWithRiver = [];
         underCellsWithWater = [];
 
@@ -388,10 +433,17 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 cellsWithRiver.Add(map.cellIndices.IndexToCell(i));
             }
+
+            if (isSpace && map.terrainGrid.topGrid[i].defName == "Space")
+            {
+                cellsWithNothing.Add(map.cellIndices.IndexToCell(i));
+            }
         }
 
         SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
         SomeThingsFloat.LogMessage($"Found {cellsWithRiver.Count} river-cells");
+        SomeThingsFloat.LogMessage($"Found {cellsWithNothing.Count} space-cells");
+
         SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
     }
 
@@ -402,9 +454,9 @@ public class FloatingThings_MapComponent : MapComponent
             return false;
         }
 
-        if (!cellsWithWater.Any())
+        if ((!isSpace || !cellsWithNothing.Any()) && !cellsWithWater.Any())
         {
-            SomeThingsFloat.LogMessage("No water cells to spawn in", debug: true);
+            SomeThingsFloat.LogMessage("No cells to spawn in", debug: true);
             return false;
         }
 
@@ -423,6 +475,10 @@ public class FloatingThings_MapComponent : MapComponent
         if (!mapEdgeCells.Any())
         {
             var possibleMapEdgeCells = cellsWithWater.Intersect(CellRect.WholeMap(map).EdgeCells);
+            if (isSpace)
+            {
+                possibleMapEdgeCells = cellsWithNothing.Intersect(CellRect.WholeMap(map).EdgeCells);
+            }
 
             var edgeCells = possibleMapEdgeCells as IntVec3[] ?? possibleMapEdgeCells.ToArray();
             if (!edgeCells.Any())
@@ -434,7 +490,8 @@ public class FloatingThings_MapComponent : MapComponent
             foreach (var mapEdgeCell in edgeCells)
             {
                 if (SomeThingsFloatMod.Instance.Settings.SpawnInOceanTiles &&
-                    mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
+                    mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true ||
+                    isSpace && mapEdgeCell.GetTerrain(map)?.defName == "Space")
                 {
                     mapEdgeCells.Add(mapEdgeCell);
                     continue;
@@ -473,27 +530,27 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (!mapEdgeCells.Any())
         {
-            SomeThingsFloat.LogMessage("Found no map-edge cells with river");
+            SomeThingsFloat.LogMessage("Found no valid map-edge cells");
             return false;
         }
 
         var cellToPlaceIt = mapEdgeCells.RandomElement();
 
         // Sometimes we spawn a pawn or corpse
-        if (Rand.Value > 0.9f)
+        if (!isSpace && Rand.Value > 0.9f)
         {
             var currentMarketValue = 0f;
             var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
-                    where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionType is not { isPlayer: true }
+                    where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionDef is not { isPlayer: true }
                                                     && !SomeThingsFloat.AquaticRaces.Contains(kindDef.race)
                                                     && !SomeThingsFloat.Vehicles.Contains(kindDef.race)
                     select kindDef)
                 .RandomElement();
             Faction faction = null;
-            if (pawnKindDef.defaultFactionType != null)
+            if (pawnKindDef.defaultFactionDef != null)
             {
                 faction = Find.World.factionManager.AllFactions
-                    .Where(factionType => factionType.def == pawnKindDef.defaultFactionType).RandomElement();
+                    .Where(factionType => factionType.def == pawnKindDef.defaultFactionDef).RandomElement();
             }
 
             var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKindDef, faction, allowDead: false));
@@ -598,6 +655,12 @@ public class FloatingThings_MapComponent : MapComponent
         var amountToSpawn =
             (int)Math.Floor(SomeThingsFloatMod.Instance.Settings.MaxSpawnValue / thingToMake.BaseMarketValue);
 
+        if (isSpace)
+        {
+            thingToMake = ThingCategoryDefOf.Chunks.DescendantThingDefs.RandomElement();
+            amountToSpawn = 1;
+        }
+
         if (amountToSpawn == 0)
         {
             SomeThingsFloat.LogMessage($"Value of {thingToMake} too high, could not spawn");
@@ -641,11 +704,24 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
         {
-            Messages.Message(
-                cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
-                    ? "STF.ThingsFloatedInFromTheOcean".Translate(thing.LabelCap)
-                    : "STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
-                MessageTypeDefOf.NeutralEvent);
+            if (cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
+            {
+                Messages.Message(
+                    "STF.ThingsFloatedInFromTheOcean".Translate(thing.LabelCap), thing,
+                    MessageTypeDefOf.NeutralEvent);
+            }
+            else if (isSpace)
+            {
+                Messages.Message(
+                    "STF.ThingsFloatedInFromSpace".Translate(thing.LabelCap), thing,
+                    MessageTypeDefOf.NeutralEvent);
+            }
+            else
+            {
+                Messages.Message(
+                    "STF.ThingsFloatedIntoTheMap".Translate(thing.LabelCap), thing,
+                    MessageTypeDefOf.NeutralEvent);
+            }
         }
 
         lastPositions[thing] = new Tuple<int, IntVec3>(GenTicks.TicksGame, thing.Position);
@@ -653,6 +729,12 @@ public class FloatingThings_MapComponent : MapComponent
         if (!force)
         {
             lastSpawnTick = GenTicks.TicksGame;
+        }
+
+        if (isSpace)
+        {
+            spaceDirections[thing] =
+                validDirections.Where(vec3 => (cellToPlaceIt + vec3).InBounds(map)).RandomElement();
         }
 
         return true;
@@ -713,7 +795,24 @@ public class FloatingThings_MapComponent : MapComponent
             setNextUpdateTime(possibleThing);
         }
 
-        SomeThingsFloat.LogMessage($"Found {floatingValues.Count} items in water");
+        if (isSpace)
+        {
+            foreach (var vec3 in cellsWithNothing)
+            {
+                foreach (var possibleThing in SomeThingsFloat.GetThingsAndPawns(vec3, map, true))
+                {
+                    if (!spaceDirections.ContainsKey(possibleThing))
+                    {
+                        possibleThing.DeSpawn();
+                    }
+
+                    floatingValues[possibleThing] = 1;
+                    setNextUpdateTime(possibleThing);
+                }
+            }
+        }
+
+        SomeThingsFloat.LogMessage($"Found {floatingValues.Count} items in floatable terrain");
     }
 
     private void setNextUpdateTime(Thing thing, bool longTime = false)
@@ -749,7 +848,7 @@ public class FloatingThings_MapComponent : MapComponent
         updateValues[nextUpdate] = thing;
     }
 
-    private void CheckForPawnsThatCanFall()
+    private void checkForPawnsThatCanFall()
     {
         // ReSharper disable once ForCanBeConvertedToForeach, May change during execution
         for (var index = 0; index < mapPawns.Count; index++)
@@ -914,11 +1013,12 @@ public class FloatingThings_MapComponent : MapComponent
             var cannotDrown =
                 pawn.apparel?.WornApparel?.Any(apparel =>
                     SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
+            var isSwimming = pawn.CurJobDef == JobDefOf.GoSwimming;
 
             var drowningHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (drowningHediff != null)
             {
-                if (cannotDrown || inShallowWater)
+                if (cannotDrown || inShallowWater || isSwimming)
                 {
                     drowningHediff.Severity = 0;
                     return;
@@ -957,6 +1057,27 @@ public class FloatingThings_MapComponent : MapComponent
 
     private bool tryToFindNewPosition(Thing thing, out IntVec3 resultingCell)
     {
+        if (isSpace && spaceDirections.TryGetValue(thing, out var direction))
+        {
+            resultingCell = thing.Position + direction;
+            if (!resultingCell.InBounds(map))
+            {
+                resultingCell = IntVec3.Invalid;
+            }
+
+            if (GenPlace.HaulPlaceBlockerIn(thing, resultingCell, map, true) == null &&
+                resultingCell.GetFirstItem(map) == null)
+            {
+                return true;
+            }
+
+            SomeThingsFloat.LogMessage($"{resultingCell} position has stuff in the way, bouncing", debug: true);
+            spaceDirections[thing] =
+                validDirections[(validDirections.IndexOf(spaceDirections[thing]) + 4) % 8];
+            resultingCell = IntVec3.Invalid;
+            return false;
+        }
+
         if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))
         {
             originalPosition = thing.Position;
@@ -1015,9 +1136,10 @@ public class FloatingThings_MapComponent : MapComponent
                 continue;
             }
 
-            if (!cellsWithWater.Contains(adjacentCell) && !underCellsWithWater.Contains(adjacentCell))
+            if (!cellsWithWater.Contains(adjacentCell) && !underCellsWithWater.Contains(adjacentCell) &&
+                !cellsWithNothing.Contains(adjacentCell))
             {
-                SomeThingsFloat.LogMessage($"{adjacentCell} is not in water", debug: true);
+                SomeThingsFloat.LogMessage($"{adjacentCell} is not floatable", debug: true);
                 continue;
             }
 
@@ -1071,7 +1193,8 @@ public class FloatingThings_MapComponent : MapComponent
                 continue;
             }
 
-            if (!cellsWithWater.Contains(adjacentCell) && !underCellsWithWater.Contains(adjacentCell))
+            if (!cellsWithWater.Contains(adjacentCell) && !underCellsWithWater.Contains(adjacentCell) &&
+                !cellsWithNothing.Contains(adjacentCell))
             {
                 SomeThingsFloat.LogMessage($"{adjacentCell} is not in water", debug: true);
                 continue;

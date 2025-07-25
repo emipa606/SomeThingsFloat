@@ -60,6 +60,7 @@
   <STF.ThingsUnderBridgeTT>Things that are currently floating under bridges: {0}</STF.ThingsUnderBridgeTT>
   <STF.ThingsFloatedIntoTheMap>{0} appeared floating down the river</STF.ThingsFloatedIntoTheMap>
   <STF.ThingsFloatedInFromTheOcean>{0} appeared floating in the ocean</STF.ThingsFloatedInFromTheOcean>
+  <STF.ThingsFloatedInFromSpace>{0} appeared floating in from space</STF.ThingsFloatedInFromSpace>
   <STF.PawnIsDrowning>{0} is downed in the water and drowning, they are in desperate need of rescue!</STF.PawnIsDrowning>
   <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>

@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.6.0 - Updated to 1.6, added the possibility for floating space-chunks
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.5.6 - Code cleanup
 
 

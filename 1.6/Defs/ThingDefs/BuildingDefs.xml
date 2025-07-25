@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef Name="STF_Nets" ParentName="BuildingBase" Abstract="True">
+    <blockWind>false</blockWind>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <blockLight>false</blockLight>
+    <canOverlapZones>true</canOverlapZones>
+    <coversFloor>false</coversFloor>
+    <passability>Standable</passability>
+    <soundImpactDefault>BulletImpact_Ground</soundImpactDefault>
+    <terrainAffordanceNeeded>Bridgeable</terrainAffordanceNeeded>
+    <drawStyleCategory>Walls</drawStyleCategory>
+    <pathCostIgnoreRepeat>true</pathCostIgnoreRepeat>
+    <pathCost>80</pathCost>
+    <neverMultiSelect>true</neverMultiSelect>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>Asymmetric</linkType>
+      <linkFlags>
+        <li>Fences</li>
+      </linkFlags>
+      <asymmetricLink>
+        <linkFlags>
+          <li>Wall</li>
+          <li>Rock</li>
+        </linkFlags>
+        <linkToDoors>true</linkToDoors>
+        <drawDoorBorderEast>
+          <color>(0,0,0)</color>
+          <size>(0.04, 0.77)</size>
+          <offset>(0.5, 0, -0.08)</offset>
+        </drawDoorBorderEast>
+        <drawDoorBorderWest>
+          <color>(0,0,0)</color>
+          <size>(0.04, 0.77)</size>
+          <offset>(-0.5, 0, -0.08)</offset>
+        </drawDoorBorderWest>
+      </asymmetricLink>
+    </graphicData>
+    <building>
+      <allowAutoroof>false</allowAutoroof>
+      <isInert>true</isInert>
+      <ai_chillDestination>false</ai_chillDestination>
+      <paintable>true</paintable>
+    </building>
+    <designationCategory>Structure</designationCategory>
+    <costStuffCount>5</costStuffCount>
+    <damageMultipliers>
+      <li>
+        <damageDef>Bomb</damageDef>
+        <multiplier>2</multiplier>
+      </li>
+    </damageMultipliers>
+    <statBases>
+      <Beauty>0</Beauty>
+    </statBases>
+    <altitudeLayer>Building</altitudeLayer>
+  </ThingDef>
+  <ThingDef ParentName="STF_Nets">
+    <defName>STF_Bars</defName>
+    <label>bars</label>
+    <description>Built in water, these bars catch large floating items, such as furniture, corpses and live pawns.</description>
+    <graphicData>
+      <texPath>STF_Things/Bars/Bars</texPath>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>150</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <uiIconPath>STF_Things/Bars/Bars_icon</uiIconPath>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+    </stuffCategories>
+    <building>
+      <blueprintGraphicData>
+        <texPath>STF_Things/Bars/Bars_blueprint</texPath>
+      </blueprintGraphicData>
+    </building>
+  </ThingDef>
+  <ThingDef ParentName="STF_Nets">
+    <defName>STF_Net</defName>
+    <label>net</label>
+    <description>Built in water, this net catches any floating item.</description>
+    <graphicData>
+      <texPath>STF_Things/Net/Net</texPath>
+    </graphicData>
+    <statBases>
+      <WorkToBuild>200</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <uiIconPath>STF_Things/Net/Net_icon</uiIconPath>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <building>
+      <blueprintGraphicData>
+        <texPath>STF_Things/Net/Net_blueprint</texPath>
+      </blueprintGraphicData>
+    </building>
+    <researchPrerequisites>
+      <li>Smithing</li>
+    </researchPrerequisites>
+  </ThingDef>
+</Defs>

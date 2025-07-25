@@ -22,7 +22,7 @@ public static class SomeThingsFloat
 
     public static readonly HashSet<ThingDef> PawnsThatBreathe;
 
-    private static readonly HashSet<ThingDef> PawnsThatFloat;
+    private static readonly HashSet<ThingDef> pawnsThatFloat;
 
     public static readonly HashSet<TerrainDef> ShallowTerrainDefs;
 
@@ -30,7 +30,7 @@ public static class SomeThingsFloat
 
     public static readonly HashSet<ThingDef> Vehicles;
 
-    private static readonly bool SwimmingKitLoaded;
+    private static readonly bool swimmingKitLoaded;
 
 
     static SomeThingsFloat()
@@ -46,11 +46,11 @@ public static class SomeThingsFloat
         PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
             def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToHashSet();
-        PawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+        pawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true }).ToHashSet();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
-        SwimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
+        swimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
             def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
 
@@ -128,13 +128,13 @@ public static class SomeThingsFloat
                 return 0.75f;
             case Pawn pawn:
                 if (!SomeThingsFloatMod.Instance.Settings.DownedPawnsFloat ||
-                    PawnsThatFloat?.Contains(pawn.def) == false ||
+                    pawnsThatFloat?.Contains(pawn.def) == false ||
                     !pawn.Downed || !pawn.Awake())
                 {
                     return 0;
                 }
 
-                if (!SwimmingKitLoaded || !pawn.def.statBases.Any(modifier => modifier.stat.defName == "SwimSpeed"))
+                if (!swimmingKitLoaded || !pawn.def.statBases.Any(modifier => modifier.stat.defName == "SwimSpeed"))
                 {
                     return 0.5f;
                 }
@@ -194,13 +194,14 @@ public static class SomeThingsFloat
         return totalValue;
     }
 
-    public static IEnumerable<Thing> GetThingsAndPawns(IntVec3 c, Map map)
+    public static IEnumerable<Thing> GetThingsAndPawns(IntVec3 c, Map map, bool inSpace = false)
     {
         var thingList = map.thingGrid.ThingsListAt(c);
         int num;
         for (var i = 0; i < thingList.Count; i = num + 1)
         {
-            if (thingList[i].def.category is ThingCategory.Item or ThingCategory.Pawn)
+            if (inSpace && thingList[i].def.thingCategories.Contains(ThingCategoryDefOf.Chunks) ||
+                thingList[i].def.category is ThingCategory.Item or ThingCategory.Pawn)
             {
                 yield return thingList[i];
             }

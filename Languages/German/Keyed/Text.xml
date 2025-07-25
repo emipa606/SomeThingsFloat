@@ -69,4 +69,5 @@
   <STF.DebugLogging>Debug-Protokollierung</STF.DebugLogging>
   <STF.DebugLoggingTT>Protokolliert alles, dies ist wirklich nur für die Entwicklung des Mods nützlich</STF.DebugLoggingTT>
   <STF.Reset>Zurücksetzen</STF.Reset>
+  <STF.ThingsFloatedInFromSpace>{0} erschien schwebend aus dem Weltraum</STF.ThingsFloatedInFromSpace>
 </LanguageData>

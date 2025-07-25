@@ -69,4 +69,5 @@
   <STF.DebugLogging>Ведение журнала отладки</STF.DebugLogging>
   <STF.DebugLoggingTT>Записывает все в журнал, это действительно только полезно при разработке мода</STF.DebugLoggingTT>
   <STF.Reset>Сброс</STF.Reset>
+  <STF.ThingsFloatedInFromSpace>{0} появился, прилетев из космоса</STF.ThingsFloatedInFromSpace>
 </LanguageData>
