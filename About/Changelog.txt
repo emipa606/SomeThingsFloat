@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.1 - Fixed subscructure and bridges. Spacechunks bounces correctly. Added some parallell calculations
+
+
 1.6.0 - Updated to 1.6, added the possibility for floating space-chunks
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

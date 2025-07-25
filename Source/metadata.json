@@ -6,11 +6,11 @@
   "SocialImageSet": true,
   "FundingSet": true,
   "SearchTags": " floating",
-  "LastXmlCleaning": "2025-07-25T11:47:06.8305117+02:00",
+  "LastXmlCleaning": "2025-07-25T14:46:25.9311154+02:00",
   "Patches": true,
   "Defs": true,
   "Assemblies": true,
-  "LinesOfCode": 95970,
+  "LinesOfCode": 97201,
   "LinesOfXML": 8585,
   "CodeBaseSize": 79
 }
