@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.2 - Things are now affected by temporary terrain, like floating under thin ice and being pulled in by seasonal flooding
+
+
 1.6.1 - Fixed subscructure and bridges. Spacechunks bounces correctly. Added some parallell calculations
 
 

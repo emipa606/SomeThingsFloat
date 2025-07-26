@@ -9,8 +9,8 @@
   <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
   <STF.RelativeFloatSpeed>Relative floating-speed {0}</STF.RelativeFloatSpeed>
   <STF.RelativeFloatSpeedTT>A slower floating speed will cause item positions to change less frequently and lower the performance need for the mod.</STF.RelativeFloatSpeedTT>
-  <STF.FloatUnderBridges>Things can float under bridges</STF.FloatUnderBridges>
-  <STF.FloatUnderBridgesTT>Things will float under bridges, their texture being hidden during the path</STF.FloatUnderBridgesTT>
+  <STF.FloatUnderBridges>Things can float under bridges/ice</STF.FloatUnderBridges>
+  <STF.FloatUnderBridgesTT>Things will float under bridges/ice, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.FloatUnderBridgesInfo>   Notify on items under bridges</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Show a message when there are items floating under bridges</STF.FloatUnderBridgesInfoTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
@@ -45,7 +45,7 @@
   <STF.SpawnLivingPawns>Allow living (downed) pawns to spawn</STF.SpawnLivingPawns>
   <STF.SpawnLivingPawnsTT>Living, but downed, pawns can spawn. You can choose to rescue them if you want.</STF.SpawnLivingPawnsTT>
   <STF.SpawnInOceanTiles>Allow spawning in on ocean-tiles</STF.SpawnInOceanTiles>
-  <STF.SpawnInOceanTilesTT>Things can also spawn in on edge-tiles of ocean type, no guarantees for it to stay on the map.</STF.SpawnInOceanTilesTT>
+  <STF.SpawnInOceanTilesTT>Things can also spawn in on edge-tiles of ocean/space, no guarantees for it to stay on the map.</STF.SpawnInOceanTilesTT>
   <STF.SpawnFertilizedEggs>Allow fertilized eggs to spawn</STF.SpawnFertilizedEggs>
   <STF.SpawnFertilizedEggsTT>Fertilized eggs can spawn, hatched animals from these eggs will be considered part of the colony.</STF.SpawnFertilizedEggsTT>
   <STF.NotifyOfSpawningItems>Notify on all spawning items</STF.NotifyOfSpawningItems>
@@ -56,8 +56,8 @@
   <STF.WarnForAllFriendlyPawnsTT>Will notify about any non-enemy drowning</STF.WarnForAllFriendlyPawnsTT>
   <STF.PawnIsFloatingAway>Pawns floating away</STF.PawnIsFloatingAway>
   <STF.PawnIsFloatingAwayTT>{0} is downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
-  <STF.ThingsUnderBridge>Things floating under bridges</STF.ThingsUnderBridge>
-  <STF.ThingsUnderBridgeTT>Things that are currently floating under bridges: {0}</STF.ThingsUnderBridgeTT>
+  <STF.ThingsUnderBridge>Things floating under bridges/ice</STF.ThingsUnderBridge>
+  <STF.ThingsUnderBridgeTT>Things that are currently floating under bridges/ice: {0}</STF.ThingsUnderBridgeTT>
   <STF.ThingsFloatedIntoTheMap>{0} appeared floating down the river</STF.ThingsFloatedIntoTheMap>
   <STF.ThingsFloatedInFromTheOcean>{0} appeared floating in the ocean</STF.ThingsFloatedInFromTheOcean>
   <STF.ThingsFloatedInFromSpace>{0} appeared floating in from space</STF.ThingsFloatedInFromSpace>

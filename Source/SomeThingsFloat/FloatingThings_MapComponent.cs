@@ -367,7 +367,11 @@ public class FloatingThings_MapComponent : MapComponent
         Scribe_Values.Look(ref lastSpawnTick, "lastSpawnTick");
         Scribe_Values.Look(ref isSpace, "isSpace");
         Scribe_Values.Look(ref WastePacksFloated, "WastePacksFloated");
-        Scribe_Values.Look(ref EnemyPawnsDrowned, "EnemyPawnsDrowned");
+        lock (this)
+        {
+            Scribe_Values.Look(ref EnemyPawnsDrowned, "EnemyPawnsDrowned");
+        }
+
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithNothing, "cellsWithNothing", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithRiver, "cellsWithRiver", LookMode.Value);
@@ -426,11 +430,13 @@ public class FloatingThings_MapComponent : MapComponent
             var upperTerrain = map.terrainGrid.topGrid[i];
             var lowerTerrain = map.terrainGrid.underGrid[i];
             var foundationTerrain = map.terrainGrid.foundationGrid[i];
+            var tempTerrain = map.terrainGrid.tempGrid[i];
             var cell = map.cellIndices.IndexToCell(i);
 
             // Check for bridges or foundations
             if (upperTerrain is { bridge: true } || foundationTerrain is { isFoundation: true } ||
-                upperTerrain?.defName.ToLower().Contains("bridge") == true)
+                upperTerrain?.defName.ToLower().Contains("bridge") == true ||
+                tempTerrain?.tags?.Contains("Ice") == true)
             {
                 if (!SomeThingsFloatMod.Instance.Settings.FloatUnderBridges)
                 {
@@ -451,7 +457,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             // Check for water cells
-            if (upperTerrain is { IsWater: true })
+            if (upperTerrain is { IsWater: true } || tempTerrain is { IsWater: true })
             {
                 lock (cellsWithWater)
                 {
@@ -460,7 +466,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             // Check for river cells
-            if (upperTerrain is { IsRiver: true })
+            if (upperTerrain is { IsRiver: true } || tempTerrain is { IsRiver: true })
             {
                 lock (cellsWithRiver)
                 {
