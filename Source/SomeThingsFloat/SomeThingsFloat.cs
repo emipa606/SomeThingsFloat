@@ -196,17 +196,41 @@ public static class SomeThingsFloat
 
     public static IEnumerable<Thing> GetThingsAndPawns(IntVec3 c, Map map, bool inSpace = false)
     {
-        var thingList = map.thingGrid.ThingsListAt(c);
-        int num;
-        for (var i = 0; i < thingList.Count; i = num + 1)
+        if (map == null || c == IntVec3.Invalid || !c.InBounds(map))
         {
-            if (inSpace && thingList[i].def.thingCategories.Contains(ThingCategoryDefOf.Chunks) ||
-                thingList[i].def.category is ThingCategory.Item or ThingCategory.Pawn)
+            yield break;
+        }
+
+        var thingList = map.thingGrid.ThingsListAt(c);
+        if (thingList == null || thingList.Count == 0)
+        {
+            yield break;
+        }
+
+        // ReSharper disable once ForCanBeConvertedToForeach
+        for (var i = 0; i < thingList.Count; i++)
+        {
+            var thing = thingList[i];
+            if (thing == null)
             {
-                yield return thingList[i];
+                continue;
             }
 
-            num = i;
+            if (inSpace)
+            {
+                if (thing.def.IsWithinCategory(ThingCategoryDefOf.Chunks))
+                {
+                    Log.Message($"Adding {thing}");
+                    yield return thing;
+                }
+
+                continue;
+            }
+
+            if (thing.def?.category is ThingCategory.Item or ThingCategory.Pawn)
+            {
+                yield return thing;
+            }
         }
     }
 

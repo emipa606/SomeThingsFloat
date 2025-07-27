@@ -777,11 +777,14 @@ public class FloatingThings_MapComponent : MapComponent
             lastSpawnTick = GenTicks.TicksGame;
         }
 
-        if (isSpace)
+        if (!isSpace)
         {
-            spaceDirections[thing] =
-                validDirections.Where(vec3 => (cellToPlaceIt + vec3).InBounds(map)).RandomElement();
+            return true;
         }
+
+        spaceDirections[thing] =
+            validDirections.Where(vec3 => (cellToPlaceIt + vec3).InBounds(map)).RandomElement();
+        floatingValues[thing] = Rand.Range(1f, 3f);
 
         return true;
     }
@@ -854,12 +857,14 @@ public class FloatingThings_MapComponent : MapComponent
                 {
                     if (!spaceDirections.ContainsKey(possibleThing))
                     {
-                        possibleThing.DeSpawn();
+                        spaceDirections[possibleThing] =
+                            validDirections.Where(intVec3 => (intVec3 + possibleThing.Position).InBounds(map))
+                                .RandomElement();
                     }
 
                     lock (floatingValues)
                     {
-                        floatingValues[possibleThing] = 1;
+                        floatingValues[possibleThing] = Rand.Range(1f, 3f);
                     }
 
                     setNextUpdateTime(possibleThing);
@@ -1109,16 +1114,23 @@ public class FloatingThings_MapComponent : MapComponent
 
     private bool tryToFindNewPosition(Thing thing, out IntVec3 resultingCell)
     {
-        if (isSpace && spaceDirections.TryGetValue(thing, out var direction))
+        if (isSpace)
         {
+            if (!spaceDirections.TryGetValue(thing, out var direction))
+            {
+                spaceDirections[thing] =
+                    validDirections.Where(vec3 => (vec3 + thing.Position).InBounds(map)).RandomElement();
+                direction = spaceDirections[thing];
+            }
+
             resultingCell = thing.Position + direction;
             if (!resultingCell.InBounds(map))
             {
                 resultingCell = IntVec3.Invalid;
+                return true;
             }
 
-            if (GenPlace.HaulPlaceBlockerIn(thing, resultingCell, map, true) == null &&
-                resultingCell.GetFirstItem(map) == null)
+            if (GenPlace.HaulPlaceBlockerIn(thing, resultingCell, map, true) == null)
             {
                 return true;
             }
@@ -1127,7 +1139,7 @@ public class FloatingThings_MapComponent : MapComponent
             spaceDirections[thing] =
                 validDirections[(validDirections.IndexOf(spaceDirections[thing]) + 4) % 8];
             resultingCell = thing.Position + spaceDirections[thing];
-            return false;
+            return true;
         }
 
         if (hiddenPositions == null || !hiddenPositions.TryGetValue(thing, out var originalPosition))

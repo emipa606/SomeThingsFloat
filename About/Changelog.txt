@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.3 - Fixed issues with load order and support for Extravehicular Activity (Spacewalk)
+
+
 1.6.2 - Things are now affected by temporary terrain, like floating under thin ice and being pulled in by seasonal flooding
 
 
