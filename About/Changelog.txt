@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.4 - Alive pawns should now also have smooth animation when floating
+
+
 1.6.3 - Fixed issues with load order and support for Extravehicular Activity (Spacewalk)
 
 
