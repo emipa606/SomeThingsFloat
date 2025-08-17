@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.6 - Fixed falling over issue
+
+
 1.6.5 - Thread safe collection operations
 
 

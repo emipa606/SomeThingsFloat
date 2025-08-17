@@ -967,8 +967,8 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null ||
-                riverCellsSnapshot.Count > 0 && !riverCellsSnapshot.Contains(pawn.Position))
+            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null || !riverCellsSnapshot.Any()
+                || !riverCellsSnapshot.Contains(pawn.Position))
             {
                 if (lostFootingHediff != null)
                 {
