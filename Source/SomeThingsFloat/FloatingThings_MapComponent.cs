@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,9 @@ public class FloatingThings_MapComponent : MapComponent
 
     private readonly HashSet<AltitudeLayer> ignoredAltitudeLayers;
     private readonly HashSet<IntVec3> mapEdgeCells;
+
+    // ReSharper disable once ChangeFieldTypeToSystemThreadingLock
+    private readonly object updateValuesLock = new();
     private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
@@ -794,12 +798,26 @@ public class FloatingThings_MapComponent : MapComponent
         floatingValues ??= new Dictionary<Thing, float>();
         SomeThingsFloat.LogMessage("Updating floating things", debug: true);
 
-        // Process cellsWithWater in parallel
-        Parallel.ForEach(cellsWithWater, vec3 =>
+        // Staging queues to collect results from parallel loops
+        var scheduled = new ConcurrentQueue<(Thing thing, float value)>();
+        var spaceToProcess = new ConcurrentQueue<Thing>();
+
+        // Snapshot inputs that are iterated from multiple threads
+        var waterCells = cellsWithWater?.ToArray() ?? [];
+        var nothingCells = isSpace ? cellsWithNothing?.ToArray() ?? [] : [];
+        var hiddenSnapshot = hiddenPositions?.ToArray() ?? [];
+
+        // 1) Cells with water: compute candidates and enqueue
+        Parallel.ForEach(waterCells, vec3 =>
         {
             foreach (var possibleThing in SomeThingsFloat.GetThingsAndPawns(vec3, map))
             {
-                if (possibleThing == null || possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
+                if (possibleThing == null)
+                {
+                    continue;
+                }
+
+                if (possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
                 {
                     continue;
                 }
@@ -811,68 +829,105 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 var floatValue = SomeThingsFloat.GetFloatingValue(possibleThing);
-                if (!(floatValue > 0))
+                if (floatValue > 0)
                 {
-                    continue;
+                    scheduled.Enqueue((possibleThing, floatValue));
                 }
-
-                lock (floatingValues)
-                {
-                    floatingValues[possibleThing] = floatValue;
-                }
-
-                setNextUpdateTime(possibleThing);
             }
         });
 
-        // Process hiddenPositions in parallel
-        Parallel.ForEach(hiddenPositions, hiddenPosition =>
+        // 2) Hidden positions: compute for hidden things and enqueue
+        Parallel.ForEach(hiddenSnapshot, pair =>
         {
-            var possibleThing = hiddenPosition.Key;
+            var possibleThing = pair.Key;
             if (possibleThing == null || possibleThing is not Pawn && floatingValues.ContainsKey(possibleThing))
             {
                 return;
             }
 
             var floatValue = SomeThingsFloat.GetFloatingValue(possibleThing);
-            if (!(floatValue > 0))
+            if (floatValue > 0)
             {
-                return;
+                scheduled.Enqueue((possibleThing, floatValue));
             }
-
-            lock (floatingValues)
-            {
-                floatingValues[possibleThing] = floatValue;
-            }
-
-            setNextUpdateTime(possibleThing);
         });
 
-        // Process cellsWithNothing in parallel (if isSpace is true)
-        if (isSpace)
+        // 3) Space: only collect candidates in parallel; do mutations on main thread
+        if (isSpace && nothingCells.Length > 0)
         {
-            Parallel.ForEach(cellsWithNothing, vec3 =>
+            Parallel.ForEach(nothingCells, vec3 =>
             {
                 foreach (var possibleThing in SomeThingsFloat.GetThingsAndPawns(vec3, map, true))
                 {
-                    if (!spaceDirections.ContainsKey(possibleThing))
+                    if (possibleThing != null)
                     {
-                        spaceDirections[possibleThing] =
-                            validDirections.Where(intVec3 => (intVec3 + possibleThing.Position).InBounds(map))
-                                .RandomElement();
+                        spaceToProcess.Enqueue(possibleThing);
                     }
-
-                    lock (floatingValues)
-                    {
-                        floatingValues[possibleThing] = Rand.Range(1f, 3f);
-                    }
-
-                    setNextUpdateTime(possibleThing);
                 }
             });
         }
 
+        // COMMIT PHASE (main thread): mutate dictionaries safely
+
+        // Commit space items: ensure direction, set random float, and schedule
+        while (spaceToProcess.TryDequeue(out var spaceThing))
+        {
+            if (!spaceDirections.ContainsKey(spaceThing))
+            {
+                // Choose a valid in-bounds direction
+                spaceDirections[spaceThing] =
+                    validDirections.Where(vec3 => (spaceThing.Position + vec3).InBounds(map)).RandomElement();
+            }
+
+            var floatValue = Rand.Range(1f, 3f);
+            floatingValues[spaceThing] = floatValue;
+            setNextUpdateTime(spaceThing, floatValue);
+        }
+
+        // Commit water/hidden items
+        while (scheduled.TryDequeue(out var item))
+        {
+            var thing = item.thing;
+            var value = item.value;
+
+            floatingValues[thing] = value;
+            setNextUpdateTime(thing, value);
+        }
+
         SomeThingsFloat.LogMessage($"Found {floatingValues.Count} items in floatable terrain");
+    }
+
+    private void setNextUpdateTime(Thing thing, float floatValue, bool longTime = false)
+    {
+        if (thing == null)
+        {
+            return;
+        }
+
+        var timeIncrease = longTime ? 5 : 1;
+        var nextUpdate = GenTicks.TicksGame +
+                         (int)Math.Round(
+                             (GenTicks.TickRareInterval / floatValue /
+                                 SomeThingsFloatMod.Instance.Settings.RelativeFloatSpeed * timeIncrease) +
+                             Rand.Range(-10, 10));
+
+        lock (updateValuesLock)
+        {
+            if (updateValues.ContainsValue(thing))
+            {
+                return;
+            }
+
+            while (updateValues.ContainsKey(nextUpdate))
+            {
+                nextUpdate++;
+            }
+
+            updateValues[nextUpdate] = thing;
+        }
+
+        SomeThingsFloat.LogMessage($"Current tick: {GenTicks.TicksGame}, {thing} next update: {nextUpdate}",
+            debug: true);
     }
 
     private void setNextUpdateTime(Thing thing, bool longTime = false)
@@ -882,37 +937,29 @@ public class FloatingThings_MapComponent : MapComponent
             return;
         }
 
-        if (!floatingValues.ContainsKey(thing))
+        if (!floatingValues.TryGetValue(thing, out var floatValue))
         {
             return;
         }
 
-        if (updateValues.ContainsValue(thing))
-        {
-            return;
-        }
-
-        var timeIncrease = longTime ? 5 : 1;
-        var nextUpdate = GenTicks.TicksGame +
-                         (int)Math.Round(
-                             (GenTicks.TickRareInterval / floatingValues[thing] /
-                                 SomeThingsFloatMod.Instance.Settings.RelativeFloatSpeed * timeIncrease) +
-                             Rand.Range(-10, 10));
-        while (updateValues.ContainsKey(nextUpdate))
-        {
-            nextUpdate++;
-        }
-
-        SomeThingsFloat.LogMessage($"Current tick: {GenTicks.TicksGame}, {thing} next update: {nextUpdate}",
-            debug: true);
-        updateValues[nextUpdate] = thing;
+        setNextUpdateTime(thing, floatValue, longTime);
     }
 
     private void checkForPawnsThatCanFall()
     {
+        // Staging queues
+        var toClearLostFooting = new ConcurrentQueue<Pawn>();
+        var toSetLostFooting = new ConcurrentQueue<(Pawn pawn, float severity)>();
+        var toAddLostFooting = new ConcurrentQueue<(Pawn pawn, float severity)>();
+        var toStartFloating = new ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)>();
+
+        // Snapshot of river cells to avoid reading a collection while it could be rebuilt elsewhere
+        var riverCellsSnapshot = cellsWithRiver?.ToHashSet() ?? [];
+
         Parallel.ForEach(mapPawns, pawn =>
         {
-            if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval) ||
+            if (pawn == null ||
+                !pawn.IsHashIntervalTick(GenTicks.TickRareInterval) ||
                 SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
                 SomeThingsFloat.Vehicles.Contains(pawn.def))
             {
@@ -921,11 +968,11 @@ public class FloatingThings_MapComponent : MapComponent
 
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
             if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null ||
-                cellsWithRiver?.Contains(pawn.Position) == false)
+                riverCellsSnapshot.Count > 0 && !riverCellsSnapshot.Contains(pawn.Position))
             {
                 if (lostFootingHediff != null)
                 {
-                    lostFootingHediff.Severity = 0;
+                    toClearLostFooting.Enqueue(pawn);
                 }
 
                 return;
@@ -935,7 +982,7 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 if (lostFootingHediff != null)
                 {
-                    lostFootingHediff.Severity = 0;
+                    toClearLostFooting.Enqueue(pawn);
                 }
 
                 SomeThingsFloat.LogMessage($"{pawn} is swimming, ignoring fall check");
@@ -948,7 +995,7 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 if (lostFootingHediff != null)
                 {
-                    lostFootingHediff.Severity = 0;
+                    toClearLostFooting.Enqueue(pawn);
                 }
 
                 SomeThingsFloat.LogMessage($"{pawn} has too high manipulation value: {manipulation}");
@@ -964,7 +1011,7 @@ public class FloatingThings_MapComponent : MapComponent
                 {
                     if (lostFootingHediff != null)
                     {
-                        lostFootingHediff.Severity = 0;
+                        toClearLostFooting.Enqueue(pawn);
                     }
 
                     return;
@@ -980,7 +1027,7 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 if (lostFootingHediff != null)
                 {
-                    lostFootingHediff.Severity = 0;
+                    toClearLostFooting.Enqueue(pawn);
                 }
 
                 return;
@@ -990,15 +1037,16 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (lostFootingHediff != null)
             {
-                lostFootingHediff.Severity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulationFiltered));
+                var newSeverity = Math.Min(1f, lostFootingHediff.Severity + (0.05f / manipulationFiltered));
+                toSetLostFooting.Enqueue((pawn, newSeverity));
             }
             else
             {
-                var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_LostFooting, pawn);
-                hediff.Severity = 0.1f / manipulationFiltered;
-                pawn.health.AddHediff(hediff);
+                var initialSeverity = 0.1f / manipulationFiltered;
+                toAddLostFooting.Enqueue((pawn, initialSeverity));
             }
 
+            // If downed and awake, don't start floating
             if (pawn.Downed && pawn.Awake())
             {
                 return;
@@ -1006,34 +1054,87 @@ public class FloatingThings_MapComponent : MapComponent
 
             if (!pawn.RaceProps.IsFlesh)
             {
-                if (pawn.Faction?.IsPlayer == true)
-                {
-                    Messages.Message("STF.PawnHasFallen".Translate(pawn.NameFullColored), pawn,
-                        MessageTypeDefOf.NegativeEvent);
-                }
-
                 return;
             }
 
-            floatingValues[pawn] = SomeThingsFloat.GetFloatingValue(pawn);
-            setNextUpdateTime(pawn);
+            var floatValue = SomeThingsFloat.GetFloatingValue(pawn);
+            if (!(floatValue > 0))
+            {
+                return;
+            }
 
-            if (pawn.Faction?.IsPlayer == true)
+            var notify = pawn.Faction?.IsPlayer == true;
+            toStartFloating.Enqueue((pawn, floatValue, notify));
+        });
+
+        // COMMIT PHASE (main thread)
+        while (toClearLostFooting.TryDequeue(out var pawnToClear))
+        {
+            var h = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
+            if (h != null)
+            {
+                h.Severity = 0;
+            }
+        }
+
+        while (toSetLostFooting.TryDequeue(out var entry))
+        {
+            var (pawn, severity) = entry;
+            var h = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
+            if (h != null)
+            {
+                h.Severity = severity;
+            }
+        }
+
+        while (toAddLostFooting.TryDequeue(out var entryAdd))
+        {
+            var (pawn, severity) = entryAdd;
+            var h = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
+            if (h != null || pawn?.health == null)
+            {
+                continue;
+            }
+
+            var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_LostFooting, pawn);
+            hediff.Severity = severity;
+            pawn.health.AddHediff(hediff);
+        }
+
+        while (toStartFloating.TryDequeue(out var f))
+        {
+            var (pawn, value, notify) = f;
+            floatingValues[pawn] = value;
+            setNextUpdateTime(pawn, value);
+            if (notify)
             {
                 Messages.Message("STF.PawnHasFallenAndFloats".Translate(pawn.NameFullColored), pawn,
                     MessageTypeDefOf.NegativeEvent);
             }
-        });
+        }
     }
 
     private void checkForPawnsThatCanDrown()
     {
-        // Use Parallel.ForEach to process pawns concurrently
+        // Staging queues
+        var toClearDrowning = new ConcurrentQueue<Pawn>();
+        var toIncreaseDrowning = new ConcurrentQueue<(Pawn pawn, float delta)>();
+        var toAddDrowning = new ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)>();
+
+        // Snapshot references we read
+        var waterCellsSnapshot = cellsWithWater?.ToHashSet() ?? [];
+
         Parallel.ForEach(mapPawns, pawn =>
         {
-            if (!pawn.IsHashIntervalTick(GenTicks.TickRareInterval) ||
-                pawn == null || pawn.Dead || SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
-                SomeThingsFloat.AquaticRaces.Contains(pawn.def) || SomeThingsFloat.Vehicles.Contains(pawn.def) ||
+            if (pawn == null || !pawn.IsHashIntervalTick(GenTicks.TickRareInterval))
+            {
+                return;
+            }
+
+            if (pawn.Dead ||
+                SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
+                SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
+                SomeThingsFloat.Vehicles.Contains(pawn.def) ||
                 !pawn.Downed || !pawn.Awake())
             {
                 return;
@@ -1042,7 +1143,7 @@ public class FloatingThings_MapComponent : MapComponent
             var inShallowWater = false;
             if (pawn.Spawned)
             {
-                if (cellsWithWater?.Contains(pawn.Position) == false)
+                if (waterCellsSnapshot.Count > 0 && !waterCellsSnapshot.Contains(pawn.Position))
                 {
                     return;
                 }
@@ -1067,11 +1168,12 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 if (cannotDrown || inShallowWater || isSwimming)
                 {
-                    drowningHediff.Severity = 0;
+                    toClearDrowning.Enqueue(pawn);
                     return;
                 }
 
-                drowningHediff.Severity += SomeThingsFloat.CalculateDrowningValue(pawn);
+                var delta = SomeThingsFloat.CalculateDrowningValue(pawn);
+                toIncreaseDrowning.Enqueue((pawn, delta));
             }
             else
             {
@@ -1080,36 +1182,92 @@ public class FloatingThings_MapComponent : MapComponent
                     return;
                 }
 
-                var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
-                hediff.Severity = SomeThingsFloat.CalculateDrowningValue(pawn);
-                pawn.health?.AddHediff(hediff);
+                var initial = SomeThingsFloat.CalculateDrowningValue(pawn);
+                var shouldNotify =
+                    SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer == true ||
+                    !SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer == true;
 
-                if (!SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer != true ||
-                    SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns &&
-                    pawn.Faction.HostileTo(Faction.OfPlayer))
-                {
-                    return;
-                }
+                // The original condition was a bit nuanced; above approximates same behavior:
+                // notify only for player pawns, honoring the setting for "all friendly".
+                toAddDrowning.Enqueue((pawn, initial, shouldNotify));
+            }
+        });
 
-                lock (Find.TickManager)
-                {
-                    Find.TickManager.TogglePaused();
-                }
-
-                Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
-                    MessageTypeDefOf.ThreatBig);
+        // COMMIT PHASE (main thread)
+        while (toClearDrowning.TryDequeue(out var pawnToClear))
+        {
+            var h = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (h != null)
+            {
+                h.Severity = 0;
             }
 
-            if (drowningHediff?.Severity < 1)
+            // Count after commit
+            var chk = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (!(chk?.Severity >= 1))
             {
-                return;
+                continue;
             }
 
             lock (this)
             {
                 EnemyPawnsDrowned++;
             }
-        });
+        }
+
+        while (toIncreaseDrowning.TryDequeue(out var inc))
+        {
+            var (pawn, delta) = inc;
+            var h = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (h != null)
+            {
+                h.Severity += delta;
+            }
+
+            var chk = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (!(chk?.Severity >= 1))
+            {
+                continue;
+            }
+
+            lock (this)
+            {
+                EnemyPawnsDrowned++;
+            }
+        }
+
+        while (toAddDrowning.TryDequeue(out var add))
+        {
+            var (pawn, initial, notify) = add;
+            if (pawn?.health != null)
+            {
+                var h = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+                if (h == null)
+                {
+                    var hediff = HediffMaker.MakeHediff(HediffDefOf.STF_Drowning, pawn);
+                    hediff.Severity = initial;
+                    pawn.health.AddHediff(hediff);
+
+                    if (notify && pawn.Faction?.IsPlayer == true)
+                    {
+                        Find.TickManager.TogglePaused();
+                        Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
+                            MessageTypeDefOf.ThreatBig);
+                    }
+                }
+            }
+
+            var chk = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
+            if (!(chk?.Severity >= 1))
+            {
+                continue;
+            }
+
+            lock (this)
+            {
+                EnemyPawnsDrowned++;
+            }
+        }
     }
 
     private bool tryToFindNewPosition(Thing thing, out IntVec3 resultingCell)

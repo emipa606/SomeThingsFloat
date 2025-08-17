@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.5 - Thread safe collection operations
+
+
 1.6.4 - Alive pawns should now also have smooth animation when floating
 
 
