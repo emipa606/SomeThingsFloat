@@ -1141,10 +1141,16 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var inShallowWater = false;
+            var drowningHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (pawn.Spawned)
             {
-                if (waterCellsSnapshot.Count > 0 && !waterCellsSnapshot.Contains(pawn.Position))
+                if (!waterCellsSnapshot.Any() || !waterCellsSnapshot.Contains(pawn.Position))
                 {
+                    if (drowningHediff != null)
+                    {
+                        toClearDrowning.Enqueue(pawn);
+                    }
+
                     return;
                 }
 
@@ -1163,7 +1169,6 @@ public class FloatingThings_MapComponent : MapComponent
                     SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
             var isSwimming = pawn.CurJobDef == JobDefOf.GoSwimming;
 
-            var drowningHediff = pawn.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (drowningHediff != null)
             {
                 if (cannotDrown || inShallowWater || isSwimming)
