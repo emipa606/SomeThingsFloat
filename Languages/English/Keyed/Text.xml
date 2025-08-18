@@ -16,7 +16,7 @@
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
   <STF.DownedPawnsDrown>Downed pawns in non-shallow water can drown</STF.DownedPawnsDrown>
-  <STF.DownedPawnsDrownTT>Pawns that are downed in non-shallow water can drown. Helmets with the EVA-tag will prevent this.</STF.DownedPawnsDrownTT>
+  <STF.DownedPawnsDrownTT>Pawns that are downed in non-shallow water can drown. Helmets with vacuum resistance or the EVA-tag will prevent this.</STF.DownedPawnsDrownTT>
   <STF.PawnsCanFall>Pawns can loose footing in moving water</STF.PawnsCanFall>
   <STF.PawnsCanFallTT>There is a chance that pawns can slip in moving water and become downed for a little while. This scales with their manipulation-skill</STF.PawnsCanFallTT>
   <STF.ManipulationThreshold>Manipulation threshold: {0}</STF.ManipulationThreshold>
