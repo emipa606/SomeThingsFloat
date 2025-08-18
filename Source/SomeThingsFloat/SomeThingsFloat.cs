@@ -41,8 +41,8 @@ public static class SomeThingsFloat
                           floatingValue > 0 && !minimized)
             .ToHashSet();
         ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
-            def.IsApparel && def.apparel.tags.Contains("EVA") &&
-            def.apparel.layers.Contains(ApparelLayerDefOf.Overhead)).ToHashSet();
+            def.IsApparel && def.apparel.layers.Contains(ApparelLayerDefOf.Overhead) &&
+            (def.apparel.tags.Contains("EVA") || def.equippedStatOffsets.GetStatOffsetFromList(StatDefOf.VacuumResistance) >= 0.5f)).ToHashSet();
         PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
             def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToHashSet();
