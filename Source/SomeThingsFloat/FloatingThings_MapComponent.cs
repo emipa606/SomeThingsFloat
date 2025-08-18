@@ -1167,6 +1167,8 @@ public class FloatingThings_MapComponent : MapComponent
             var cannotDrown =
                 pawn.apparel?.WornApparel?.Any(apparel =>
                     SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
+            if(!pawn.HarmedByVacuum)
+                cannotDrown = true;
             var isSwimming = pawn.CurJobDef == JobDefOf.GoSwimming;
 
             if (drowningHediff != null)
