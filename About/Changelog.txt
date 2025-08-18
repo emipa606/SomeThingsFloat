@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.8 - Adds waterseeker animals to aquatic animals
+
+
 1.6.7 - Fixed drowning issue
 
 

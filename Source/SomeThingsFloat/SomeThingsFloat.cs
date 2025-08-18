@@ -64,7 +64,7 @@ public static class SomeThingsFloat
 
         AquaticRaces = [];
         foreach (var aquaticAnimal in DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
-                         def.race != null && def.thingClass != typeof(Corpse) && def.race.waterSeeker))
+                     def.race != null && def.thingClass != typeof(Corpse) && def.race.waterSeeker))
         {
             AquaticRaces.Add(aquaticAnimal);
         }
