@@ -5,6 +5,8 @@
   <STF.Reset>Reset</STF.Reset>
   <STF.VerboseLoggingTT>For a bit more info, can be used to find the cause of issues.</STF.VerboseLoggingTT>
   <STF.DebugLoggingTT>Logs everything, this is really just usable when developing the mod</STF.DebugLoggingTT>
+  <STF.NoNotifications>No notifications</STF.NoNotifications>
+  <STF.NoNotificationsTT>Do not give any notifications about events in this mod</STF.NoNotificationsTT>
   <STF.ForbidWhenMoving>Forbid when leaving stockpile</STF.ForbidWhenMoving>
   <STF.ForbidWhenMovingTT>Will forbid any item that floats away from a stockpile that allows the item. This will stop pawns from constantly try to return items that float away.</STF.ForbidWhenMovingTT>
   <STF.RelativeFloatSpeed>Relative floating-speed {0}</STF.RelativeFloatSpeed>
@@ -13,6 +15,8 @@
   <STF.FloatUnderBridgesTT>Things will float under bridges/ice, their texture being hidden during the path</STF.FloatUnderBridgesTT>
   <STF.FloatUnderBridgesInfo>   Notify on items under bridges</STF.FloatUnderBridgesInfo>
   <STF.FloatUnderBridgesInfoTT>Show a message when there are items floating under bridges</STF.FloatUnderBridgesInfoTT>
+  <STF.AllowStranding>Things can wash up on land</STF.AllowStranding>
+  <STF.AllowStrandingTT>When floating near land, things may wash up on the shore</STF.AllowStrandingTT>
   <STF.DownedPawnsFloat>Downed pawns float</STF.DownedPawnsFloat>
   <STF.DownedPawnsFloatTT>Pawns that are downed will also float, but at a slower rate than corpses.</STF.DownedPawnsFloatTT>
   <STF.DownedPawnsDrown>Downed pawns in non-shallow water can drown</STF.DownedPawnsDrown>

@@ -70,4 +70,8 @@
   <STF.DebugLoggingTT>Записывает все в журнал, это действительно только полезно при разработке мода</STF.DebugLoggingTT>
   <STF.Reset>Сброс</STF.Reset>
   <STF.ThingsFloatedInFromSpace>{0} появился, прилетев из космоса</STF.ThingsFloatedInFromSpace>
+  <STF.NoNotifications>Нет уведомлений</STF.NoNotifications>
+  <STF.NoNotificationsTT>Не дает никаких уведомлений о событиях в этом моде</STF.NoNotificationsTT>
+  <STF.AllowStranding>Вещи могут выбрасываться на сушу</STF.AllowStranding>
+  <STF.AllowStrandingTT>Когда вещи плавают вблизи суши, их может выбросить на берег</STF.AllowStrandingTT>
 </LanguageData>

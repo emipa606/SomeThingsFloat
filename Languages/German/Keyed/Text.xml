@@ -70,4 +70,8 @@
   <STF.DebugLoggingTT>Protokolliert alles, dies ist wirklich nur für die Entwicklung des Mods nützlich</STF.DebugLoggingTT>
   <STF.Reset>Zurücksetzen</STF.Reset>
   <STF.ThingsFloatedInFromSpace>{0} erschien schwebend aus dem Weltraum</STF.ThingsFloatedInFromSpace>
+  <STF.NoNotifications>Keine Benachrichtigungen</STF.NoNotifications>
+  <STF.NoNotificationsTT>Geben Sie keine Benachrichtigungen über Ereignisse in dieser Mod</STF.NoNotificationsTT>
+  <STF.AllowStranding>Dinge können an Land gespült werden</STF.AllowStranding>
+  <STF.AllowStrandingTT>Wenn sie in der Nähe von Land schwimmen, können Dinge an das Ufer gespült werden</STF.AllowStrandingTT>
 </LanguageData>

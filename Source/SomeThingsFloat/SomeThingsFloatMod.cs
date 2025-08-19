@@ -51,10 +51,6 @@ public class SomeThingsFloatMod : Mod
     public override void DoSettingsWindowContents(Rect rect)
     {
         var viewContainer = rect.ContractedBy(10);
-        //var innerContainer = viewContainer.ContractedBy(6);
-        //innerContainer.width -= 20;
-        //innerContainer.height += 180;
-        //Widgets.BeginScrollView(viewContainer, ref scrollPosition, innerContainer);
         var listing_Standard = new Listing_Standard();
         listing_Standard.Begin(viewContainer);
         listing_Standard.ColumnWidth = (viewContainer.width / 2) - 20;
@@ -80,13 +76,23 @@ public class SomeThingsFloatMod : Mod
                 "STF.BobbingTT".Translate());
         }
 
+        listing_Standard.CheckboxLabeled("STF.NoNotifications".Translate(), ref Settings.NoNotifications,
+            "STF.NoNotificationsTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsFloat".Translate(), ref Settings.DownedPawnsFloat,
             "STF.DownedPawnsFloatTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DownedPawnsDrown".Translate(), ref Settings.DownedPawnsDrown,
             "STF.DownedPawnsDrownTT".Translate());
-        listing_Standard.CheckboxLabeled("STF.WarnForAllFriendlyPawns".Translate(),
-            ref Settings.WarnForAllFriendlyPawns,
-            "STF.WarnForAllFriendlyPawnsTT".Translate());
+        if (!Settings.NoNotifications)
+        {
+            listing_Standard.CheckboxLabeled("STF.WarnForAllFriendlyPawns".Translate(),
+                ref Settings.WarnForAllFriendlyPawns,
+                "STF.WarnForAllFriendlyPawnsTT".Translate());
+        }
+        else
+        {
+            Settings.WarnForAllFriendlyPawns = false;
+        }
+
         listing_Standard.CheckboxLabeled("STF.PawnsCanFall".Translate(), ref Settings.PawnsCanFall,
             "STF.PawnsCanFallTT".Translate());
         if (Settings.PawnsCanFall)
@@ -111,6 +117,8 @@ public class SomeThingsFloatMod : Mod
             "STF.AllowOnStuckTT".Translate());
         listing_Standard.CheckboxLabeled("STF.DespawnAtMapEdge".Translate(), ref Settings.DespawnAtMapEdge,
             "STF.DespawnAtMapEdgeTT".Translate());
+        listing_Standard.CheckboxLabeled("STF.AllowStranding".Translate(), ref Settings.AllowStranding,
+            "STF.AllowStrandingTT".Translate());
         listing_Standard.CheckboxLabeled("STF.SpawnNewItems".Translate(), ref Settings.SpawnNewItems,
             "STF.SpawnNewItemsTT".Translate());
         if (Settings.SpawnNewItems)
@@ -160,9 +168,16 @@ public class SomeThingsFloatMod : Mod
                 "STF.SpawnLivingPawnsTT".Translate());
             listing_Standard.CheckboxLabeled("STF.SpawnFertilizedEggs".Translate(), ref Settings.SpawnFertilizedEggs,
                 "STF.SpawnFertilizedEggsTT".Translate());
-            listing_Standard.CheckboxLabeled("STF.NotifyOfSpawningItems".Translate(),
-                ref Settings.NotifyOfSpawningItems,
-                "STF.NotifyOfSpawningItemsTT".Translate());
+            if (!Settings.NoNotifications)
+            {
+                listing_Standard.CheckboxLabeled("STF.NotifyOfSpawningItems".Translate(),
+                    ref Settings.NotifyOfSpawningItems,
+                    "STF.NotifyOfSpawningItemsTT".Translate());
+            }
+            else
+            {
+                Settings.NotifyOfSpawningItems = false;
+            }
         }
 
         listing_Standard.CheckboxLabeled("STF.VerboseLogging".Translate(), ref Settings.VerboseLogging,
@@ -187,6 +202,5 @@ public class SomeThingsFloatMod : Mod
         }
 
         listing_Standard.End();
-        //Widgets.EndScrollView();
     }
 }

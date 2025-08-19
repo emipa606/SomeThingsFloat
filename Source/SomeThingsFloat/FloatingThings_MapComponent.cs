@@ -30,8 +30,8 @@ public class FloatingThings_MapComponent : MapComponent
     // ReSharper disable once ChangeFieldTypeToSystemThreadingLock
     private readonly object updateValuesLock = new();
     private HashSet<IntVec3> cellsWithNothing;
-    private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithOcean;
+    private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
     public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
@@ -255,8 +255,11 @@ public class FloatingThings_MapComponent : MapComponent
         {
             if (thing is Pawn { IsColonist: true } pawn)
             {
-                Find.LetterStack.ReceiveLetter("STF.PawnIsLostTitle".Translate(pawn.NameFullColored),
-                    "STF.PawnIsLostMessage".Translate(pawn.NameFullColored), LetterDefOf.Death);
+                if (!SomeThingsFloatMod.Instance.Settings.NoNotifications)
+                {
+                    Find.LetterStack.ReceiveLetter("STF.PawnIsLostTitle".Translate(pawn.NameFullColored),
+                        "STF.PawnIsLostMessage".Translate(pawn.NameFullColored), LetterDefOf.Death);
+                }
 
                 PawnDiedOrDownedThoughtsUtility.TryGiveThoughts(pawn, null, PawnDiedOrDownedThoughtsKind.Lost);
             }
@@ -671,7 +674,8 @@ public class FloatingThings_MapComponent : MapComponent
                         SomeThingsFloat.HaulUrgentlyDef));
                 }
 
-                if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
+                if (!SomeThingsFloatMod.Instance.Settings.NoNotifications &&
+                    SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
                 {
                     Messages.Message(
                         cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
@@ -685,17 +689,21 @@ public class FloatingThings_MapComponent : MapComponent
 
             HealthUtility.DamageUntilDowned(pawn);
             GenSpawn.Spawn(pawn, cellToPlaceIt, map);
-            if (!pawn.RaceProps.Animal)
+            if (!SomeThingsFloatMod.Instance.Settings.NoNotifications)
             {
-                Find.LetterStack.ReceiveLetter("STF.PawnSpawnedTitle".Translate(), "STF.PawnSpawnedMessage".Translate(),
-                    LetterDefOf.NeutralEvent, pawn);
-            }
-            else
-            {
-                if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
+                if (!pawn.RaceProps.Animal)
                 {
-                    Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(pawn.NameFullColored), pawn,
-                        MessageTypeDefOf.NeutralEvent);
+                    Find.LetterStack.ReceiveLetter("STF.PawnSpawnedTitle".Translate(),
+                        "STF.PawnSpawnedMessage".Translate(),
+                        LetterDefOf.NeutralEvent, pawn);
+                }
+                else
+                {
+                    if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
+                    {
+                        Messages.Message("STF.ThingsFloatedIntoTheMap".Translate(pawn.NameFullColored), pawn,
+                            MessageTypeDefOf.NeutralEvent);
+                    }
                 }
             }
 
@@ -768,7 +776,8 @@ public class FloatingThings_MapComponent : MapComponent
             map.designationManager.AddDesignation(new Designation(thing, SomeThingsFloat.HaulUrgentlyDef));
         }
 
-        if (SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
+        if (!SomeThingsFloatMod.Instance.Settings.NoNotifications &&
+            SomeThingsFloatMod.Instance.Settings.NotifyOfSpawningItems)
         {
             if (cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true)
             {
@@ -1081,7 +1090,7 @@ public class FloatingThings_MapComponent : MapComponent
                 return;
             }
 
-            var notify = pawn.Faction?.IsPlayer == true;
+            var notify = !SomeThingsFloatMod.Instance.Settings.NoNotifications && pawn.Faction?.IsPlayer == true;
             toStartFloating.Enqueue((pawn, floatValue, notify));
         });
 
@@ -1184,9 +1193,8 @@ public class FloatingThings_MapComponent : MapComponent
 
             var cannotDrown =
                 pawn.apparel?.WornApparel?.Any(apparel =>
-                    SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true;
-            if(!pawn.HarmedByVacuum)
-                cannotDrown = true;
+                    SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true || !pawn.HarmedByVacuum;
+
             var isSwimming = pawn.CurJobDef == JobDefOf.GoSwimming;
 
             if (drowningHediff != null)
@@ -1208,9 +1216,9 @@ public class FloatingThings_MapComponent : MapComponent
                 }
 
                 var initial = SomeThingsFloat.CalculateDrowningValue(pawn);
-                var shouldNotify =
+                var shouldNotify = !SomeThingsFloatMod.Instance.Settings.NoNotifications && (
                     SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer == true ||
-                    !SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer == true;
+                    !SomeThingsFloatMod.Instance.Settings.WarnForAllFriendlyPawns && pawn.Faction?.IsPlayer == true);
 
                 // The original condition was a bit nuanced; above approximates same behavior:
                 // notify only for player pawns, honoring the setting for "all friendly".
@@ -1387,6 +1395,17 @@ public class FloatingThings_MapComponent : MapComponent
                 !cellsWithNothing.Contains(adjacentCell))
             {
                 SomeThingsFloat.LogMessage($"{adjacentCell} is not floatable", debug: true);
+
+                if (SomeThingsFloatMod.Instance.Settings.AllowStranding && Rand.Chance(0.05f))
+                {
+                    if (GenPlace.HaulPlaceBlockerIn(thing, adjacentCell, map, true) == null)
+                    {
+                        SomeThingsFloat.LogMessage($"Will strand on {adjacentCell}", debug: true);
+                        resultingCell = adjacentCell;
+                        return true;
+                    }
+                }
+
                 continue;
             }
 
@@ -1558,7 +1577,8 @@ public class FloatingThings_MapComponent : MapComponent
     {
         return mapPawns.Where(pawn =>
             pawn is { Downed: true } && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
-            (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true || cellsWithOcean?.Contains(pawn.Position) == true ||
+            (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true ||
+             cellsWithOcean?.Contains(pawn.Position) == true ||
              hiddenPositions?.TryGetValue(pawn, out _) == true)).ToList();
     }
 

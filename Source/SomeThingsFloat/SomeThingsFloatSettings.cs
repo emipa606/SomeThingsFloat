@@ -9,6 +9,7 @@ namespace SomeThingsFloat;
 public class SomeThingsFloatSettings : ModSettings
 {
     public bool AllowOnStuck = true;
+    public bool AllowStranding;
     public bool Bobbing = true;
     public bool DebugLogging;
     public bool DespawnAtMapEdge = true;
@@ -22,6 +23,7 @@ public class SomeThingsFloatSettings : ModSettings
     public float ManipulationThreshold = 0.99f;
     public float MaxSpawnValue = 50f;
     public float MinTimeBetweenItems = GenDate.TicksPerHour * 18;
+    public bool NoNotifications;
     public bool NotifyOfSpawningItems = true;
     public bool PawnsCanFall = true;
     public float RelativeChanceInShallows = 0.5f;
@@ -48,6 +50,7 @@ public class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref ReservedItemsWillNotMove, "ReservedItemsWillNotMove");
         Scribe_Values.Look(ref WarnForAllFriendlyPawns, "WarnForAllFriendlyPawns");
         Scribe_Values.Look(ref SpawnInOceanTiles, "SpawnInOceanTiles");
+        Scribe_Values.Look(ref AllowStranding, "AllowStranding");
         Scribe_Values.Look(ref RelativeFloatSpeed, "RelativeFloatSpeed", 1f);
         Scribe_Values.Look(ref ManipulationThreshold, "ManipulationThreshold", 0.99f);
         Scribe_Values.Look(ref ForbidWhenMoving, "ForbidWhenMoving", true);
@@ -64,6 +67,7 @@ public class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref RelativeChanceInShallows, "RelativeChanceInShallows", 0.5f);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
         Scribe_Values.Look(ref SpawnFertilizedEggs, "SpawnFertilizedEggs");
+        Scribe_Values.Look(ref NoNotifications, "NoNotifications");
         Scribe_Values.Look(ref NotifyOfSpawningItems, "NotifyOfSpawningItems", true);
         Scribe_Values.Look(ref MaxSpawnValue, "MaxSpawnValue", 50f);
         Scribe_Values.Look(ref MinTimeBetweenItems, "MinTimeBetweenItems", GenDate.TicksPerHour * 18);
@@ -80,12 +84,14 @@ public class SomeThingsFloatSettings : ModSettings
         FloatUnderBridges = true;
         FloatUnderBridgesInfo = true;
         ForbidSpawningItems = false;
+        AllowStranding = false;
         ForbidWhenMoving = true;
         HaulUrgently = false;
         ManipulationThreshold = 0.99f;
         MaxSpawnValue = 50f;
         MinTimeBetweenItems = GenDate.TicksPerHour * 18;
         NotifyOfSpawningItems = true;
+        NoNotifications = false;
         PawnsCanFall = true;
         RelativeChanceInShallows = 0.5f;
         RelativeFloatSpeed = 1f;

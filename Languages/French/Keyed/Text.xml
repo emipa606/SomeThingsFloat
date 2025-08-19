@@ -70,4 +70,8 @@
   <STF.DebugLoggingTT>Enregistre tout, ceci n'est vraiment utilisable que lors du développement du mod.</STF.DebugLoggingTT>
   <STF.Reset>Remise à zéro</STF.Reset>
   <STF.ThingsFloatedInFromSpace>{0} est apparu flottant dans l'espace</STF.ThingsFloatedInFromSpace>
+  <STF.NoNotifications>Pas de notifications</STF.NoNotifications>
+  <STF.NoNotificationsTT>Ne donnez pas de notifications sur les événements de ce mod.</STF.NoNotificationsTT>
+  <STF.AllowStranding>Les objets peuvent s'échouer sur la terre ferme</STF.AllowStranding>
+  <STF.AllowStrandingTT>Lorsqu'elles flottent près de la terre, les choses peuvent s'échouer sur le rivage.</STF.AllowStrandingTT>
 </LanguageData>

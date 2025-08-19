@@ -1,5 +1,13 @@
 # Changelog for SomeThingsFloat
 
+1.6.9 - When pawn is drowning, trigger force slowdown instead of pause (via llunak)
+Loose footing and drowning can also happen in shallow ocean water (via llunak)
+Air-tight Odyssey helmets prevents drowning (via llunak)
+Added option to let things get washed up on land on occation (5% base chance when selecting new cell)
+Added option to block all notifications from the mod
+Used DeepL to update translations for ChineseSimplified, French, German, Russian
+
+
 1.6.8 - Adds waterseeker animals to aquatic animals
 
 

@@ -70,4 +70,8 @@
   <STF.DebugLoggingTT>记录一切，这实际上只是在开发修改器时可用</STF.DebugLoggingTT>
   <STF.Reset>重置</STF.Reset>
   <STF.ThingsFloatedInFromSpace>{0}从太空中漂浮而来</STF.ThingsFloatedInFromSpace>
+  <STF.NoNotifications>无通知</STF.NoNotifications>
+  <STF.NoNotificationsTT>请勿对本模块中的事件发出任何通知</STF.NoNotificationsTT>
+  <STF.AllowStranding>东西会被冲到陆地上</STF.AllowStranding>
+  <STF.AllowStrandingTT>漂浮在陆地附近时，东西可能会被冲到岸上</STF.AllowStrandingTT>
 </LanguageData>
