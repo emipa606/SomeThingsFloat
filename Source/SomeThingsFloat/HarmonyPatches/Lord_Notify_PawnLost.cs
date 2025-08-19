@@ -1,7 +1,4 @@
 using HarmonyLib;
-using RimWorld;
-using UnityEngine;
-using Verse;
 using Verse.AI.Group;
 
 namespace SomeThingsFloat;
@@ -14,10 +11,8 @@ namespace SomeThingsFloat;
 [HarmonyPatch(typeof(Lord), nameof(Lord.Notify_PawnLost))]
 public static class Lord_Notify_PawnLost
 {
-    public static bool Prefix(PawnLostCondition cond, DamageInfo? dinfo)
+    public static bool Prefix(PawnLostCondition cond)
     {
-        if(cond == PawnLostCondition.Incapped && Pawn_HealthTracker_MakeDowned.downedByLostFooting)
-            return false;
-        return true;
+        return cond != PawnLostCondition.Incapped || !Pawn_HealthTracker_MakeDowned.downedByLostFooting;
     }
 }
