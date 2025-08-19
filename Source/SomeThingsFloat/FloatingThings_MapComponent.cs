@@ -1255,7 +1255,7 @@ public class FloatingThings_MapComponent : MapComponent
 
                     if (notify && pawn.Faction?.IsPlayer == true)
                     {
-                        Find.TickManager.TogglePaused();
+                        Find.TickManager.slower.SignalForceNormalSpeed();
                         Messages.Message("STF.PawnIsDrowning".Translate(pawn.NameFullColored), pawn,
                             MessageTypeDefOf.ThreatBig);
                     }
