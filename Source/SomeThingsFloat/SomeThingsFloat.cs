@@ -52,7 +52,7 @@ public static class SomeThingsFloat
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
         swimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
-            def.IsWater && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
+            def.IsWater && !def.IsOcean && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
 
         Vehicles = [];
         if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework", true) != null)

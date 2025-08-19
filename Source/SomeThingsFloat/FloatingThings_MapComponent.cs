@@ -31,6 +31,7 @@ public class FloatingThings_MapComponent : MapComponent
     private readonly object updateValuesLock = new();
     private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithRiver;
+    private HashSet<IntVec3> cellsWithOcean;
     private HashSet<IntVec3> cellsWithWater;
     public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
@@ -55,6 +56,7 @@ public class FloatingThings_MapComponent : MapComponent
         SomeThingsFloat.FloatingMapComponents[map] = this;
         underCellsWithWater = [];
         cellsWithWater = [];
+        cellsWithOcean = [];
         cellsWithRiver = [];
         cellsWithNothing = [];
         spaceDirections = [];
@@ -379,6 +381,7 @@ public class FloatingThings_MapComponent : MapComponent
         Scribe_Collections.Look(ref cellsWithWater, "cellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithNothing, "cellsWithNothing", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithRiver, "cellsWithRiver", LookMode.Value);
+        Scribe_Collections.Look(ref cellsWithOcean, "cellsWithOcean", LookMode.Value);
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref spaceDirections, "spaceDirections", LookMode.Deep, LookMode.Value,
             ref spaceDirectionsKeys, ref spaceDirectionsValues);
@@ -407,6 +410,8 @@ public class FloatingThings_MapComponent : MapComponent
 
         cellsWithRiver ??= [];
 
+        cellsWithOcean ??= [];
+
         underCellsWithWater ??= [];
 
         if (!isSpace)
@@ -426,6 +431,7 @@ public class FloatingThings_MapComponent : MapComponent
         cellsWithWater = [];
         cellsWithNothing = [];
         cellsWithRiver = [];
+        cellsWithOcean = [];
         underCellsWithWater = [];
 
         // Use Parallel.For to iterate over terrain grid
@@ -478,6 +484,15 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
+            // Check for ocean cells
+            if (upperTerrain is { IsOcean: true } || tempTerrain is { IsOcean: true })
+            {
+                lock (cellsWithOcean)
+                {
+                    cellsWithOcean.Add(cell);
+                }
+            }
+
             // Check for space cells
             if (!isSpace || upperTerrain is not { defName: "Space" })
             {
@@ -493,6 +508,7 @@ public class FloatingThings_MapComponent : MapComponent
         // Log results
         SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
         SomeThingsFloat.LogMessage($"Found {cellsWithRiver.Count} river-cells");
+        SomeThingsFloat.LogMessage($"Found {cellsWithOcean.Count} ocean-cells");
         SomeThingsFloat.LogMessage($"Found {cellsWithNothing.Count} space-cells");
         SomeThingsFloat.LogMessage($"Found {underCellsWithWater.Count} water-cells under bridges");
     }
@@ -955,6 +971,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         // Snapshot of river cells to avoid reading a collection while it could be rebuilt elsewhere
         var riverCellsSnapshot = cellsWithRiver?.ToHashSet() ?? [];
+        var oceanCellsSnapshot = cellsWithOcean?.ToHashSet() ?? [];
 
         Parallel.ForEach(mapPawns, pawn =>
         {
@@ -967,8 +984,9 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             var lostFootingHediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null || !riverCellsSnapshot.Any()
-                || !riverCellsSnapshot.Contains(pawn.Position))
+            if (pawn is not { Spawned: true } || pawn.Dead || pawn.CarriedBy != null ||
+                (!riverCellsSnapshot.Any() || !riverCellsSnapshot.Contains(pawn.Position)) &&
+                (!oceanCellsSnapshot.Any() || !oceanCellsSnapshot.Contains(pawn.Position)))
             {
                 if (lostFootingHediff != null)
                 {
@@ -1540,7 +1558,7 @@ public class FloatingThings_MapComponent : MapComponent
     {
         return mapPawns.Where(pawn =>
             pawn is { Downed: true } && pawn.Awake() && floatingValues.ContainsKey(pawn) &&
-            (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true ||
+            (pawn.Spawned && cellsWithRiver?.Contains(pawn.Position) == true || cellsWithOcean?.Contains(pawn.Position) == true ||
              hiddenPositions?.TryGetValue(pawn, out _) == true)).ToList();
     }
 
