@@ -33,6 +33,8 @@ public class FloatingThings_MapComponent : MapComponent
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithOcean;
     private HashSet<IntVec3> cellsWithWater;
+    private HashSet<IntVec3> dirtyCells;
+    private bool allCellsDirty;
     public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
@@ -59,6 +61,8 @@ public class FloatingThings_MapComponent : MapComponent
         cellsWithOcean = [];
         cellsWithRiver = [];
         cellsWithNothing = [];
+        dirtyCells = [];
+        allCellsDirty = true;
         spaceDirections = [];
         mapEdgeCells = [];
         floatingValues = new Dictionary<Thing, float>();
@@ -82,6 +86,7 @@ public class FloatingThings_MapComponent : MapComponent
         ];
         lastSpawnTick = 0;
         isSpace = map.Tile.LayerDef.isSpace;
+        map.events.TerrainChanged += TerrainChanged;
     }
 
     public override void MapComponentTick()
@@ -362,8 +367,14 @@ public class FloatingThings_MapComponent : MapComponent
     public override void MapGenerated()
     {
         base.MapGenerated();
+        allCellsDirty = true;
         updateListOfFloatCells();
         updateListOfFloatingThings();
+    }
+
+    private void TerrainChanged(IntVec3 cell)
+    {
+        dirtyCells.Add(cell);
     }
 
     public override void ExposeData()
@@ -382,6 +393,8 @@ public class FloatingThings_MapComponent : MapComponent
         Scribe_Collections.Look(ref cellsWithNothing, "cellsWithNothing", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithRiver, "cellsWithRiver", LookMode.Value);
         Scribe_Collections.Look(ref cellsWithOcean, "cellsWithOcean", LookMode.Value);
+        Scribe_Collections.Look(ref dirtyCells, "dirtyCells", LookMode.Value);
+        Scribe_Values.Look(ref allCellsDirty, "allCellsDirty", true);
         Scribe_Collections.Look(ref underCellsWithWater, "underCellsWithWater", LookMode.Value);
         Scribe_Collections.Look(ref spaceDirections, "spaceDirections", LookMode.Deep, LookMode.Value,
             ref spaceDirectionsKeys, ref spaceDirectionsValues);
@@ -412,6 +425,8 @@ public class FloatingThings_MapComponent : MapComponent
 
         cellsWithOcean ??= [];
 
+        dirtyCells ??= [];
+
         underCellsWithWater ??= [];
 
         if (!isSpace)
@@ -427,21 +442,12 @@ public class FloatingThings_MapComponent : MapComponent
     {
         SomeThingsFloat.LogMessage("Updating water-cells", debug: true);
 
-        // Clear collections before processing
-        cellsWithWater = [];
-        cellsWithNothing = [];
-        cellsWithRiver = [];
-        cellsWithOcean = [];
-        underCellsWithWater = [];
-
-        // Use Parallel.For to iterate over terrain grid
-        Parallel.For(0, map.terrainGrid.topGrid.Length, i =>
+        void processCell(int i, IntVec3 cell)
         {
             var upperTerrain = map.terrainGrid.topGrid[i];
             var lowerTerrain = map.terrainGrid.underGrid[i];
             var foundationTerrain = map.terrainGrid.foundationGrid[i];
             var tempTerrain = map.terrainGrid.tempGrid[i];
-            var cell = map.cellIndices.IndexToCell(i);
 
             // Check for bridges or foundations
             if (upperTerrain is { bridge: true } || foundationTerrain is { isFoundation: true } ||
@@ -503,7 +509,38 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 cellsWithNothing.Add(cell);
             }
-        });
+        };
+
+        // Use Parallel.For to iterate over terrain grid
+        if(allCellsDirty)
+        {
+            // Clear collections before processing
+            cellsWithWater = [];
+            cellsWithNothing = [];
+            cellsWithRiver = [];
+            cellsWithOcean = [];
+            underCellsWithWater = [];
+            Parallel.For(0, map.terrainGrid.topGrid.Length, i => processCell( i, map.cellIndices.IndexToCell(i)));
+        }
+        else
+        {
+            // Remote dirty cells before they are possibly generated again.
+            foreach(IntVec3 cell in dirtyCells)
+            {
+                cellsWithWater.Remove(cell);
+                cellsWithNothing.Remove(cell);
+                cellsWithRiver.Remove(cell);
+                cellsWithOcean.Remove(cell);
+                underCellsWithWater.Remove(cell);
+            }
+            if(dirtyCells.Count < 100)
+                foreach(IntVec3 cell in dirtyCells)
+                    processCell(map.cellIndices.CellToIndex(cell), cell);
+            else
+                Parallel.ForEach(dirtyCells, cell => processCell(map.cellIndices.CellToIndex(cell), cell));
+        }
+        allCellsDirty = false;
+        dirtyCells = [];
 
         // Log results
         SomeThingsFloat.LogMessage($"Found {cellsWithWater.Count} water-cells");
