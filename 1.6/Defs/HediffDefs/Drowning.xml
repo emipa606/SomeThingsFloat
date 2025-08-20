@@ -4,7 +4,7 @@
     <defName>STF_Drowning</defName>
     <hediffClass>SomeThingsFloat.Hediff_OnlyFloating</hediffClass>
     <label>drowning</label>
-    <description>Pawn is struggeling to keep above the water and is risking drowning.</description>
+    <description>Pawn is struggling to keep above the water and is risking drowning.</description>
     <lethalSeverity>1</lethalSeverity>
     <defaultLabelColor>(0.5, 0.6, 0.85)</defaultLabelColor>
     <stages>
