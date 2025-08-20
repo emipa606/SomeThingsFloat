@@ -2,7 +2,7 @@
 <Defs>
   <HediffDef>
     <defName>STF_Drowning</defName>
-    <hediffClass>SomeThingsFloat.Hediff_OnlyFloating</hediffClass>
+    <hediffClass>SomeThingsFloat.Hediff_Drowning</hediffClass>
     <label>drowning</label>
     <description>Pawn is struggling to keep above the water and is risking drowning.</description>
     <lethalSeverity>1</lethalSeverity>
