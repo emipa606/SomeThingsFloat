@@ -215,7 +215,7 @@ public class FloatingThings_MapComponent : MapComponent
 
         lastPositions.Remove(thing);
 
-        if (!isSpace && !VerifyThingIsInWater(thing))
+        if (!isSpace && (!VerifyThingIsInWater(thing) || (thing is Pawn pawn2 && !pawn2.Downed)))
         {
             SomeThingsFloat.LogMessage($"{thing} is no longer floating");
             floatingValues.Remove(thing);
