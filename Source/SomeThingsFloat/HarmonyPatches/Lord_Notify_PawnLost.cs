@@ -13,6 +13,6 @@ public static class Lord_Notify_PawnLost
 {
     public static bool Prefix(PawnLostCondition cond)
     {
-        return cond != PawnLostCondition.Incapped || !Pawn_HealthTracker_MakeDowned.downedByLostFooting;
+        return cond != PawnLostCondition.Incapped || !Pawn_HealthTracker_MakeDowned.DownedByLostFooting;
     }
 }

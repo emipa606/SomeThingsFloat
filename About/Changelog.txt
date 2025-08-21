@@ -1,5 +1,10 @@
 # Changelog for SomeThingsFloat
 
+1.6.11 - Fixed downed issue for births
+Pawns should only float when downed (via llunak)
+Pawns only drop their things when they are drowning (via llunak)
+
+
 1.6.10 - Water-cells updates dynamically based on terrain changes, should make less of an impact (via llunak)
 Pawns that fall will not leave their current lord, raids and hospitality guests will just continue their previous task after getting up (via llunak)
 

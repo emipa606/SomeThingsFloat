@@ -1,6 +1,4 @@
 using HarmonyLib;
-using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace SomeThingsFloat;
@@ -17,8 +15,6 @@ public static class Pawn_DropAndForbidEverything
         // them, and raiders would disarm themselves. So do not drop inventory
         // immediately after losing footing, Hediff_Drowning will possibly
         // do it later.
-        if(Pawn_HealthTracker_MakeDowned.downedByLostFooting)
-            return false;
-        return true;
+        return !Pawn_HealthTracker_MakeDowned.DownedByLostFooting;
     }
 }
