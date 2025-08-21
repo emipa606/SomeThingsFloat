@@ -35,6 +35,7 @@ public class FloatingThings_MapComponent : MapComponent
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
     private HashSet<IntVec3> dirtyCells;
+    private HashSet<IntVec3> cellsEmptyHash;
     public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
@@ -62,6 +63,7 @@ public class FloatingThings_MapComponent : MapComponent
         cellsWithRiver = [];
         cellsWithNothing = [];
         dirtyCells = [];
+        cellsEmptyHash = [];
         allCellsDirty = true;
         spaceDirections = [];
         mapEdgeCells = [];
@@ -887,10 +889,11 @@ public class FloatingThings_MapComponent : MapComponent
         var scheduled = new ConcurrentQueue<(Thing thing, float value)>();
         var spaceToProcess = new ConcurrentQueue<Thing>();
 
-        // Snapshot inputs that are iterated from multiple threads
-        var waterCells = cellsWithWater?.ToArray() ?? [];
-        var nothingCells = isSpace ? cellsWithNothing?.ToArray() ?? [] : [];
-        var hiddenSnapshot = hiddenPositions?.ToArray() ?? [];
+        // Inputs that are iterated from multiple threads (must be accessed read-only)
+        // Should ideally be IReadOnlySet and IReadOnlyCollection, but not available in this .NET version.
+        var waterCells = cellsWithWater;
+        var nothingCells = isSpace ? cellsWithNothing : cellsEmptyHash;
+        var hiddenSnapshot = hiddenPositions;
 
         // 1) Cells with water: compute candidates and enqueue
         Parallel.ForEach(waterCells, vec3 =>
@@ -938,7 +941,7 @@ public class FloatingThings_MapComponent : MapComponent
         });
 
         // 3) Space: only collect candidates in parallel; do mutations on main thread
-        if (isSpace && nothingCells.Length > 0)
+        if (isSpace && nothingCells.Count > 0)
         {
             Parallel.ForEach(nothingCells, vec3 =>
             {
@@ -1038,9 +1041,10 @@ public class FloatingThings_MapComponent : MapComponent
         var toAddLostFooting = new ConcurrentQueue<(Pawn pawn, float severity)>();
         var toStartFloating = new ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)>();
 
-        // Snapshot of river cells to avoid reading a collection while it could be rebuilt elsewhere
-        var riverCellsSnapshot = cellsWithRiver?.ToHashSet() ?? [];
-        var oceanCellsSnapshot = cellsWithOcean?.ToHashSet() ?? [];
+        // River cells accessed from multiple threads, must be accessed read-only.
+        // Again, ideally these should be IReadOnlySet.
+        var riverCellsSnapshot = cellsWithRiver;
+        var oceanCellsSnapshot = cellsWithOcean;
 
         Parallel.ForEach(mapPawns, pawn =>
         {
@@ -1208,8 +1212,9 @@ public class FloatingThings_MapComponent : MapComponent
         var toIncreaseDrowning = new ConcurrentQueue<(Pawn pawn, float delta)>();
         var toAddDrowning = new ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)>();
 
-        // Snapshot references we read
-        var waterCellsSnapshot = cellsWithWater?.ToHashSet() ?? [];
+        // Water cells accessed from multiple threads, must be accessed read-only.
+        // Again, ideally these should be IReadOnlySet.
+        var waterCellsSnapshot = cellsWithWater;
 
         Parallel.ForEach(mapPawns, pawn =>
         {
