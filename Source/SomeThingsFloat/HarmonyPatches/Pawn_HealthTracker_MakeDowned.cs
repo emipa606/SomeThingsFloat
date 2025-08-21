@@ -10,7 +10,7 @@ public static class Pawn_HealthTracker_MakeDowned
 
     public static void Prefix(Hediff hediff)
     {
-        downedByLostFooting = hediff.def == HediffDefOf.STF_LostFooting;
+        downedByLostFooting = hediff?.def == HediffDefOf.STF_LostFooting;
     }
 
     public static void Postfix()
