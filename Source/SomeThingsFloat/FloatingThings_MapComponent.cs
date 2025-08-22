@@ -51,6 +51,13 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
     private List<Thing> updateValuesValues;
+    private ConcurrentQueue<Pawn> toClearLostFooting;
+    private ConcurrentQueue<(Pawn pawn, float severity)> toSetLostFooting;
+    private ConcurrentQueue<(Pawn pawn, float severity)> toAddLostFooting;
+    private ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)> toStartFloating;
+    private ConcurrentQueue<Pawn> toClearDrowning;
+    private ConcurrentQueue<(Pawn pawn, float delta)> toIncreaseDrowning;
+    private ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)> toAddDrowning;
     public int WastePacksFloated;
 
     public FloatingThings_MapComponent(Map map) : base(map)
@@ -74,6 +81,13 @@ public class FloatingThings_MapComponent : MapComponent
         hiddenPositions = new Dictionary<Thing, IntVec3>();
         hiddenPositionsKeys = [];
         hiddenPositionsValues = [];
+        toClearLostFooting = [];
+        toSetLostFooting = [];
+        toAddLostFooting = [];
+        toStartFloating = [];
+        toClearDrowning = [];
+        toIncreaseDrowning = [];
+        toAddDrowning = [];
         ignoredAltitudeLayers =
         [
             AltitudeLayer.Blueprint,
@@ -1033,10 +1047,10 @@ public class FloatingThings_MapComponent : MapComponent
     private void checkForPawnsThatCanFall()
     {
         // Staging queues
-        var toClearLostFooting = new ConcurrentQueue<Pawn>();
-        var toSetLostFooting = new ConcurrentQueue<(Pawn pawn, float severity)>();
-        var toAddLostFooting = new ConcurrentQueue<(Pawn pawn, float severity)>();
-        var toStartFloating = new ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)>();
+        toClearLostFooting.Clear();
+        toSetLostFooting.Clear();
+        toAddLostFooting.Clear();
+        toStartFloating.Clear();
 
         // Snapshot of river cells to avoid reading a collection while it could be rebuilt elsewhere
         var riverCellsSnapshot = cellsWithRiver?.ToHashSet() ?? [];
@@ -1204,9 +1218,9 @@ public class FloatingThings_MapComponent : MapComponent
     private void checkForPawnsThatCanDrown()
     {
         // Staging queues
-        var toClearDrowning = new ConcurrentQueue<Pawn>();
-        var toIncreaseDrowning = new ConcurrentQueue<(Pawn pawn, float delta)>();
-        var toAddDrowning = new ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)>();
+        toClearDrowning.Clear();
+        toIncreaseDrowning.Clear();
+        toAddDrowning.Clear();
 
         // Snapshot references we read
         var waterCellsSnapshot = cellsWithWater?.ToHashSet() ?? [];
