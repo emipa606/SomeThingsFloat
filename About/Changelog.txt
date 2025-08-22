@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.12 - Some performance optimizations by llunak
+
+
 1.6.11 - Fixed downed issue for births
 Pawns should only float when downed (via llunak)
 Pawns only drop their things when they are drowning (via llunak)

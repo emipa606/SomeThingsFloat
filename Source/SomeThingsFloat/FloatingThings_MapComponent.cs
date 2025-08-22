@@ -30,12 +30,12 @@ public class FloatingThings_MapComponent : MapComponent
     // ReSharper disable once ChangeFieldTypeToSystemThreadingLock
     private readonly object updateValuesLock = new();
     private bool allCellsDirty;
+    private readonly HashSet<IntVec3> cellsEmptyHash;
     private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithOcean;
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
     private HashSet<IntVec3> dirtyCells;
-    private HashSet<IntVec3> cellsEmptyHash;
     public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
@@ -48,17 +48,17 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> spaceDirections;
     private List<Thing> spaceDirectionsKeys;
     private List<IntVec3> spaceDirectionsValues;
+    private readonly ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)> toAddDrowning;
+    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toAddLostFooting;
+    private readonly ConcurrentQueue<Pawn> toClearDrowning;
+    private readonly ConcurrentQueue<Pawn> toClearLostFooting;
+    private readonly ConcurrentQueue<(Pawn pawn, float delta)> toIncreaseDrowning;
+    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toSetLostFooting;
+    private readonly ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)> toStartFloating;
     private HashSet<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
     private List<Thing> updateValuesValues;
-    private ConcurrentQueue<Pawn> toClearLostFooting;
-    private ConcurrentQueue<(Pawn pawn, float severity)> toSetLostFooting;
-    private ConcurrentQueue<(Pawn pawn, float severity)> toAddLostFooting;
-    private ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)> toStartFloating;
-    private ConcurrentQueue<Pawn> toClearDrowning;
-    private ConcurrentQueue<(Pawn pawn, float delta)> toIncreaseDrowning;
-    private ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)> toAddDrowning;
     public int WastePacksFloated;
 
     public FloatingThings_MapComponent(Map map) : base(map)
