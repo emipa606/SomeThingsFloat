@@ -132,6 +132,8 @@ public static class SomeThingsFloat
                 return 0;
             case Corpse corpse when corpse.InnerPawn == null || corpse.InnerPawn.RaceProps.IsFlesh:
                 return 0.75f;
+            case Corpse corpse when corpse.InnerPawn?.RaceProps.IsMechanoid == true:
+                return 0;
             case Pawn pawn:
                 if (!SomeThingsFloatMod.Instance.Settings.DownedPawnsFloat ||
                     pawnsThatFloat?.Contains(pawn.def) == false ||
