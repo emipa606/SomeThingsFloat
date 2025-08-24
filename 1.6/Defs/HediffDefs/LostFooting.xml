@@ -2,7 +2,7 @@
 <Defs>
   <HediffDef ParentName="DiseaseBase">
     <defName>STF_LostFooting</defName>
-    <hediffClass>SomeThingsFloat.Hediff_OnlyFloating</hediffClass>
+    <hediffClass>SomeThingsFloat.Hediff_LostFooting</hediffClass>
     <label>lost footing</label>
     <description>The pawn has lost their footing in the moving water and is now trying to stay afloat</description>
     <lethalSeverity>9999</lethalSeverity>
