@@ -42,7 +42,8 @@ public static class SomeThingsFloat
             .ToHashSet();
         ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.IsApparel && def.apparel.layers.Contains(ApparelLayerDefOf.Overhead) &&
-            (def.apparel.tags.Contains("EVA") || def.equippedStatOffsets.GetStatOffsetFromList(StatDefOf.VacuumResistance) >= 0.5f)).ToHashSet();
+            (def.apparel.tags.Contains("EVA") ||
+             def.equippedStatOffsets.GetStatOffsetFromList(StatDefOf.VacuumResistance) >= 0.5f)).ToHashSet();
         PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
             def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToHashSet();
@@ -52,7 +53,8 @@ public static class SomeThingsFloat
         HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
         swimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
-            def.IsWater && !def.IsOcean && (def.defName.ToLower().Contains("shallow") || def.driesTo != null)).ToHashSet();
+                def.IsWater && !def.IsOcean && (def.defName.ToLower().Contains("shallow") || def.driesTo != null))
+            .ToHashSet();
 
         Vehicles = [];
         if (ModLister.GetActiveModWithIdentifier("SmashPhil.VehicleFramework", true) != null)

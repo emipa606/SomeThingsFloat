@@ -1,5 +1,9 @@
 # Changelog for SomeThingsFloat
 
+1.6.13 - Mechanoids does not float (via llunak)
+Raiders do not stop fleeing when loosing footing (via llunak)
+
+
 1.6.12 - Some performance optimizations by llunak
 
 

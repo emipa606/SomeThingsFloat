@@ -9,6 +9,6 @@ public class Hediff_LostFooting : Hediff_OnlyFloating
     public override void ExposeData()
     {
         base.ExposeData();
-        Scribe_Values.Look(ref wasInPanicFlee, "wasInPanicFlee", false);
+        Scribe_Values.Look(ref wasInPanicFlee, "wasInPanicFlee");
     }
 }

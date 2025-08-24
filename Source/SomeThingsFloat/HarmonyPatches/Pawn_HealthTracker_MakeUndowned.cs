@@ -9,8 +9,7 @@ public static class Pawn_HealthTracker_MakeUndowned
 {
     public static void Postfix(Pawn ___pawn, Hediff hediff)
     {
-        if(hediff?.def == HediffDefOf.STF_LostFooting && hediff is Hediff_LostFooting lostFooting
-            && lostFooting.wasInPanicFlee)
+        if (hediff?.def == HediffDefOf.STF_LostFooting && hediff is Hediff_LostFooting { wasInPanicFlee: true })
         {
             ___pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.PanicFlee);
         }
