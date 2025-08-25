@@ -25,7 +25,8 @@ public class Alert_ThingsUnderBridge : Alert
 
     public override AlertReport GetReport()
     {
-        if (!SomeThingsFloatMod.Instance.Settings.FloatUnderBridgesInfo)
+        if (!SomeThingsFloatMod.Instance.Settings.FloatUnderBridgesInfo ||
+            SomeThingsFloatMod.Instance.Settings.NoNotifications)
         {
             return false;
         }

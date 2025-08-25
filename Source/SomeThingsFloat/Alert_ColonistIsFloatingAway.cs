@@ -20,6 +20,11 @@ public class Alert_ColonistIsFloatingAway : Alert
 
     public override AlertReport GetReport()
     {
+        if (SomeThingsFloatMod.Instance.Settings.NoNotifications)
+        {
+            return false;
+        }
+
         var pawns = floatingPawns();
         return new AlertReport
         {
