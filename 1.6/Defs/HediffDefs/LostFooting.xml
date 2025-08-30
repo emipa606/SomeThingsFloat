@@ -7,6 +7,8 @@
     <description>The pawn has lost their footing in the moving water and is now trying to stay afloat</description>
     <lethalSeverity>9999</lethalSeverity>
     <isBad>false</isBad>
+    <blocksSleeping>true</blocksSleeping>
+    <preventsCrawling>true</preventsCrawling>
     <comps>
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>-5</severityPerDay>
