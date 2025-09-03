@@ -1241,7 +1241,7 @@ public class FloatingThings_MapComponent : MapComponent
                 SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
                 SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
                 SomeThingsFloat.Vehicles.Contains(pawn.def) ||
-                !pawn.Downed || !pawn.Awake())
+                !pawn.Downed)
             {
                 return;
             }
