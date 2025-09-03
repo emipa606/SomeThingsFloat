@@ -61,6 +61,8 @@ public class FloatingThings_MapComponent : MapComponent
     private List<Thing> updateValuesValues;
     public int WastePacksFloated;
 
+    public bool IsCellWithWater(IntVec3 cell) => cellsWithWater.Any() && cellsWithWater.Contains(cell);
+
     public FloatingThings_MapComponent(Map map) : base(map)
     {
         SomeThingsFloat.FloatingMapComponents[map] = this;
