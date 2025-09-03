@@ -1237,11 +1237,7 @@ public class FloatingThings_MapComponent : MapComponent
                 return;
             }
 
-            if (pawn.Dead ||
-                SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
-                SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
-                SomeThingsFloat.Vehicles.Contains(pawn.def) ||
-                !pawn.Downed)
+            if (!SomeThingsFloat.CanDrown(pawn))
             {
                 return;
             }
@@ -1270,15 +1266,11 @@ public class FloatingThings_MapComponent : MapComponent
                 }
             }
 
-            var cannotDrown =
-                pawn.apparel?.WornApparel?.Any(apparel =>
-                    SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true || !pawn.HarmedByVacuum;
-
             var isSwimming = pawn.CurJobDef == JobDefOf.GoSwimming;
 
             if (drowningHediff != null)
             {
-                if (cannotDrown || inShallowWater || isSwimming)
+                if (inShallowWater || isSwimming)
                 {
                     toClearDrowning.Enqueue(pawn);
                     return;
@@ -1289,7 +1281,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
             else
             {
-                if (cannotDrown || inShallowWater || isSwimming)
+                if (inShallowWater || isSwimming)
                 {
                     return;
                 }
