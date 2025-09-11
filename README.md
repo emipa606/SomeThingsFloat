@@ -20,6 +20,8 @@ If the smooth floating animations are causing distractions or performance issues
 
 I made it mostly for my own playthrough but hopefully someone else can get joy from it!
 
+Thank you to llunak for the various performance improvements!
+
 [![Image](https://i.imgur.com/kNldlMg.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2288125657)
 
 ![Image](https://i.imgur.com/Ds0rBAD.png)

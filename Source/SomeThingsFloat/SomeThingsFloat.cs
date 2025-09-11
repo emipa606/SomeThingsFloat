@@ -18,9 +18,9 @@ public static class SomeThingsFloat
 
     public static readonly DesignationDef HaulUrgentlyDef;
 
-    public static readonly HashSet<ThingDef> ApparelThatPreventDrowning;
+    private static readonly HashSet<ThingDef> apparelThatPreventDrowning;
 
-    public static readonly HashSet<ThingDef> PawnsThatBreathe;
+    private static readonly HashSet<ThingDef> pawnsThatBreathe;
 
     private static readonly HashSet<ThingDef> pawnsThatFloat;
 
@@ -40,11 +40,11 @@ public static class SomeThingsFloat
             .Where(def => tryGetSpecialFloatingValue(def, out var floatingValue, out var minimized) &&
                           floatingValue > 0 && !minimized)
             .ToHashSet();
-        ApparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+        apparelThatPreventDrowning = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.IsApparel && def.apparel.layers.Contains(ApparelLayerDefOf.Overhead) &&
             (def.apparel.tags.Contains("EVA") ||
              def.equippedStatOffsets.GetStatOffsetFromList(StatDefOf.VacuumResistance) >= 0.5f)).ToHashSet();
-        PawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
+        pawnsThatBreathe = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true } &&
             def.race.body.HasPartWithTag(BodyPartTagDefOf.BreathingSource)).ToHashSet();
         pawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
@@ -113,7 +113,7 @@ public static class SomeThingsFloat
                 var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
                 if (movementType.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
                 {
-                    ApparelThatPreventDrowning.Add(possibleNonDrowningApparel);
+                    apparelThatPreventDrowning.Add(possibleNonDrowningApparel);
                 }
             }
         }
@@ -128,18 +128,15 @@ public static class SomeThingsFloat
     public static bool CanDrown(Pawn pawn)
     {
         if (pawn.Dead || !pawn.Downed ||
-            SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
-            SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
-            SomeThingsFloat.Vehicles.Contains(pawn.def))
+            pawnsThatBreathe?.Contains(pawn.def) == false ||
+            AquaticRaces.Contains(pawn.def) ||
+            Vehicles.Contains(pawn.def))
         {
             return false;
         }
-        if (pawn.apparel?.WornApparel?.Any(apparel =>
-                SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true || !pawn.HarmedByVacuum)
-        {
-            return false;
-        }
-        return true;
+
+        return pawn.apparel?.WornApparel?.Any(apparel =>
+            apparelThatPreventDrowning.Contains(apparel.def)) != true && pawn.HarmedByVacuum;
     }
 
     public static float GetFloatingValue(Thing thing)

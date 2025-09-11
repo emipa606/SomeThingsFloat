@@ -24,13 +24,21 @@ public class FloatingThings_MapComponent : MapComponent
         IntVec3.NorthWest
     ];
 
+    private readonly HashSet<IntVec3> cellsEmptyHash;
+
     private readonly HashSet<AltitudeLayer> ignoredAltitudeLayers;
     private readonly HashSet<IntVec3> mapEdgeCells;
+    private readonly ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)> toAddDrowning;
+    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toAddLostFooting;
+    private readonly ConcurrentQueue<Pawn> toClearDrowning;
+    private readonly ConcurrentQueue<Pawn> toClearLostFooting;
+    private readonly ConcurrentQueue<(Pawn pawn, float delta)> toIncreaseDrowning;
+    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toSetLostFooting;
+    private readonly ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)> toStartFloating;
 
     // ReSharper disable once ChangeFieldTypeToSystemThreadingLock
     private readonly object updateValuesLock = new();
     private bool allCellsDirty;
-    private readonly HashSet<IntVec3> cellsEmptyHash;
     private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithOcean;
     private HashSet<IntVec3> cellsWithRiver;
@@ -48,20 +56,11 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<Thing, IntVec3> spaceDirections;
     private List<Thing> spaceDirectionsKeys;
     private List<IntVec3> spaceDirectionsValues;
-    private readonly ConcurrentQueue<(Pawn pawn, float initialSeverity, bool notify)> toAddDrowning;
-    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toAddLostFooting;
-    private readonly ConcurrentQueue<Pawn> toClearDrowning;
-    private readonly ConcurrentQueue<Pawn> toClearLostFooting;
-    private readonly ConcurrentQueue<(Pawn pawn, float delta)> toIncreaseDrowning;
-    private readonly ConcurrentQueue<(Pawn pawn, float severity)> toSetLostFooting;
-    private readonly ConcurrentQueue<(Pawn pawn, float value, bool notifyPlayer)> toStartFloating;
     private HashSet<IntVec3> underCellsWithWater;
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
     private List<Thing> updateValuesValues;
     public int WastePacksFloated;
-
-    public bool IsCellWithWater(IntVec3 cell) => cellsWithWater.Any() && cellsWithWater.Contains(cell);
 
     public FloatingThings_MapComponent(Map map) : base(map)
     {
@@ -105,6 +104,11 @@ public class FloatingThings_MapComponent : MapComponent
         lastSpawnTick = 0;
         isSpace = map.Tile.LayerDef.isSpace;
         map.events.TerrainChanged += terrainChanged;
+    }
+
+    public bool IsCellWithWater(IntVec3 cell)
+    {
+        return cellsWithWater.Any() && cellsWithWater.Contains(cell);
     }
 
     public override void MapComponentTick()

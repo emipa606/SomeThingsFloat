@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.15 - Pawns should not crawl into water or sleep in it, thanks llunak
+
+
 1.6.14 - Fixed the no-notifications setting not affecting alerts
 
 
