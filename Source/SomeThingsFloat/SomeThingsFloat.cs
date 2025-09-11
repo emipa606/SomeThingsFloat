@@ -125,6 +125,23 @@ public static class SomeThingsFloat
     }
 
 
+    public static bool CanDrown(Pawn pawn)
+    {
+        if (pawn.Dead || !pawn.Downed ||
+            SomeThingsFloat.PawnsThatBreathe?.Contains(pawn.def) == false ||
+            SomeThingsFloat.AquaticRaces.Contains(pawn.def) ||
+            SomeThingsFloat.Vehicles.Contains(pawn.def))
+        {
+            return false;
+        }
+        if (pawn.apparel?.WornApparel?.Any(apparel =>
+                SomeThingsFloat.ApparelThatPreventDrowning.Contains(apparel.def)) == true || !pawn.HarmedByVacuum)
+        {
+            return false;
+        }
+        return true;
+    }
+
     public static float GetFloatingValue(Thing thing)
     {
         var actualThing = thing;

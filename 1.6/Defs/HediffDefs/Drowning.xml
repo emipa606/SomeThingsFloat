@@ -7,6 +7,8 @@
     <description>Pawn is struggling to keep above the water and is risking drowning.</description>
     <lethalSeverity>1</lethalSeverity>
     <defaultLabelColor>(0.5, 0.6, 0.85)</defaultLabelColor>
+    <blocksSleeping>true</blocksSleeping>
+    <preventsCrawling>true</preventsCrawling>
     <stages>
       <li>
         <label>initial</label>
