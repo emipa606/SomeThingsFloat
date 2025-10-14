@@ -111,6 +111,12 @@ public class FloatingThings_MapComponent : MapComponent
         return cellsWithWater.Any() && cellsWithWater.Contains(cell);
     }
 
+    public void ForceFloatCellUpdate()
+    {
+        allCellsDirty = true;
+        updateListOfFloatCells();
+    }
+
     public override void MapComponentTick()
     {
         var ticksGame = GenTicks.TicksGame;

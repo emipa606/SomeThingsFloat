@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.16 - Landing a gravship on water should not cause pawns to loose footing while it recalculates the water cells.
+
+
 1.6.15 - Pawns should not crawl into water or sleep in it, thanks llunak
 
 
