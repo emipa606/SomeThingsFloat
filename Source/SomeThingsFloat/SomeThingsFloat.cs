@@ -50,7 +50,8 @@ public static class SomeThingsFloat
         pawnsThatFloat = DefDatabase<ThingDef>.AllDefsListForReading.Where(def =>
             def.race is { IsFlesh: true }).ToHashSet();
         FloatingMapComponents = new Dictionary<Map, FloatingThings_MapComponent>();
-        HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation");
+        HaulUrgentlyDef = DefDatabase<DesignationDef>.GetNamedSilentFail("HaulUrgentlyDesignation") ??
+                          DefDatabase<DesignationDef>.GetNamedSilentFail("KAU_HaulUrgentlyDesignation");
         swimmingKitLoaded = ModLister.GetActiveModWithIdentifier("pyrce.swimming.modkit", true) != null;
         ShallowTerrainDefs = DefDatabase<TerrainDef>.AllDefsListForReading.Where(def =>
                 def.IsWater && !def.IsOcean && (def.defName.ToLower().Contains("shallow") || def.driesTo != null))

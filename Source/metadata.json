@@ -6,11 +6,11 @@
   "SocialImageSet": true,
   "FundingSet": true,
   "SearchTags": " floating",
-  "LastXmlCleaning": "2025-10-14T21:06:38.0364625+02:00",
+  "LastXmlCleaning": "2025-11-02T15:26:25.6407038+01:00",
   "Patches": true,
   "Defs": true,
   "Assemblies": true,
-  "LinesOfCode": 118378,
+  "LinesOfCode": 118486,
   "LinesOfXML": 8759,
   "CodeBaseSize": 80,
   "RimWorldBaseId": "12487"
