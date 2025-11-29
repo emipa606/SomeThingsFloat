@@ -1,12 +1,13 @@
+using RimWorld;
+using RimWorld.Planet;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using RimWorld;
-using RimWorld.Planet;
 using UnityEngine;
 using Verse;
+using Verse.AI.Group;
 
 namespace SomeThingsFloat;
 
@@ -1095,7 +1096,7 @@ public class FloatingThings_MapComponent : MapComponent
                 return;
             }
 
-            if (pawn.CurJobDef?.defName.ToLower().Contains("swim") == true)
+            if (pawn.CurJob is not null && (pawn.CurJobDef.defName.ToLower().Contains("swim") == true || pawn.CurJob.swimming))
             {
                 if (lostFootingHediff != null)
                 {

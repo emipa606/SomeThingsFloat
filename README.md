@@ -1,6 +1,6 @@
 # [Some Things Float](https://steamcommunity.com/sharedfiles/filedetails/?id=2940072380)
 
-![Image](https://i.postimg.cc/PJc4kLbg/Self-Info.png)
+![Image](https://img.litet.net/logos/Self-Info.png)
 
 Let the river wash your trash away!
 
@@ -22,15 +22,15 @@ I made it mostly for my own playthrough but hopefully someone else can get joy f
 
 Thank you to llunak for the various performance improvements!
 
-[![Image](https://i.postimg.cc/qqTTK08Q/kNldlMg.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2288125657)
+[![Image](https://img.litet.net/kNldlMg.png)](https://steamcommunity.com/sharedfiles/filedetails/?id=2288125657)
 
-![Image](https://i.postimg.cc/nr5ktsY8/Self-Support-And-Donations.png)
+![Image](https://img.litet.net/logos/Self-SupportAndDonations.png)
 
 Since modding is just a hobby for me I expect no donations to keep modding. If you still want to show your support you can gift me anything from my [Wishlist](https://store.steampowered.com/wishlist/id/Mlie) or buy me a cup of tea.
 
-[![Image](https://i.postimg.cc/4yn5MvtR/Kofi-Small.png)](https://ko-fi.com/G2G55DDYD)
+[![Image](https://img.litet.net/logos/Kofi-Small.png)](https://ko-fi.com/G2G55DDYD)
 
-![Image](https://i.postimg.cc/cC6mj7Y4/Self-Reporting-Issues.png)
+![Image](https://img.litet.net/logos/Self-ReportingIssues.png)
 
 
 
