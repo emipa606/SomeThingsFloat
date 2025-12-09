@@ -1,13 +1,12 @@
-using RimWorld;
-using RimWorld.Planet;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
-using Verse.AI.Group;
 
 namespace SomeThingsFloat;
 
@@ -1096,14 +1095,15 @@ public class FloatingThings_MapComponent : MapComponent
                 return;
             }
 
-            if (pawn.CurJob is not null && (pawn.CurJobDef.defName.ToLower().Contains("swim") == true || pawn.CurJob.swimming))
+            if (pawn.WaterCellCost is <= 1 || pawn.CurJob is not null &&
+                (pawn.CurJob.swimming || pawn.CurJobDef.defName.ToLower().Contains("swim")))
             {
                 if (lostFootingHediff != null)
                 {
                     toClearLostFooting.Enqueue(pawn);
                 }
 
-                SomeThingsFloat.LogMessage($"{pawn} is swimming, ignoring fall check");
+                SomeThingsFloat.LogMessage($"{pawn} is swimming/flying, ignoring fall check");
                 return;
             }
 
@@ -1189,20 +1189,14 @@ public class FloatingThings_MapComponent : MapComponent
         while (toClearLostFooting.TryDequeue(out var pawnToClear))
         {
             var h = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (h != null)
-            {
-                h.Severity = 0;
-            }
+            h?.Severity = 0;
         }
 
         while (toSetLostFooting.TryDequeue(out var entry))
         {
             var (pawn, severity) = entry;
             var h = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_LostFooting);
-            if (h != null)
-            {
-                h.Severity = severity;
-            }
+            h?.Severity = severity;
         }
 
         while (toAddLostFooting.TryDequeue(out var entryAdd))
@@ -1314,10 +1308,7 @@ public class FloatingThings_MapComponent : MapComponent
         while (toClearDrowning.TryDequeue(out var pawnToClear))
         {
             var h = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
-            if (h != null)
-            {
-                h.Severity = 0;
-            }
+            h?.Severity = 0;
 
             // Count after commit
             var chk = pawnToClear?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
@@ -1336,10 +1327,7 @@ public class FloatingThings_MapComponent : MapComponent
         {
             var (pawn, delta) = inc;
             var h = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
-            if (h != null)
-            {
-                h.Severity += delta;
-            }
+            h?.Severity += delta;
 
             var chk = pawn?.health?.hediffSet?.GetFirstHediffOfDef(HediffDefOf.STF_Drowning);
             if (!(chk?.Severity >= 1))

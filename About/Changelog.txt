@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.19 - Pawns with natural water-speed, for example using the gene webbed phalanges, can no longer loose footing in moving water
+
+
 1.6.18 - Pawns should not loose footing when swimming
 
 
