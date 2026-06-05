@@ -10,6 +10,7 @@ public class SomeThingsFloatSettings : ModSettings
 {
     public bool AllowOnStuck = true;
     public bool AllowStranding;
+    public bool AnythingFloatsInSpace = true;
     public bool Bobbing = true;
     public bool DebugLogging;
     public bool DespawnAtMapEdge = true;
@@ -64,6 +65,7 @@ public class SomeThingsFloatSettings : ModSettings
         Scribe_Values.Look(ref DownedPawnsFloat, "DownedPawnsFloat", true);
         Scribe_Values.Look(ref DownedPawnsDrown, "DownedPawnsDrown", true);
         Scribe_Values.Look(ref PawnsCanFall, "PawnsCanFall", true);
+        Scribe_Values.Look(ref AnythingFloatsInSpace, "AnythingFloatsInSpace", true);
         Scribe_Values.Look(ref RelativeChanceInShallows, "RelativeChanceInShallows", 0.5f);
         Scribe_Values.Look(ref SpawnLivingPawns, "SpawnLivingPawns", true);
         Scribe_Values.Look(ref SpawnFertilizedEggs, "SpawnFertilizedEggs");
@@ -93,6 +95,7 @@ public class SomeThingsFloatSettings : ModSettings
         NotifyOfSpawningItems = true;
         NoNotifications = false;
         PawnsCanFall = true;
+        AnythingFloatsInSpace = true;
         RelativeChanceInShallows = 0.5f;
         RelativeFloatSpeed = 1f;
         ReservedItemsWillNotMove = false;

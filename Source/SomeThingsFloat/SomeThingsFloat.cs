@@ -243,7 +243,9 @@ public static class SomeThingsFloat
 
             if (inSpace)
             {
-                if (thing.def.IsWithinCategory(ThingCategoryDefOf.Chunks))
+                if (thing.def.IsWithinCategory(ThingCategoryDefOf.Chunks) ||
+                    SomeThingsFloatMod.Instance.Settings.AnythingFloatsInSpace &&
+                    thing.def.IsWithinCategory(ThingCategoryDefOf.Root))
                 {
                     Log.Message($"Adding {thing}");
                     yield return thing;

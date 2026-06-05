@@ -1,55 +1,53 @@
-# GitHub Copilot Instructions for RimWorld "Some Things Float" Mod
+# GitHub Copilot Instructions for RimWorld Modding: Some Things Float
 
 ## Mod Overview and Purpose
-
-The "Some Things Float" mod enhances the game RimWorld by introducing new mechanics related to floating objects and drowning. The mod adds a layer of strategy to water bodies on the map, making them more interactive and significant in gameplay. Players must manage their colonies with the understanding that some objects and pawns can float or drown, which affects resource management and colony safety.
+**Some Things Float** is a RimWorld mod that introduces dynamic interaction with water bodies within the game world. By enabling items and pawns to float in water and move with the stream, this mod adds layers of realism and gameplay opportunities. Objects can both leave the map, acting as a neat disposal system, and drift into the map, offering newfound resources or companions. This project enhances storytelling and strategical depth with water as an active agent.
 
 ## Key Features and Systems
+### Features
+- **Floating Mechanics**: Items and pawns buoy and flow with water currents, whether streaming (directional) or random water bodies.
+- **Dynamic Disposal**: Objects can exit the map through waterways, allowing practical removal of unwanted items like corpses.
+- **Resource Influx**: Items and characters can spawn in water, offering new resources or rescue opportunities for downed pawns.
+- **Swim Speed Implications**: Swim speed from other mods (e.g., SwimmingKit) influences how efficiently pawns float when downed.
+- **Aquatic Kits**: Apparel and traits influence drowning risks; power armor helmets and SOS2 EVA-tagged headgear provide safety.
+- **Structures**: Build bars and nets in water to intercept floating large items or all types of items, respectively.
 
-- **Floating Objects Mechanic**: Certain objects can float on water. This mechanic is controlled by the `FloatingThings_MapComponent` class, which tracks and updates floating objects on the map.
-
-- **Drowning and Sinking**: Pawns can drown or sink if they are not careful near water bodies. Classes like `Hediff_OnlyFloating` help manage the state of pawns related to floating.
-
-- **Alerts System**: The mod includes alerts to warn players about floating objects or pawns. The classes `Alert_ColonistIsFloatingAway` and `Alert_ThingsUnderBridge` handle these alerts.
-
-- **Achievement Tracking**: The mod includes achievement tracking for specific events, such as when enemies drown, managed by classes like `EnemyDrownedTracker`.
-
-- **Rewards System**: Completing certain achievements can trigger specific rewards, such as spawning random items. This is handled by the `Reward_SpawnRandomItem` class.
+### Systems
+- **Footing and Drowning**: Pawns risk losing balance or drowning in moving water; preventive measures exist through gear or mod synergies.
+- **Floating Value Calculation**: Determines item movement speed on water based on material properties and item type modifications.
+- **Performance Management**: Smooth floating animations can be toggled in settings to manage distractions or performance dips.
 
 ## Coding Patterns and Conventions
-
-- **Class Organization**: Classes are organized based on functionality, e.g., trackers, alerts, and mod settings.
-  
-- **Method Naming**: Methods are named using camelCase for private methods and PascalCase for public methods, consistent with typical C# conventions.
-
-- **Static vs Instance**: Static classes are used where shared functionality is intended, whereas individual objects are used for specific behaviors.
+- **C# File Structure**: Use appropriate access modifiers, organize classes into utilities or handlers, and adhere to single responsibility principles.
+- **XML Definitions**: Define items, effects, and structures hierarchically; reuse and extend base definitions wherever possible.
 
 ## XML Integration
-
-While the C# summary does not explicitly detail XML integration, XML is typically used in RimWorld mods to define game data such as item properties and events. Consider maintaining XML files to define:
-
-- **ThingDefs** for new floating objects or modified properties.
-- **HediffDefs** for conditions like floating or drowning.
-- Link XML definitions with C# logic using `DefModExtensions`.
+- **Hediff Definitions**: Utilize `<HediffDef>` to manage health impacts like drowning and losing footing.
+- **Building Definitions**: Capture structure properties using `<ThingDef>` for items like nets and bars, implementing inheritance for shared attributes.
 
 ## Harmony Patching
-
-**Harmony** is a library used for patching existing methods in RimWorld. Consider the following:
-
-- **Prefix and Postfix Methods**: Use Harmony prefixes and postfixes to execute code before or after game functions are called. This allows you to extend or modify vanilla behavior.
-
-- **Example Usage**: Apply patches in classes like `SomeThingsFloatMod` to integrate floating and drowning mechanics into existing game logic.
+- **Patch Strategy**: Apply Harmony patches to augment or alter vanilla game behaviors—such as pawn interactions with water—while maintaining compatibility with existing systems.
+- **Use Cases**: Modify behaviors in `Pawn_HealthTracker_MakeDowned` and `Pawn_PathFollower_SetupMoveIntoNextCell`.
 
 ## Suggestions for Copilot
+1. **Automate Repetitive Code**: Encourage use of Copilot to suggest auto-generated code for common patterns like floating calculations or animation toggles.
+2. **Template XML Entries**: Provide boilerplate XML framework for simpler hedgedif or thing definitions.
+3. **Patch Suggestions**: Suggest potential improvements or bug fixes via Harmony method detours or postfixes.
+4. **Integration Tests**: Encourage the creation of automated tests to verify item buoyancy behaviors across different conditions and mod setups.
+5. **Documentation**: Suggest inline documentation and summaries on key methods and classes for improved codebase clarity.
 
-To effectively utilize GitHub Copilot in this mod development:
+> This mod was initially crafted for personal use but stands to enrich playthroughs for others. Thank you, notably llunak, for performance enhancements.
 
-1. **Define Clear Functionality**: Write clear comments about what each method should do. Provide context and expected behavior in comments to guide Copilot suggestions.
+## Project Solution Guidelines
+- Relevant mod XML files are included as Solution Items under the solution folder named XML, these can be read and modified from within the solution.
+- Use these in-solution XML files as the primary files for reference and modification.
+- The `.github/copilot-instructions.md` file is included in the solution under the `.github` solution folder, so it should be read/modified from within the solution instead of using paths outside the solution. Update this file once only, as it and the parent-path solution reference point to the same file in this workspace.
+- When making functional changes in this mod, ensure the documented features stay in sync with implementation; use the in-solution `.github` copy as the primary file.
+- In the solution is also a project called Assembly-CSharp, containing a read-only version of the decompiled game source, for reference and debugging purposes.
+- For any new documentation, update this copilot-instructions.md file rather than creating separate documentation files.
 
-2. **Use Descriptive Names**: For variables and methods, use descriptive names that reflect their purpose. This helps Copilot suggest more relevant code snippets.
 
-3. **Decompose Logic**: Break down large methods into smaller, focused functions. Copilot can then generate suggestions per function, making logic easier to manage and test.
+## Hard rules (must follow)
+- Do NOT run commands that modify the repo (no git commit, git apply, dotnet format) unless explicitly asked.
+- Prefer minimal reads: read only the smallest code region needed (around the suspicious lines).
 
-4. **Prioritize Common Patterns**: Encourage Copilot to follow the prevalent methods and logic patterns within your code. Consistency aids in generating reliable code.
-
-By adhering to these guidelines, you can leverage GitHub Copilot to streamline your mod development process, generating code that fits seamlessly within the RimWorld modding architecture.

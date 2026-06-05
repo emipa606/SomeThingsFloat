@@ -1,0 +1,33 @@
+ManifestFileVersion: 0
+CRC: 3629594784
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 72554ed6bceb312a5cf0be8ac51df0d6
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 2612ac43db082a73502ee80f2eceb73f
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 72554ed6bceb312a5cf0be8ac51df0d6
+HashAppended: 0
+ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/OriginalAchievmentsBG.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_WhoNeedsOxygenAnyway.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_NotMyProblem.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_SleepingWithTheFishes.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_TheLureOfTheDeep.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Bars/Bars_icon.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Bars/Bars.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_ProgressBeforeNature.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/UpdateInfo/SomeThingsFloat.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Net/Net_icon.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/Achievements/STF_AWateryGrave.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Bars/Bars_blueprint.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Net/Net_blueprint.png
+- Assets/Data/Mlie.SomeThingsFloat/Textures/STF_Things/Net/Net.png
+Dependencies: []

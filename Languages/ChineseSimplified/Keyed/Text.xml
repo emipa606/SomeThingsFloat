@@ -74,4 +74,6 @@
   <STF.NoNotificationsTT>请勿对本模块中的事件发出任何通知</STF.NoNotificationsTT>
   <STF.AllowStranding>东西会被冲到陆地上</STF.AllowStranding>
   <STF.AllowStrandingTT>漂浮在陆地附近时，东西可能会被冲到岸上</STF.AllowStrandingTT>
+  <STF.AnythingFloatsInSpace>任何物品都会漂浮在太空中</STF.AnythingFloatsInSpace>
+  <STF.AnythingFloatsInSpaceTT>如果启用，任何物品都会漂浮在太空中。如果禁用，则只有大块物品会飘走。</STF.AnythingFloatsInSpaceTT>
 </LanguageData>

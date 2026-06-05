@@ -7,4 +7,27 @@
   </Configurations>
   <Project Path="AchievementsExpanded/AchievementsExpanded_SomeThingsFloat.csproj" />
   <Project Path="SomeThingsFloat/SomeThingsFloat.csproj" />
+  <Folder Name="/XML/About/">
+    <File Path="../About/about.xml" />
+  </Folder>
+  <Folder Name="/XML/Languages/English/Keyed/">
+    <File Path="../Languages/English/Keyed/Text.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/">
+    <File Path="../1.6/Defs/UpdateInfo.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/HediffDefs/">
+    <File Path="../1.6/Defs/HediffDefs/Drowning.xml" />
+    <File Path="../1.6/Defs/HediffDefs/LostFooting.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Patches/">
+    <File Path="../1.6/Patches/Biotech.xml" />
+    <File Path="../1.6/Patches/DubsBadHygiene.xml" />
+    <File Path="../1.6/Patches/EVA.xml" />
+    <File Path="../1.6/Patches/SeedsPlease.xml" />
+    <File Path="../1.6/Patches/VanillaRecyclingExpanded.xml" />
+  </Folder>
+  <Folder Name="/XML/1.6/Defs/ThingDefs/">
+    <File Path="../1.6/Defs/ThingDefs/BuildingDefs.xml" />
+  </Folder>
 </Solution>

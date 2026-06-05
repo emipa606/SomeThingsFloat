@@ -74,4 +74,6 @@
   <STF.NoNotificationsTT>Не дает никаких уведомлений о событиях в этом моде</STF.NoNotificationsTT>
   <STF.AllowStranding>Вещи могут выбрасываться на сушу</STF.AllowStranding>
   <STF.AllowStrandingTT>Когда вещи плавают вблизи суши, их может выбросить на берег</STF.AllowStrandingTT>
+  <STF.AnythingFloatsInSpace>Любой предмет уплывает в пространстве.</STF.AnythingFloatsInSpace>
+  <STF.AnythingFloatsInSpaceTT>Если включить этот мод, то любой предмет будет парить в пространстве. Если отключить, то уплывут только куски.</STF.AnythingFloatsInSpaceTT>
 </LanguageData>

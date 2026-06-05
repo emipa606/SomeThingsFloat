@@ -180,6 +180,13 @@ public class SomeThingsFloatMod : Mod
             }
         }
 
+        if (ModLister.OdysseyInstalled)
+        {
+            listing_Standard.CheckboxLabeled("STF.AnythingFloatsInSpace".Translate(),
+                ref Settings.AnythingFloatsInSpace,
+                "STF.AnythingFloatsInSpaceTT".Translate());
+        }
+
         listing_Standard.CheckboxLabeled("STF.VerboseLogging".Translate(), ref Settings.VerboseLogging,
             "STF.VerboseLoggingTT".Translate());
         if (Settings.VerboseLogging)

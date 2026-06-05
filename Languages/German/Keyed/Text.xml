@@ -74,4 +74,6 @@
   <STF.NoNotificationsTT>Geben Sie keine Benachrichtigungen über Ereignisse in dieser Mod</STF.NoNotificationsTT>
   <STF.AllowStranding>Dinge können an Land gespült werden</STF.AllowStranding>
   <STF.AllowStrandingTT>Wenn sie in der Nähe von Land schwimmen, können Dinge an das Ufer gespült werden</STF.AllowStrandingTT>
+  <STF.AnythingFloatsInSpace>Jeder Gegenstand wird im Raum schweben</STF.AnythingFloatsInSpace>
+  <STF.AnythingFloatsInSpaceTT>Wenn aktiviert, schwebt jeder Gegenstand im Raum. Wenn deaktiviert, schweben nur Brocken davon.</STF.AnythingFloatsInSpaceTT>
 </LanguageData>

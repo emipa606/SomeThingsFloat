@@ -58,6 +58,8 @@
   <STF.ReservedItemsWillNotMoveTT>Will make items that are reserved to be used in a toil to stay still to not cause issues when working</STF.ReservedItemsWillNotMoveTT>
   <STF.WarnForAllFriendlyPawns>Warn about any drowning non-enemy</STF.WarnForAllFriendlyPawns>
   <STF.WarnForAllFriendlyPawnsTT>Will notify about any non-enemy drowning</STF.WarnForAllFriendlyPawnsTT>
+  <STF.AnythingFloatsInSpace>Any item will float away in space</STF.AnythingFloatsInSpace>
+  <STF.AnythingFloatsInSpaceTT>If enabled, any item will float away in space. If disabled, only chunks will float away.</STF.AnythingFloatsInSpaceTT>
   <STF.PawnIsFloatingAway>Pawns floating away</STF.PawnIsFloatingAway>
   <STF.PawnIsFloatingAwayTT>{0} is downed and floating away in the water.</STF.PawnIsFloatingAwayTT>
   <STF.ThingsUnderBridge>Things floating under bridges/ice</STF.ThingsUnderBridge>
@@ -69,7 +71,7 @@
   <STF.PawnHasFallen>{0} has lost their footing in the flowing water!</STF.PawnHasFallen>
   <STF.PawnHasFallenAndFloats>{0} has lost their footing in the flowing water and is now floating away!</STF.PawnHasFallenAndFloats>
   <STF.PawnIsLostTitle>{0} has floated away</STF.PawnIsLostTitle>
-  <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water and they have now floated out of sight. Hopefully they can save themselves but you may never see them again.</STF.PawnIsLostMessage>
+  <STF.PawnIsLostMessage>You failed to rescue {0} from the flowing water, and they have now floated out of sight. Hopefully they can save themselves but you may never see them again.</STF.PawnIsLostMessage>
   <STF.PawnSpawnedTitle>Someone is struggling in the river</STF.PawnSpawnedTitle>
   <STF.PawnSpawnedMessage>You notice someone in the water, they signal you for help</STF.PawnSpawnedMessage>
   <STF.CurrentModVersion>Installed mod-version: {0}</STF.CurrentModVersion>
