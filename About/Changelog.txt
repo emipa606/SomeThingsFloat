@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.21 - Should no longer cause issues on pocket maps, for example in DeepAndDeeper
+
+
 1.6.20 - Added mod-option (default on) to let anything float away in space rather than just chunks
 Used DeepL to update translations for ChineseSimplified, French, German, Russian
 

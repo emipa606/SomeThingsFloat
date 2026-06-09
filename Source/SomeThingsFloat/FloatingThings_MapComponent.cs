@@ -102,7 +102,15 @@ public class FloatingThings_MapComponent : MapComponent
             AltitudeLayer.Weather
         ];
         lastSpawnTick = 0;
-        isSpace = map.Tile.LayerDef.isSpace;
+        try
+        {
+            isSpace = map.Tile is { LayerDef.isSpace: true };
+        }
+        catch
+        {
+            isSpace = false;
+        }
+
         map.events.TerrainChanged += terrainChanged;
     }
 
@@ -471,7 +479,14 @@ public class FloatingThings_MapComponent : MapComponent
 
         if (!isSpace)
         {
-            isSpace = map.Tile.LayerDef.isSpace;
+            try
+            {
+                isSpace = map.Tile is { LayerDef.isSpace: true };
+            }
+            catch
+            {
+                isSpace = false;
+            }
         }
 
         updateListOfFloatCells();
