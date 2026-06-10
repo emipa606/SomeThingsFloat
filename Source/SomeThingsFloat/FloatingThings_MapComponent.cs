@@ -104,7 +104,7 @@ public class FloatingThings_MapComponent : MapComponent
         lastSpawnTick = 0;
         try
         {
-            isSpace = map.Tile is { LayerDef.isSpace: true };
+            isSpace = map.Tile is { LayerDef.isSpace: true } || map.Biome.defName == "OuterSpaceBiome";
         }
         catch
         {
@@ -481,7 +481,7 @@ public class FloatingThings_MapComponent : MapComponent
         {
             try
             {
-                isSpace = map.Tile is { LayerDef.isSpace: true };
+                isSpace = map.Tile is { LayerDef.isSpace: true } || map.Biome.defName == "OuterSpaceBiome";
             }
             catch
             {
@@ -495,7 +495,16 @@ public class FloatingThings_MapComponent : MapComponent
 
     private void updateListOfFloatCells()
     {
-        SomeThingsFloat.LogMessage("Updating water-cells", debug: true);
+        SomeThingsFloat.LogMessage("Updating cells", debug: true);
+        try
+        {
+            isSpace = map.Tile is { LayerDef.isSpace: true } || map.Biome.defName == "OuterSpaceBiome";
+        }
+        catch
+        {
+            isSpace = false;
+        }
+
         switch (allCellsDirty)
         {
             case false when !dirtyCells.Any():
@@ -607,7 +616,7 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             // Check for space cells
-            if (!isSpace || upperTerrain is not { defName: "Space" })
+            if (!isSpace || upperTerrain is not null and not { defName: "Space" } and not { defName: "EmptySpace" })
             {
                 return;
             }
@@ -663,7 +672,8 @@ public class FloatingThings_MapComponent : MapComponent
             {
                 if (SomeThingsFloatMod.Instance.Settings.SpawnInOceanTiles &&
                     mapEdgeCell.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true ||
-                    isSpace && mapEdgeCell.GetTerrain(map)?.defName == "Space")
+                    isSpace && (mapEdgeCell.GetTerrain(map)?.defName == "Space" ||
+                                mapEdgeCell.GetTerrain(map)?.defName == "EmptySpace"))
                 {
                     mapEdgeCells.Add(mapEdgeCell);
                     continue;

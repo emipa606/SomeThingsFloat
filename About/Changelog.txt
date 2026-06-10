@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.22 - Space floating should affect sos2 space as well
+
+
 1.6.21 - Should no longer cause issues on pocket maps, for example in DeepAndDeeper
 
 

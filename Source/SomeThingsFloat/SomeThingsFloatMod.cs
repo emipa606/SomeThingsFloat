@@ -180,7 +180,7 @@ public class SomeThingsFloatMod : Mod
             }
         }
 
-        if (ModLister.OdysseyInstalled)
+        if (ModLister.OdysseyInstalled || ModLister.GetActiveModWithIdentifier("kentington.saveourship2", true) != null)
         {
             listing_Standard.CheckboxLabeled("STF.AnythingFloatsInSpace".Translate(),
                 ref Settings.AnythingFloatsInSpace,
