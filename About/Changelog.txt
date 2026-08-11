@@ -1,5 +1,8 @@
 # Changelog for SomeThingsFloat
 
+1.6.23 - Walls, doors and wall-attachments should no longer float away in space
+
+
 1.6.22 - Space floating should affect sos2 space as well
 
 

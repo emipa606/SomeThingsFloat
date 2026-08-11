@@ -245,7 +245,9 @@ public static class SomeThingsFloat
             {
                 if (thing.def.IsWithinCategory(ThingCategoryDefOf.Chunks) ||
                     SomeThingsFloatMod.Instance.Settings.AnythingFloatsInSpace &&
-                    thing.def.IsWithinCategory(ThingCategoryDefOf.Root))
+                    thing.def.IsWithinCategory(ThingCategoryDefOf.Root) &&
+                    !thing.def.IsWall && !thing.def.IsDoor &&
+                    thing.def.building?.isAttachment == false)
                 {
                     Log.Message($"Adding {thing}");
                     yield return thing;
