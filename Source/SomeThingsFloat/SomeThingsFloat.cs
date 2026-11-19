@@ -81,7 +81,7 @@ public static class SomeThingsFloat
                 var modExtension =
                     possibleAquaticAnimal.modExtensions.First(extension =>
                         extension.GetType().Name == "AquaticExtension");
-                if ((bool)modExtension.GetType().GetField("aquatic").GetValue(modExtension))
+                if ((bool)(modExtension.GetType().GetField("aquatic")?.GetValue(modExtension) ?? false))
                 {
                     AquaticRaces.Add(possibleAquaticAnimal);
                 }
@@ -97,8 +97,8 @@ public static class SomeThingsFloat
                 var modExtension =
                     possibleAquaticAnimal.modExtensions.First(extension =>
                         extension.GetType().Name == "MovementExtension");
-                var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
-                if (movementType.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
+                var movementType = (Def)modExtension.GetType().GetField("movementDef")?.GetValue(modExtension);
+                if (movementType?.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
                 {
                     AquaticRaces.Add(possibleAquaticAnimal);
                 }
@@ -111,8 +111,8 @@ public static class SomeThingsFloat
                 var modExtension =
                     possibleNonDrowningApparel.modExtensions.First(extension =>
                         extension.GetType().Name == "MovementExtension");
-                var movementType = (Def)modExtension.GetType().GetField("movementDef").GetValue(modExtension);
-                if (movementType.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
+                var movementType = (Def)modExtension.GetType().GetField("movementDef")?.GetValue(modExtension);
+                if (movementType?.defName is "PF_Movement_Amphibious" or "PF_Movement_Aquatic")
                 {
                     apparelThatPreventDrowning.Add(possibleNonDrowningApparel);
                 }

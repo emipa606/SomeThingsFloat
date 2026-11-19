@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputPath>..\..\AchievementsExpanded\1.5\Assemblies</OutputPath>
-    <TargetFramework>net481</TargetFramework>
+    <OutputPath>..\..\AchievementsExpanded\1.6\Assemblies</OutputPath>
+    <TargetFramework>net48</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>None</DebugType>
     <LangVersion>latest</LangVersion>
-    <FileVersion>1.5.6</FileVersion>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <FileVersion>1.6.23</FileVersion>
+    <Copyright>© Mlie 2026 - MIT License</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
@@ -16,7 +16,7 @@
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <Reference Include="VanillaAchievementsExpanded">
-      <HintPath>..\..\..\..\..\..\workshop\content\294100\2288125657\1.5\Assemblies\AchievementsExpanded.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\workshop\content\294100\2288125657\1.6\Assemblies\AchievementsExpanded.dll</HintPath>
       <CopyLocal>False</CopyLocal>
       <Private>false</Private>
     </Reference>

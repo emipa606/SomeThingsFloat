@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using Verse;
@@ -7,16 +9,20 @@ using Verse.AI;
 namespace SomeThingsFloat;
 
 // Prevent downed pawns from crawling into water where they would drown.
-[HarmonyPatch(typeof(Pawn_PathFollower), nameof(Pawn_PathFollower.SetupMoveIntoNextCell))]
+[HarmonyPatch(typeof(Pawn_PathFollower), "SetupMoveIntoNextCell")]
 public static class Pawn_PathFollower_SetupMoveIntoNextCell
 {
+    private static readonly FieldInfo pawnField = AccessTools.Field(typeof(Pawn_PathFollower), "pawn") ??
+                                                  throw new MissingFieldException(typeof(Pawn_PathFollower).FullName,
+                                                      "pawn");
+
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
     {
         var found = false;
         foreach (var instr in instructions)
         {
             yield return instr;
-            if (instr.opcode != OpCodes.Call || !instr.operand.ToString().Contains("WalkableBy"))
+            if (instr.opcode != OpCodes.Call || instr.operand?.ToString()?.Contains("WalkableBy") != true)
             {
                 continue;
             }
@@ -45,7 +51,8 @@ public static class Pawn_PathFollower_SetupMoveIntoNextCell
             return false;
         }
 
-        var pawn = pather.pawn;
+        var pawn = pawnField.GetValue(pather) as Pawn ??
+                   throw new InvalidOperationException("Pawn_PathFollower.pawn is missing or invalid.");
         var nextCell = pather.nextCell;
         if (!pawn.Downed)
         {

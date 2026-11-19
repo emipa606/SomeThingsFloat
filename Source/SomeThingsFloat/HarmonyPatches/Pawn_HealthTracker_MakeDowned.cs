@@ -4,7 +4,7 @@ using Verse;
 
 namespace SomeThingsFloat;
 
-[HarmonyPatch(typeof(Pawn_HealthTracker), nameof(Pawn_HealthTracker.MakeDowned))]
+[HarmonyPatch(typeof(Pawn_HealthTracker), "MakeDowned")]
 public static class Pawn_HealthTracker_MakeDowned
 {
     public static bool DownedByLostFooting;

@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="color-scheme" content="light dark">
+<title>Some Things Float analysis</title>
+</head>
+<body>
+<h1>Some Things Float analysis</h1>
+<h1 id="practical-low-effort-improvements-for-some-things-float">Practical, Low-Effort Improvements for Some Things Float</h1>
+<h2 id="top-priority-quick-wins">Top Priority (Quick Wins)</h2>
+<ol>
+<li><p><strong>Fix Deadlock with Hidden Pawns</strong></p>
+<ul>
+<li><strong>Priority:</strong> Highest</li>
+<li><strong>Title:</strong> Edge Case with Hidden Pawns Under Bridges</li>
+<li><strong>Implementation Idea:</strong> Ensure hidden pawns are not manually ticked if they are despawned. Add a check in the hidden-object tick to verify if the pawn still exists before proceeding with any operations.</li>
+<li><strong>Confidence:</strong> High</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/5qEjlVFg">Trello Card</a></li>
+</ul>
+</li>
+<li><p><strong>Improve Spawn Failures</strong></p>
+<ul>
+<li><strong>Priority:</strong> High</li>
+<li><strong>Title:</strong> Pawn Spawn Failures</li>
+<li><strong>Implementation Idea:</strong> Review the code responsible for pawn spawning and add null checks to avoid exceptions. Ensure that the spawn request logic is robust against failure.</li>
+<li><strong>Confidence:</strong> Medium</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/GwBSpidf">Trello Card</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="medium-priority-moderate-effort">Medium Priority (Moderate Effort)</h2>
+<ol>
+<li><p><strong>Weighted Combination for Water Traps</strong></p>
+<ul>
+<li><strong>Priority:</strong> Medium</li>
+<li><strong>Title:</strong> Weighted Combination for Shallow and Deep Water Traps</li>
+<li><strong>Implementation Idea:</strong> Modify the water trap logic to use a weighted combination of shallow and deep water effects. This would require adjusting the calculation of trap severity based on water depth.</li>
+<li><strong>Confidence:</strong> Medium</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/yR6sjZZJ">Trello Card</a></li>
+</ul>
+</li>
+<li><p><strong>Separate Fall Chance Sliders</strong></p>
+<ul>
+<li><strong>Priority:</strong> Medium</li>
+<li><strong>Title:</strong> Separate Fall Chance Sliders for Different Water Types</li>
+<li><strong>Implementation Idea:</strong> Add separate sliders for fall chances in shallow and deep water. Update the UI to reflect these changes and ensure the logic in the code accounts for both settings.</li>
+<li><strong>Confidence:</strong> Medium</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/ZuDt5su6">Trello Card</a></li>
+</ul>
+</li>
+</ol>
+<h2 id="semantic-summary-suggestions-no-trello-cards">Semantic-summary Suggestions (no Trello cards)</h2>
+<ol>
+<li><strong>Fix Map Render Break on Vacuum Tiles</strong>
+<ul>
+<li><strong>Priority:</strong> Low</li>
+<li><strong>Title:</strong> Fix Map Render Break on Vacuum Tiles</li>
+<li><strong>Implementation Idea:</strong> Investigate the interaction between vacuum tiles and map rendering. Ensure that the code handling vacuum tiles does not interfere with map rendering. This may involve checking the compatibility of the mod with other mods that affect map rendering.</li>
+<li><strong>Confidence:</strong> Low</li>
+<li><strong>Source:</strong> Semantic summary (no Trello card)</li>
+</ul>
+</li>
+</ol>
+<h2 id="deferred-work">Deferred Work</h2>
+<ol>
+<li><p><strong>Integrate Avoidance Mechanism</strong></p>
+<ul>
+<li><strong>Priority:</strong> Low</li>
+<li><strong>Title:</strong> Integrate Avoidance Mechanism for Water Traps</li>
+<li><strong>Implementation Idea:</strong> Consider implementing a more sophisticated avoidance mechanism for water traps. This would require a deeper understanding of the mod's current logic and potential changes to the game's physics.</li>
+<li><strong>Confidence:</strong> Low</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/yR6sjZZJ">Trello Card</a></li>
+</ul>
+</li>
+<li><p><strong>Generic Water Event Letter</strong></p>
+<ul>
+<li><strong>Priority:</strong> Low</li>
+<li><strong>Title:</strong> Change Water Event Letter to Generic Term</li>
+<li><strong>Implementation Idea:</strong> Update the event letter text to use a more generic term for water. This would require modifying the string resources used for event messages.</li>
+<li><strong>Confidence:</strong> Medium</li>
+<li><strong>Source:</strong> Trello card <a href="https://trello.com/c/ZuDt5su6">Trello Card</a></li>
+</ul>
+</li>
+</ol>
+
+</body>
+</html>

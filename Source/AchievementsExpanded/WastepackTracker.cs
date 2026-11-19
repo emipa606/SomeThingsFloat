@@ -6,9 +6,9 @@ namespace SomeThingsFloat;
 
 public class WastepackTracker : TrackerBase
 {
-    public int count = 1;
+    private int count = 1;
 
-    [Unsaved] protected int triggeredCount; //Only for display
+    [Unsaved] private int triggeredCount; //Only for display
 
     public WastepackTracker()
     {

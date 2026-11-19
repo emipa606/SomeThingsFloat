@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: drowning -->
+  <STF_Drowning.label>drowning</STF_Drowning.label>
+  <!-- EN: Pawn is struggling to keep above the water and is risking drowning. -->
+  <STF_Drowning.description>Pawn is struggling to keep above the water and is risking drowning.</STF_Drowning.description>
+  <!-- EN: initial -->
+  <STF_Drowning.stages.initial.label>initial</STF_Drowning.stages.initial.label>
+  <!-- EN: serious -->
+  <STF_Drowning.stages.serious.label>serious</STF_Drowning.stages.serious.label>
+  <!-- EN: critical -->
+  <STF_Drowning.stages.critical.label>critical</STF_Drowning.stages.critical.label>
+</LanguageData>

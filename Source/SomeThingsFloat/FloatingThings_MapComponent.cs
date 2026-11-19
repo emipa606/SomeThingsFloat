@@ -2,7 +2,9 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -24,6 +26,24 @@ public class FloatingThings_MapComponent : MapComponent
         IntVec3.NorthWest
     ];
 
+    private static readonly FieldInfo factorOffsetOutdoorsField = AccessTools.Field(
+                                                                      typeof(StatPart_EnvironmentalEffects),
+                                                                      "factorOffsetOutdoors") ??
+                                                                  throw new MissingFieldException(
+                                                                      typeof(StatPart_EnvironmentalEffects).FullName,
+                                                                      "factorOffsetOutdoors");
+
+    private static readonly FieldInfo factorOffsetUnroofedField = AccessTools.Field(
+                                                                      typeof(StatPart_EnvironmentalEffects),
+                                                                      "factorOffsetUnroofed") ??
+                                                                  throw new MissingFieldException(
+                                                                      typeof(StatPart_EnvironmentalEffects).FullName,
+                                                                      "factorOffsetUnroofed");
+
+    private static readonly FieldInfo liveMessagesField = AccessTools.Field(typeof(Messages), "liveMessages") ??
+                                                          throw new MissingFieldException(typeof(Messages).FullName,
+                                                              "liveMessages");
+
     private readonly HashSet<IntVec3> cellsEmptyHash;
 
     private readonly HashSet<AltitudeLayer> ignoredAltitudeLayers;
@@ -38,13 +58,14 @@ public class FloatingThings_MapComponent : MapComponent
 
     // ReSharper disable once ChangeFieldTypeToSystemThreadingLock
     private readonly object updateValuesLock = new();
+    public int EnemyPawnsDrowned;
+    public int WastePacksFloated;
     private bool allCellsDirty;
     private HashSet<IntVec3> cellsWithNothing;
     private HashSet<IntVec3> cellsWithOcean;
     private HashSet<IntVec3> cellsWithRiver;
     private HashSet<IntVec3> cellsWithWater;
     private HashSet<IntVec3> dirtyCells;
-    public int EnemyPawnsDrowned;
     private Dictionary<Thing, float> floatingValues;
     private Dictionary<Thing, IntVec3> hiddenPositions;
     private List<Thing> hiddenPositionsKeys;
@@ -60,7 +81,6 @@ public class FloatingThings_MapComponent : MapComponent
     private Dictionary<int, Thing> updateValues;
     private List<int> updateValuesKeys;
     private List<Thing> updateValuesValues;
-    public int WastePacksFloated;
 
     public FloatingThings_MapComponent(Map map) : base(map)
     {
@@ -175,19 +195,26 @@ public class FloatingThings_MapComponent : MapComponent
             SomeThingsFloat.LogMessage("Found items in hiddenPositions", debug: true);
             var thingsDestroyed = new List<Thing>();
             var thingsToRespawn = new List<Thing>();
-            foreach (var hiddenPositionsKey in hiddenPositions.Keys)
+            foreach (var hiddenPositionsKey in hiddenPositions.Keys.ToArray())
             {
-                hiddenPositionsKey.Tick();
+                if (!hiddenPositions.ContainsKey(hiddenPositionsKey))
+                {
+                    continue;
+                }
+
+                if (!hiddenPositionsKey.Destroyed && hiddenPositionsKey is not Pawn && !hiddenPositionsKey.Spawned)
+                {
+                    hiddenPositionsKey.DoTick();
+                }
+
                 if (hiddenPositionsKey.Destroyed)
                 {
                     thingsDestroyed.Add(hiddenPositionsKey);
                 }
-                else
+                else if (hiddenPositions.ContainsKey(hiddenPositionsKey) &&
+                         floatingValues.TryGetValue(hiddenPositionsKey, out var floatValue) && floatValue == 0)
                 {
-                    if (floatingValues.TryGetValue(hiddenPositionsKey, out var floatValue) && floatValue == 0)
-                    {
-                        thingsToRespawn.Add(hiddenPositionsKey);
-                    }
+                    thingsToRespawn.Add(hiddenPositionsKey);
                 }
             }
 
@@ -196,28 +223,42 @@ public class FloatingThings_MapComponent : MapComponent
                 SomeThingsFloat.LogMessage($"{destroyedThing} is destroyed, removing");
                 hiddenPositions.Remove(destroyedThing);
                 lastPositions.Remove(destroyedThing);
+                floatingValues.Remove(destroyedThing);
+                updateValues.RemoveAll(pair => pair.Value == destroyedThing);
             }
 
             foreach (var respawningThing in thingsToRespawn)
             {
-                var radius = 1;
-                IntVec3 spawnCell;
                 if (!hiddenPositions.TryGetValue(respawningThing, out var respawnPos))
                 {
                     continue;
                 }
 
-                while (!CellFinder.TryFindRandomCellNear(respawnPos, map, radius, cellsWithWater.Contains,
-                           out spawnCell))
+                var radius = int.MaxValue;
+                foreach (var waterCell in cellsWithWater)
                 {
-                    radius++;
+                    if (waterCell.InBounds(map))
+                    {
+                        radius = Math.Min(radius, Math.Max(Math.Abs(waterCell.x - respawnPos.x),
+                            Math.Abs(waterCell.z - respawnPos.z)));
+                    }
                 }
 
-                if (GenPlace.TryPlaceThing(respawningThing, spawnCell, map, ThingPlaceMode.Direct))
+                if (radius == int.MaxValue ||
+                    !CellFinder.TryFindRandomCellNear(respawnPos, map, Math.Max(1, radius), cellsWithWater.Contains,
+                        out var spawnCell) ||
+                    !GenPlace.TryPlaceThing(respawningThing, spawnCell, map, ThingPlaceMode.Direct))
                 {
-                    lastPositions[respawningThing] = new Tuple<int, IntVec3>(ticksGame, spawnCell);
+                    if (map.IsHashIntervalTick(GenTicks.TickLongInterval))
+                    {
+                        Log.Warning(
+                            $"[SomeThingsFloat] Could not restore hidden {respawningThing} near {respawnPos}; will retry.");
+                    }
+
+                    continue;
                 }
 
+                lastPositions[respawningThing] = new Tuple<int, IntVec3>(ticksGame, spawnCell);
                 hiddenPositions.Remove(respawningThing);
             }
         }
@@ -561,9 +602,9 @@ public class FloatingThings_MapComponent : MapComponent
         void processCell(int i, IntVec3 cell)
         {
             var upperTerrain = map.terrainGrid.topGrid[i];
-            var lowerTerrain = map.terrainGrid.underGrid[i];
+            var lowerTerrain = map.terrainGrid.UnderTerrainAt(i);
             var foundationTerrain = map.terrainGrid.foundationGrid[i];
-            var tempTerrain = map.terrainGrid.tempGrid[i];
+            var tempTerrain = map.terrainGrid.TempTerrainAt(i);
 
             // Check for bridges or foundations
             if (upperTerrain is { bridge: true } || foundationTerrain is { isFoundation: true } ||
@@ -722,20 +763,34 @@ public class FloatingThings_MapComponent : MapComponent
         if (!isSpace && Rand.Value > 0.9f)
         {
             var currentMarketValue = 0f;
-            var pawnKindDef = (from kindDef in DefDatabase<PawnKindDef>.AllDefs
-                    where kindDef.RaceProps.IsFlesh && kindDef.defaultFactionDef is not { isPlayer: true }
-                                                    && !SomeThingsFloat.AquaticRaces.Contains(kindDef.race)
-                                                    && !SomeThingsFloat.Vehicles.Contains(kindDef.race)
-                    select kindDef)
-                .RandomElement();
-            Faction faction = null;
-            if (pawnKindDef.defaultFactionDef != null)
+            if (!DefDatabase<PawnKindDef>.AllDefs
+                    .Where(kindDef => kindDef.race?.race is { IsFlesh: true } &&
+                                      kindDef.defaultFactionDef is not { isPlayer: true } &&
+                                      !SomeThingsFloat.AquaticRaces.Contains(kindDef.race) &&
+                                      !SomeThingsFloat.Vehicles.Contains(kindDef.race))
+                    .TryRandomElement(out var pawnKindDef))
             {
-                faction = Find.World.factionManager.AllFactions
-                    .Where(factionType => factionType.def == pawnKindDef.defaultFactionDef).RandomElement();
+                Log.Warning("[SomeThingsFloat] Could not spawn a pawn: no eligible pawn kinds were found.");
+                return false;
+            }
+
+            Faction faction = null;
+            if (pawnKindDef.defaultFactionDef != null &&
+                !Find.World.factionManager.AllFactions
+                    .Where(factionType => factionType.def == pawnKindDef.defaultFactionDef)
+                    .TryRandomElement(out faction))
+            {
+                Log.Warning($"[SomeThingsFloat] Could not spawn {pawnKindDef}: no matching faction was found.");
+                return false;
             }
 
             var pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(pawnKindDef, faction, allowDead: false));
+            if (pawn == null)
+            {
+                Log.Warning($"[SomeThingsFloat] Pawn generation failed for {pawnKindDef}.");
+                return false;
+            }
+
             if (pawn.equipment?.HasAnything() == true)
             {
                 pawn.equipment.DestroyAllEquipment();
@@ -772,18 +827,38 @@ public class FloatingThings_MapComponent : MapComponent
                     }
                 }
 
-                pawn.Corpse.Age = Rand.Range(1, 900000);
-                GenSpawn.Spawn(pawn.Corpse, cellToPlaceIt, map);
-                pawn.Corpse.GetComp<CompRottable>().RotProgress += pawn.Corpse.Age;
+                var spawnedCorpse = pawn.Corpse;
+                if (spawnedCorpse == null)
+                {
+                    Log.Warning($"[SomeThingsFloat] Could not spawn a corpse for {pawn}: no corpse was created.");
+                    return false;
+                }
+
+                spawnedCorpse.Age = Rand.Range(1, 900000);
+                if (GenSpawn.Spawn(spawnedCorpse, cellToPlaceIt, map) != spawnedCorpse || !spawnedCorpse.Spawned)
+                {
+                    Log.Warning($"[SomeThingsFloat] Could not spawn {spawnedCorpse} at {cellToPlaceIt}.");
+                    return false;
+                }
+
+                if (spawnedCorpse.GetComp<CompRottable>() is { } rottable)
+                {
+                    rottable.RotProgress += spawnedCorpse.Age;
+                }
+                else
+                {
+                    Log.Warning($"[SomeThingsFloat] Spawned {spawnedCorpse} without a rottable component.");
+                }
+
                 if (!force)
                 {
                     lastSpawnTick = GenTicks.TicksGame;
                 }
 
-                pawn.Corpse.SetForbidden(SomeThingsFloatMod.Instance.Settings.ForbidSpawningItems, false);
+                spawnedCorpse.SetForbidden(SomeThingsFloatMod.Instance.Settings.ForbidSpawningItems, false);
                 if (SomeThingsFloat.HaulUrgentlyDef != null && SomeThingsFloatMod.Instance.Settings.HaulUrgently)
                 {
-                    map.designationManager.AddDesignation(new Designation(pawn.Corpse,
+                    map.designationManager.AddDesignation(new Designation(spawnedCorpse,
                         SomeThingsFloat.HaulUrgentlyDef));
                 }
 
@@ -792,8 +867,8 @@ public class FloatingThings_MapComponent : MapComponent
                 {
                     Messages.Message(
                         cellToPlaceIt.GetTerrain(map)?.defName.ToLower().Contains("ocean") == true
-                            ? "STF.ThingsFloatedInFromTheOcean".Translate(pawn.Corpse.LabelCap)
-                            : "STF.ThingsFloatedIntoTheMap".Translate(pawn.Corpse.LabelCap), pawn,
+                            ? "STF.ThingsFloatedInFromTheOcean".Translate(spawnedCorpse.LabelCap)
+                            : "STF.ThingsFloatedIntoTheMap".Translate(spawnedCorpse.LabelCap), pawn,
                         MessageTypeDefOf.NeutralEvent);
                 }
 
@@ -801,7 +876,12 @@ public class FloatingThings_MapComponent : MapComponent
             }
 
             HealthUtility.DamageUntilDowned(pawn);
-            GenSpawn.Spawn(pawn, cellToPlaceIt, map);
+            if (pawn.Dead || pawn.Destroyed || GenSpawn.Spawn(pawn, cellToPlaceIt, map) != pawn || !pawn.Spawned)
+            {
+                Log.Warning($"[SomeThingsFloat] Could not spawn living {pawn} at {cellToPlaceIt}.");
+                return false;
+            }
+
             if (!SomeThingsFloatMod.Instance.Settings.NoNotifications)
             {
                 if (!pawn.RaceProps.Animal)
@@ -1478,8 +1558,9 @@ public class FloatingThings_MapComponent : MapComponent
             if (!adjacentCell.InBounds(map))
             {
                 if (SomeThingsFloatMod.Instance.Settings.DespawnAtMapEdge &&
-                    !Messages.liveMessages.Any(message =>
-                        message.lookTargets?.targets.Contains(thing) == true))
+                    !(liveMessagesField.GetValue(null) as List<Message> ??
+                      throw new InvalidOperationException("Messages.liveMessages is missing or invalid."))
+                        .Any(message => message.lookTargets?.targets.Contains(thing) == true))
                 {
                     resultingCell = IntVec3.Invalid;
                     return true;
@@ -1654,9 +1735,12 @@ public class FloatingThings_MapComponent : MapComponent
         }
 
         var underTerrain = map.terrainGrid?.UnderTerrainAt(position);
+        var environmentalEffects = StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>();
 
-        num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetUnroofed;
-        num += StatDefOf.DeteriorationRate.GetStatPart<StatPart_EnvironmentalEffects>().factorOffsetOutdoors;
+        num += (float)(factorOffsetUnroofedField.GetValue(environmentalEffects) ??
+                       throw new InvalidOperationException("Environmental unroofed offset is missing."));
+        num += (float)(factorOffsetOutdoorsField.GetValue(environmentalEffects) ??
+                       throw new InvalidOperationException("Environmental outdoors offset is missing."));
         if (underTerrain != null)
         {
             num *= underTerrain.extraDeteriorationFactor;

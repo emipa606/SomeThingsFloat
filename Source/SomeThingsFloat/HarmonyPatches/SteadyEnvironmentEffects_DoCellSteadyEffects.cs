@@ -4,7 +4,7 @@ using Verse;
 
 namespace SomeThingsFloat;
 
-[HarmonyPatch(typeof(SteadyEnvironmentEffects), nameof(SteadyEnvironmentEffects.DoCellSteadyEffects))]
+[HarmonyPatch(typeof(SteadyEnvironmentEffects), "DoCellSteadyEffects")]
 public static class SteadyEnvironmentEffects_DoCellSteadyEffects
 {
     public static void Postfix(IntVec3 c, Map ___map)

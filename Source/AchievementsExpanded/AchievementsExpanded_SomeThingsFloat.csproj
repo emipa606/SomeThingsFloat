@@ -1,21 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputPath>..\..\AchievementsExpanded\1.6\Assemblies</OutputPath>
-    <TargetFramework>net48</TargetFramework>
+    <OutputPath>..\..\AchievementsExpanded\1.7\Assemblies</OutputPath>
+    <TargetFramework>net10.0</TargetFramework>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <DebugType>None</DebugType>
     <LangVersion>latest</LangVersion>
-    <FileVersion>1.6.23</FileVersion>
-    <Copyright>© Mlie 2026 - MIT License</Copyright>
-  </PropertyGroup>
+  <FileVersion>1.7.0</FileVersion><GenerateDependencyFile>false</GenerateDependencyFile><AssemblyVersion>1.7</AssemblyVersion><Product>Some Things Float</Product><Copyright>© Mlie 2026 - MIT License</Copyright><Nullable>warnings</Nullable></PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Krafs.Rimworld.Ref">
-      <Version>*</Version>
+      <Version>1.7.5014-unstable</Version>
       <ExcludeAssets>runtime</ExcludeAssets>
       <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <Reference Include="VanillaAchievementsExpanded">
+    <Reference Include="AchievementsExpanded">
       <HintPath>..\..\..\..\..\..\workshop\content\294100\2288125657\1.6\Assemblies\AchievementsExpanded.dll</HintPath>
       <CopyLocal>False</CopyLocal>
       <Private>false</Private>
@@ -27,4 +25,4 @@
       <ExcludeAssets>all</ExcludeAssets>
     </ProjectReference>
   </ItemGroup>
-</Project>
+<Target Name="KillRimWorld" BeforeTargets="Clean;Build"><Exec Command="taskkill.exe /F /IM RimWorld.exe /T &gt;nul 2&gt;&amp;1" IgnoreExitCode="true" /></Target></Project>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+  <!-- EN: lost footing -->
+  <STF_LostFooting.label>lost footing</STF_LostFooting.label>
+  <!-- EN: The pawn has lost their footing in the moving water and is now trying to stay afloat -->
+  <STF_LostFooting.description>The pawn has lost their footing in the moving water and is now trying to stay afloat</STF_LostFooting.description>
+</LanguageData>
